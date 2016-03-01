@@ -60,10 +60,12 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.fieldset_sftp = $('<fieldset id="fieldset_sftp">')
       .appendTo(this.div_sftp);
       
-      this.list_sftp = $('<table id="table_sftp">')
-        .appendTo(this.fieldset_sftp);
+//      this.list_sftp = $('<table id="table_sftp">')
+//        .appendTo(this.fieldset_sftp);
 
-      this.button_sftp = $('<button id="button_sftp" disabled>upload</button>')
+      // Button to confirm the selected file to upload from sftp import dir
+      this.button_sftp = $('<a href="javascript:;" class="btn">Upload</a>')
+      .on('click', this._onInputChangeSFTP)
       .appendTo(this.div_sftp);
       
       // Button to set the field to be a URL
@@ -135,18 +137,18 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		for(var x in parsed){
     			filelist.push(parsed[x]);
     		}
-    		$('#table_sftp').empty();
+    		$('#fieldset_sftp').empty();
     		for (var i=0; i < filelist.length; i++) {
-    			$('#table_sftp').after('<tr> \
-   	    				<td><input type="radio" name="file" value="'+ filelist[i] +'" onchange="$(&quot;#button_sftp&quot;).prop(&quot;disabled&quot;, false);"> '+ filelist[i] +'</td> \
-   	    				</tr>');
+    			var id = 'file'+i;
+    			$('#fieldset_sftp').append('<input type="radio" id="'+id
+    				+'" name="file" value="'+ filelist[i] 
+    				+'" onchange="$(&quot;#button_sftp&quot;).prop(&quot;disabled&quot;, false);"><label for="'+id
+    				+'">'+ filelist[i]+'</label>');
    	      }
     	}).fail(function() {
     		console.log('sftp list request failed!');
     	});
 	   }
-     
-      
 	  this.div_sftp.toggle();
    },
    
@@ -187,9 +189,15 @@ this.ckan.module('ccca-image-upload', function($, _) {
     },
     
     _onInputChangeSFTP: function() {
-    	var selected = $("#table_sftp input[type='radio']:checked");
-    	this.input.val(selected);
-    	this._onInputChange();
+    	var selected = $("#fieldset_sftp input[type='radio']:checked");
+    	if (selected.length>0) {
+	    	this.field_url_input.val($(selected[0]).val());
+	    	this.field_url_input.prop('readonly', true);
+	        this.field_clear.val('');
+	        this._showOnlyFieldUrl();
+	        this.div_sftp.hide();
+    	}
+    	
     },
 
     /* Show only the buttons, hiding all others

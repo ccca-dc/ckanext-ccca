@@ -40,7 +40,6 @@ class UploadController(base.BaseController):
         if 'apikey' in data and data['apikey']==user.apikey:
             mypath = expanduser("~")+'/../'+user.name+'/ckan/'
             onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and not f.startswith('.'))]
-            log.debug(c.userobj.name)
             return json.dumps(onlyfiles)
         else:
              return "no API key"
