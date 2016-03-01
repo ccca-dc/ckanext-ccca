@@ -9,7 +9,7 @@
 }
 
 #field-ccca-image-upload {
-  display: none
+/*   display: none */
   cursor: pointer;
   position: absolute;
   z-index: 1;

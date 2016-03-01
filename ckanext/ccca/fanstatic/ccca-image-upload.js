@@ -54,12 +54,18 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.div_sftp = $('<div id="div_sftp_upload" style="display: none;" name="sftp_upload">')
         .appendTo(this.el);
 
+      this.info_sftp = $('<p>Please choose file to upload:</p>')
+      .appendTo(this.div_sftp);
+      
       this.fieldset_sftp = $('<fieldset id="fieldset_sftp">')
       .appendTo(this.div_sftp);
       
-      this.list_sftp = $('<ul> id="ul_sftp"')
+      this.list_sftp = $('<table id="table_sftp">')
         .appendTo(this.fieldset_sftp);
 
+      this.button_sftp = $('<button id="button_sftp" disabled>upload</button>')
+      .appendTo(this.div_sftp);
+      
       // Button to set the field to be a URL
       this.button_url = $('<a href="javascript:;" class="btn"><i class="icon-globe"></i> '+this.i18n('url')+'</a>')
         .prop('title', this.i18n('url_tooltip'))
@@ -68,6 +74,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 
       // Button to attach file from sftp to the form
       this.button_upload_sftp = $('<a href="javascript:;" class="btn"><i class="icon-cloud-upload"></i>Upload SFTP</a>')
+      .prop('title', 'Upload file imported from SFTP directory')
       .on('click', this._onSFTP)
       .insertAfter(this.input);
       
@@ -95,6 +102,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       // Fields storage. Used in this.changeState
       this.fields = $('<i />')
         .add(this.button_upload)
+        .add(this.button_upload_sftp)
         .add(this.button_url)
         .add(this.input)
         .add(this.field_url)
@@ -115,6 +123,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
     * Returns nothing.
     */
    _onSFTP: function() {
+	   if (this.div_sftp.css('display')=='none') {
       $.ajax({
     	  url: "http://127.0.0.1:5000/sftp_upload?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
     	  context: document.body
@@ -126,14 +135,16 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		for(var x in parsed){
     			filelist.push(parsed[x]);
     		}
+    		$('#table_sftp').empty();
     		for (var i=0; i < filelist.length; i++) {
-    			$('#ul_sftp').after('<li><label> \
-   	    				<input type="checkbox" name="file" value="'+ filelist[i] +'"> '+ filelist[i] +' \
-   	    				</label></li>');
+    			$('#table_sftp').after('<tr> \
+   	    				<td><input type="radio" name="file" value="'+ filelist[i] +'" onchange="$(&quot;#button_sftp&quot;).prop(&quot;disabled&quot;, false);"> '+ filelist[i] +'</td> \
+   	    				</tr>');
    	      }
     	}).fail(function() {
     		console.log('sftp list request failed!');
     	});
+	   }
      
       
 	  this.div_sftp.toggle();
@@ -149,6 +160,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       if (this.options.is_upload) {
         this.field_clear.val('true');
       }
+      
     },
 
     /* Event listener for resetting the field back to the blank state
@@ -173,6 +185,12 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.field_clear.val('');
       this._showOnlyFieldUrl();
     },
+    
+    _onInputChangeSFTP: function() {
+    	var selected = $("#table_sftp input[type='radio']:checked");
+    	this.input.val(selected);
+    	this._onInputChange();
+    },
 
     /* Show only the buttons, hiding all others
      *
@@ -182,6 +200,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.fields.hide();
       this.button_upload
         .add(this.field_image)
+        .add(this.button_upload_sftp)
         .add(this.button_url)
         .add(this.input)
         .show();
