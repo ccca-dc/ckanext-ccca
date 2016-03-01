@@ -26,7 +26,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
      * Returns nothing.
      */
     initialize: function () {
-    	console.log("new module");
       $.proxyAll(this, /_on/);
       var options = this.options;
 
@@ -116,21 +115,22 @@ this.ckan.module('ccca-image-upload', function($, _) {
     * Returns nothing.
     */
    _onSFTP: function() {
-      //var loc = window.location.pathname;
-      //var homedir = loc.substring(0, loc.lastIndexOf('/'));
-      //var allFiles = ['vector.shp', 'raster.tif'];
       $.ajax({
-    	  url: "/sftp_upload",
+    	  url: "http://127.0.0.1:5000/sftp_upload?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
     	  context: document.body
     	}).done(function() {
-    	  $( this ).addClass( "done" );
-    	}).success(function(data) {
+    	  $(this).addClass( "done" );
+    	}).success(function(json) {
     		var parsed = JSON.parse(json);
-    		var allFilenames = [];
+    		var filelist = [];
     		for(var x in parsed){
-    			allFilenames.push(parsed[x]);
+    			filelist.push(parsed[x]);
     		}
-    		this._fillSFTPList(allFilenames);
+    		for (var i=0; i < filelist.length; i++) {
+    			$('#ul_sftp').after('<li><label> \
+   	    				<input type="checkbox" name="file" value="'+ filelist[i] +'"> '+ filelist[i] +' \
+   	    				</label></li>');
+   	      }
     	}).fail(function() {
     		console.log('sftp list request failed!');
     	});
@@ -139,14 +139,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	  this.div_sftp.toggle();
    },
    
-   _fillSFTPList: function(filelist) {
-	      for (var i=0; i < filelist.length; i++) {
-	    	  this.list_sftp.after('<li><label> \
-	    				<input type="checkbox" name="file" value="'+ filelist[i] +'"> '+ filelist[i] +' \
-	    				</label></li>');
-	      }
-   },
-
     /* Event listener for when someone sets the field to URL mode
      *
      * Returns nothing.
