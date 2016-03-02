@@ -52,10 +52,11 @@ class UploadController(base.BaseController):
     def upload_file(self):
         reqData = base.request.params
         response = requests.post('http://127.0.0.1:5000/api/action/resource_create',
-              data={'package_id': '726a89e6-72db-459e-8aae-d4f3d2ab4751',
-                    'url': '/Users/ck/ckan/AUT.geojson'},
+              data={'package_id': reqData['package_id'],
+                    'url': reqData['url'],
+                    'name': reqData['name']},
               headers={"X-CKAN-API-Key": "4d4b762b-f696-49e4-be00-79aacfb6cd0b"},
-              files=[('upload', file('/Users/ck/ckan/AUT.geojson'))])
+              files=[('upload', file(reqData['url']))])
         return response
         
         

@@ -207,17 +207,11 @@ this.ckan.module('ccca-image-upload', function($, _) {
     	if (selected.length>0) {
     		console.log("Importing file");
     		var formData=new FormData();
-//    		formData.append("apikey", "4d4b762b-f696-49e4-be00-79aacfb6cd0b");
-//    		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
-//    		formData.append("upload", "/Users/ck/git/ckan/AUT.geojson"));
-//    		formData.append("url", "/Users/ck/git/ckan/AUT.geojson");
-//    		formData.append("name", "AUT");
+    		formData.append("apikey", "4d4b762b-f696-49e4-be00-79aacfb6cd0b");
+    		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
+    		formData.append("url", "/Users/ck/ckan/" + selected[0].value);
+    		formData.append("name", "AUT");
     		
-//    		var plainData={"apikey": "4d4b762b-f696-49e4-be00-79aacfb6cd0b", 
-//	   	    		 "package_id": "726a89e6-72db-459e-8aae-d4f3d2ab4751", 
-//	   	    		 "upload": "@/Users/ck/git/ckan/AUT.geojson",
-//	   	    		 "url": "/Users/ck/git/ckan/AUT.geojson",
-//	   	    		 "name": "AUT"};
     		 $.ajax({
     			 method: "POST",
     			 headers: { 'Authorization': '4d4b762b-f696-49e4-be00-79aacfb6cd0b' },
