@@ -38,7 +38,8 @@ class UploadController(base.BaseController):
         data = base.request.params
         log.debug(user)
         if 'apikey' in data and data['apikey']==user.apikey:
-            mypath = expanduser("~")+'/../'+user.name+'/ckan/'
+            #mypath = expanduser("~")+'/../'+user.name+'/ckan/'
+            mypath = '/Users/ck/git/ckanext-ccca/ckanext/ccca/public/test'
             onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and not f.startswith('.'))]
             return json.dumps(onlyfiles)
         else:

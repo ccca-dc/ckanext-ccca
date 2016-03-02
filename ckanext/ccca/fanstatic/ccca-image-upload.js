@@ -37,6 +37,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.input = $(field_upload, this.el);
       this.field_url = $(field_url, this.el).parents('.control-group');
       this.field_image = this.input.parents('.control-group');
+      this.field_image_sftp = this.input.parents('.control-group');
       this.field_url_input = $('input', this.field_url);
 
       // Is there a clear checkbox on the form already?
@@ -61,7 +62,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.fieldset_sftp = $('<fieldset id="fieldset_sftp">')
       .appendTo(this.div_sftp);
       
-      // Button to confirm the selected file to upload from sftp import dir
+      // Button to refresh the file list from sftp import dir
       this.button_sftp_refresh = $('<a href="javascript:;" id="button_sftp_refresh" class="btn">Refresh</a>')
       .on('click', this._refreshSFTPFilelist)
       .appendTo(this.div_sftp);
@@ -111,7 +112,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
         .add(this.button_url)
         .add(this.input)
         .add(this.field_url)
-        .add(this.field_image);
+        .add(this.field_image)
+        .add(this.field_image_sftp);
 
       if (options.is_url) {
         this._showOnlyFieldUrl();
@@ -201,8 +203,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
     _onInputChangeSFTP: function() {
     	var selected = $("#fieldset_sftp input[type='radio']:checked");
     	if (selected.length>0) {
-//    		this.input.val('/User/test/ckan/' + $(selected[0]).val());
-	    	this.field_url_input.val('/User/test/ckan/' + $(selected).val());
+	    	this.field_url_input.val('http://127.0.0.1:5000/test/' + $(selected).val());
 	    	this.field_url_input.prop('readonly', true);
 	        this.field_clear.val('');
 	        this._showOnlyFieldUrl();
