@@ -1,6 +1,7 @@
 /* Image Upload
  * 
- */  
+ */ 
+
 this.ckan.module('ccca-image-upload', function($, _) {
   return {
     /* options object can be extended using data-module-* attributes */
@@ -139,7 +140,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
    _refreshSFTPFilelist: function() {
 	   $('#fieldset_sftp').hide();
 	   $.ajax({
-	    	  url: "http://127.0.0.1:5000/sftp_upload?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
+	    	  url: "http://127.0.0.1:5000/sftp_filelist?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
 	    	  context: document.body
 	    	}).done(function() {
 	    	  $(this).addClass( "done" );
@@ -202,15 +203,63 @@ this.ckan.module('ccca-image-upload', function($, _) {
     
     _onInputChangeSFTP: function() {
     	var selected = $("#fieldset_sftp input[type='radio']:checked");
+    	var obj = this;
     	if (selected.length>0) {
-	    	this.field_url_input.val('http://127.0.0.1:5000/test/' + $(selected).val());
-	    	this.field_url_input.prop('readonly', true);
-	        this.field_clear.val('');
-	        this._showOnlyFieldUrl();
-	        this.div_sftp.hide();
+    		console.log("Importing file");
+    		var formData=new FormData();
+//    		formData.append("apikey", "4d4b762b-f696-49e4-be00-79aacfb6cd0b");
+//    		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
+//    		formData.append("upload", "/Users/ck/git/ckan/AUT.geojson"));
+//    		formData.append("url", "/Users/ck/git/ckan/AUT.geojson");
+//    		formData.append("name", "AUT");
+    		
+//    		var plainData={"apikey": "4d4b762b-f696-49e4-be00-79aacfb6cd0b", 
+//	   	    		 "package_id": "726a89e6-72db-459e-8aae-d4f3d2ab4751", 
+//	   	    		 "upload": "@/Users/ck/git/ckan/AUT.geojson",
+//	   	    		 "url": "/Users/ck/git/ckan/AUT.geojson",
+//	   	    		 "name": "AUT"};
+    		 $.ajax({
+    			 method: "POST",
+    			 headers: { 'Authorization': '4d4b762b-f696-49e4-be00-79aacfb6cd0b' },
+	   	    	 url: "http://127.0.0.1:5000/sftp_upload",
+	   	    	 context: document.body,
+	   	    	 data: formData,
+	   	    	 cache: false,
+	   	    	 contentType: false,
+	   	    	 processData: false
+   	    	}).done(function() {
+//   	    	  $(this).addClass( "done" );
+   	    	}).success(function(json) {
+//   	    		var package_id = response.result.package_id;
+//   	    		var resource_id = response.result.id;
+//   	    		var filename = "AUT.geojson";
+   	    		var response = jQuery.parseJSON(json);
+   	    		var url = response.result.url;
+   	    		console.log(url);
+	   	     	obj.field_url_input.val(url);
+	   	     	obj.field_url_input.prop('readonly', true);
+	   	     	obj.field_clear.val('');
+			   	obj._showOnlyFieldUrl();
+			   	obj.div_sftp.hide();
+   	    	}).fail(function() {
+   	    		console.log('sftp list request failed!');
+   	    	});
     	}
     	
     },
+    
+//    _enterResourceURL: function() {
+//   		var package_id = response.result.package_id;
+//   		var resource_id = response.result.id;
+//   		var filename = "AUT.geojson";
+//   		var url = "http://127.0.0.1:5000/dataset/"+package_id+"/resource/"+resource_id+"/download/"+filename;
+//   		console.log(url);
+//    	this.field_url_input.val(url);
+//    	this.field_url_input.prop('readonly', true);
+//        this.field_clear.val('');
+//        this._showOnlyFieldUrl();
+//        this.div_sftp.hide();
+//    },
 
     /* Show only the buttons, hiding all others
      *

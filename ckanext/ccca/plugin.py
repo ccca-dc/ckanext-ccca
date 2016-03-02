@@ -1,6 +1,9 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.lib.base as base
+
+import requests
+
 from pylons import g, c
 from jinja2 import Environment, FileSystemLoader
 from os import listdir
@@ -23,7 +26,8 @@ class CccaPlugin(plugins.SingletonPlugin):
         toolkit.add_resource('fanstatic', 'ccca')
         
     def before_map(self, map):
-        map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.plugin:UploadController', action='show_filelist')
+        map.connect('sftp_filelist', '/sftp_filelist', controller='ckanext.ccca.plugin:UploadController', action='show_filelist')
+        map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.plugin:UploadController', action='upload_file')
         return map
     
     
@@ -44,4 +48,14 @@ class UploadController(base.BaseController):
             return json.dumps(onlyfiles)
         else:
              return "no API key"
+         
+    def upload_file(self):
+        reqData = base.request.params
+        response = requests.post('http://127.0.0.1:5000/api/action/resource_create',
+              data={'package_id': '726a89e6-72db-459e-8aae-d4f3d2ab4751',
+                    'url': '/Users/ck/ckan/AUT.geojson'},
+              headers={"X-CKAN-API-Key": "4d4b762b-f696-49e4-be00-79aacfb6cd0b"},
+              files=[('upload', file('/Users/ck/ckan/AUT.geojson'))])
+        return response
+        
         
