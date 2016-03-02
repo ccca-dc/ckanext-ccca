@@ -54,17 +54,20 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.div_sftp = $('<div id="div_sftp_upload" style="display: none;" name="sftp_upload">')
         .appendTo(this.el);
 
-      this.info_sftp = $('<p>Please choose file to upload:</p>')
+      // Adds an info string for SFTP upload
+      this.info_sftp = $('<p>All files you upload to ​<a href="sftp://user@example.com">sftp://user@example.com</a> will appear here.<br>Please choose a file to upload to CKAN:</p>')
       .appendTo(this.div_sftp);
       
       this.fieldset_sftp = $('<fieldset id="fieldset_sftp">')
       .appendTo(this.div_sftp);
       
-//      this.list_sftp = $('<table id="table_sftp">')
-//        .appendTo(this.fieldset_sftp);
-
       // Button to confirm the selected file to upload from sftp import dir
-      this.button_sftp = $('<a href="javascript:;" class="btn">Upload</a>')
+      this.button_sftp_refresh = $('<a href="javascript:;" id="button_sftp_refresh" class="btn">Refresh</a>')
+      .on('click', this._refreshSFTPFilelist)
+      .appendTo(this.div_sftp);
+      
+      // Button to confirm the selected file to upload from sftp import dir
+      this.button_sftp = $('<a href="javascript:;" id="button_sftp" class="btn" disabled>Upload</a>')
       .on('click', this._onInputChangeSFTP)
       .appendTo(this.div_sftp);
       
@@ -126,30 +129,37 @@ this.ckan.module('ccca-image-upload', function($, _) {
     */
    _onSFTP: function() {
 	   if (this.div_sftp.css('display')=='none') {
-      $.ajax({
-    	  url: "http://127.0.0.1:5000/sftp_upload?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
-    	  context: document.body
-    	}).done(function() {
-    	  $(this).addClass( "done" );
-    	}).success(function(json) {
-    		var parsed = JSON.parse(json);
-    		var filelist = [];
-    		for(var x in parsed){
-    			filelist.push(parsed[x]);
-    		}
-    		$('#fieldset_sftp').empty();
-    		for (var i=0; i < filelist.length; i++) {
-    			var id = 'file'+i;
-    			$('#fieldset_sftp').append('<input type="radio" id="'+id
-    				+'" name="file" value="'+ filelist[i] 
-    				+'" onchange="$(&quot;#button_sftp&quot;).prop(&quot;disabled&quot;, false);"><label for="'+id
-    				+'">'+ filelist[i]+'</label>');
-   	      }
-    	}).fail(function() {
-    		console.log('sftp list request failed!');
-    	});
+		   this._refreshSFTPFilelist();
 	   }
 	  this.div_sftp.toggle();
+   },
+   
+   _refreshSFTPFilelist: function() {
+	   $('#fieldset_sftp').hide();
+	   $.ajax({
+	    	  url: "http://127.0.0.1:5000/sftp_upload?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
+	    	  context: document.body
+	    	}).done(function() {
+	    	  $(this).addClass( "done" );
+	    	}).success(function(json) {
+	    		var parsed = JSON.parse(json);
+	    		var filelist = [];
+	    		for(var x in parsed){
+	    			filelist.push(parsed[x]);
+	    		}
+	    		$('#fieldset_sftp').empty();
+	    		for (var i=0; i < filelist.length; i++) {
+	    			var id = 'file'+i;
+	    			$('#fieldset_sftp').append('<input type="radio" id="'+id
+	    				+'" name="file" class="filebutton" value="'+ filelist[i] 
+	    				+'" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);"/><label class="radio inline filelabel" for="'+id
+	    				+'">'+ filelist[i] +'</label><br>');
+	   	      }
+	    		$('#fieldset_sftp').show();
+	    		$('#button_sftp').attr('disabled', true);
+	    	}).fail(function() {
+	    		console.log('sftp list request failed!');
+	    	});
    },
    
     /* Event listener for when someone sets the field to URL mode
@@ -191,7 +201,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
     _onInputChangeSFTP: function() {
     	var selected = $("#fieldset_sftp input[type='radio']:checked");
     	if (selected.length>0) {
-	    	this.field_url_input.val($(selected[0]).val());
+//    		this.input.val('/User/test/ckan/' + $(selected[0]).val());
+	    	this.field_url_input.val('/User/test/ckan/' + $(selected).val());
 	    	this.field_url_input.prop('readonly', true);
 	        this.field_clear.val('');
 	        this._showOnlyFieldUrl();
