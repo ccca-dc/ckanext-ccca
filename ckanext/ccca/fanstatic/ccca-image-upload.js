@@ -27,10 +27,12 @@ this.ckan.module('ccca-image-upload', function($, _) {
      * Returns nothing.
      */
     initialize: function () {
-    	console.log('field_url: '+field_url);
       $.proxyAll(this, /_on/);
       var options = this.options;
-
+      var host_url = options.host_url.replace("http://", "");
+      var username = options.username;
+      console.log(options.host_url);
+      
       // firstly setup the fields
       var field_upload = 'input[name="' + options.field_upload + '"]';
       var field_url = 'input[name="' + options.field_url + '"]';
@@ -58,7 +60,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
         .appendTo(this.el);
 
       // Adds an info string for SFTP upload
-      this.info_sftp = $('<p>All files you upload to ​<a href="sftp://user@example.com">sftp://user@example.com</a> will appear here.<br>'
+      this.info_sftp = $('<p>All files you upload to ​<a href="'+username+'@'+host_url+'">'+username+'@'+host_url
+    		  +'</a> will appear here.<br>'
     		  +'Please select a file to import:</p>')
       .appendTo(this.div_sftp);
       
@@ -73,7 +76,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       
       // Button to cancel sftp import
       this.button_sftp_cancel = $('<a href="javascript:;" id="button_sftp_cancel" class="btn">Cancel</a>')
-      .on('click', function() {$('#div_sftp').hide();})
+      .on('click', function() {$('#div_sftp').animate( { "opacity": "hide", top:"100"} , 500 );})
       .appendTo(this.div_sftp);
 
       // Button to confirm the selected file to import from local import directory
@@ -142,7 +145,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	   if (this.div_sftp.css('display')=='none') {
 		   this._refreshSFTPFilelist();
 	   }
-	  this.div_sftp.toggle();
+	   this.div_sftp.animate( { "opacity": "show", top:"100"} , 500 );
    },
    
    _refreshSFTPFilelist: function() {

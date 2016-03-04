@@ -39,7 +39,7 @@ class UploadController(base.BaseController):
     def show_filelist(self):
         user = c.userobj
         data = base.request.params
-        log.debug(user)
+        log.debug('username: '+user.name)
         if 'apikey' in data and data['apikey']==user.apikey:
             mypath = '/Users/ck/ccca-import/'
             onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and not f.startswith('.'))]
