@@ -17,10 +17,10 @@
   filter: alpha(opacity=0);
 }
 
-.filelabel {
-
+#select_sftp {
+	width: 100%;
+	margin-bottom: 15px;
 }
 
-.filebutton {
-
-}
+#div_sftp {
+	margin-bottom: 20px;

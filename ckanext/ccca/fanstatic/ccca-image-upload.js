@@ -54,11 +54,12 @@ this.ckan.module('ccca-image-upload', function($, _) {
         .appendTo(this.el);
       
       // Adds the hidden text field for sftp upload
-      this.div_sftp = $('<div id="div_sftp_upload" style="display: none;" name="sftp_upload">')
+      this.div_sftp = $('<div id="div_sftp" style="display: none;" name="sftp_upload">')
         .appendTo(this.el);
 
       // Adds an info string for SFTP upload
-      this.info_sftp = $('<p>All files you upload to ​<a href="sftp://user@example.com">sftp://user@example.com</a> will appear here.<br>Please choose a file to upload to CKAN:</p>')
+      this.info_sftp = $('<p>All files you upload to ​<a href="sftp://user@example.com">sftp://user@example.com</a> will appear here.<br>'
+    		  +'Please select a file to import:</p>')
       .appendTo(this.div_sftp);
       
       // File selection
@@ -70,8 +71,13 @@ this.ckan.module('ccca-image-upload', function($, _) {
       .on('click', this._refreshSFTPFilelist)
       .appendTo(this.div_sftp);
       
+      // Button to cancel sftp import
+      this.button_sftp_cancel = $('<a href="javascript:;" id="button_sftp_cancel" class="btn">Cancel</a>')
+      .on('click', function() {$('#div_sftp').hide();})
+      .appendTo(this.div_sftp);
+
       // Button to confirm the selected file to import from local import directory
-      this.button_sftp = $('<a href="javascript:;" id="button_sftp" class="btn" disabled>Import</a>')
+      this.button_sftp = $('<a href="javascript:;" id="button_sftp" class="btn btn-primary" disabled>Import</a>')
       .on('click', this._onInputChangeSFTP)
       .appendTo(this.div_sftp);
       
