@@ -13,12 +13,12 @@ import json
 
 log = logging.getLogger(__name__)
 
-class CccaPlugin(plugins.SingletonPlugin):
+class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
-
+    plugins.implements(plugins.IDatasetForm)
+    
     # IConfigurer
-
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
@@ -29,11 +29,38 @@ class CccaPlugin(plugins.SingletonPlugin):
         map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.plugin:UploadController', action='upload_file')
         return map
     
-    
     def after_map(self, map):
         #log.fatal("==================================> %s" % map)
         return map
+    
+    def create_package_schema(self):
+        # let's grab the default schema in our plugin
+        schema = super(CccaPlugin, self).create_package_schema()
+        #our custom field
+        schema.update({
+            'res_access': [toolkit.get_validator('boolean_validator'),
+                            toolkit.get_converter('convert_to_extras')]
+        })
+        return schema
 
+    def show_package_schema(self):
+        schema = super(CccaPlugin, self).show_package_schema()
+        schema.update({
+            'res_access': [toolkit.get_converter('convert_from_extras'),
+                            toolkit.get_validator('boolean_validator')]
+        })
+        return schema
+    
+    def is_fallback(self):
+        # Return True to register this plugin as the default handler for
+        # package types not handled by any other IDatasetForm plugin.
+        return True
+
+    def package_types(self):
+        # This plugin doesn't handle any special package types, it just
+        # registers itself as the default (above).
+        return []
+    
 class UploadController(base.BaseController):
     
     def show_filelist(self):
