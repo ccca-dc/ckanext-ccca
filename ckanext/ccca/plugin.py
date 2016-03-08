@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=True)
     plugins.implements(plugins.IRoutes, inherit=True)
-    #plugins.implements(plugins.IDatasetForm)
+    plugins.implements(plugins.IDatasetForm)
     
     # IConfigurer
     def update_config(self, config_):
@@ -33,26 +33,28 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #log.fatal("==================================> %s" % map)
         return map
     
-    def _modify_package_schema(self, schema):
+    def create_package_schema(self):
+        schema = super(CccaPlugin, self).create_package_schema()
+        schema.update({
+            'res_access': [toolkit.get_validator('boolean_validator'),
+                            toolkit.get_converter('convert_to_extras')]
+        })
+        return schema
+
+    def update_package_schema(self):
+        schema = super(CccaPlugin, self).update_package_schema()
         schema.update({
             'res_access': [toolkit.get_validator('boolean_validator'),
                             toolkit.get_converter('convert_to_extras')]
         })
         return schema
     
-    def create_package_schema(self):
-        schema = super(CccaPlugin, self).create_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-
-    def update_package_schema(self):
-        schema = super(CccaPlugin, self).update_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-    
     def show_package_schema(self):
         schema = super(CccaPlugin, self).show_package_schema()
-        schema = self._modify_package_schema(schema)
+        schema.update({
+            'res_access': [toolkit.get_converter('convert_from_extras'),
+                           toolkit.get_validator('boolean_validator')]
+        })
         return schema
     
     def is_fallback(self):

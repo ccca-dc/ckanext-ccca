@@ -1,11 +1,14 @@
 {% ckan_extends %}
 {% set pkg = c.pkg_dict or pkg_dict %}
 {% set res_access = pkg.res_access %}
+{% set mydataset = (c.userobj.id == c.package.creator_user_id) %}
 {% block resource_read_url %}
-	{{ res_access }}
-	{% if res.url and h.is_url(res.url) %}
+    <br>
+	{% if mydataset and res_access and res.url and h.is_url(res.url) %}
 	  <p class="muted ellipsis">{{ _('URL:') }} <a href="{{ res.url }}" title="{{ res.url }}">{{ res.url }}</a></p>
-	{% elif res.url %}
+	{% elif mydataset and res_access and res.url %}
 	  <p class="muted ellipsis">{{ _('URL:') }} {{ res.url }}</p>
+	 {% else %}
+	  <p class="muted ellipsis">{{ _('Resource not accessible') }}: {{ res.url }}</p>
 	{% endif %}
 {% endblock %}
