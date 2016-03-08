@@ -1,5 +1,6 @@
 {% ckan_extends %}
-{% set res_access = c.package.extras.res_access %}
+{% set pkg = c.pkg_dict or pkg_dict %}
+{% set res_access = pkg.res_access %}
 {% block resource_read_url %}
 	{{ res_access }}
 	{% if res.url and h.is_url(res.url) %}

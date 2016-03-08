@@ -93,16 +93,8 @@
           </select>
         </div>
       </div>
-    {% endblock %}
-  {% endif %}
-
-  {% if show_organizations_selector and show_visibility_selector %}
-    </div>
-  {% endif %}
-  
-  {% block package_basic_fields_custom %}
-		
-	<div class="control-group">
+      
+      <div class="control-group">
 		<label for="field-res_access" class="control-label">{{ _('Resources Access') }}</label>
 		<div class="controls">
 		  <select id="field-res_access" name="res_access">
@@ -112,9 +104,12 @@
 		  </select>
 		</div>
 	 </div>
-	 
-{% endblock %}
+    {% endblock %}
+  {% endif %}
 
+  {% if show_organizations_selector and show_visibility_selector %}
+    </div>
+  {% endif %}
 
   {% if data.id and h.check_access('package_delete', {'id': data.id}) and data.state != 'active' %}
     <div class="control-group">
