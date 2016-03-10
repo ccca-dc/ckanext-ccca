@@ -18,7 +18,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
         remove: _('Remove'),
         upload_label: _('Image'),
         upload_tooltip: _('Upload a file on your computer'),
-        url_tooltip: _('Link to a URL on the internet (you can also link to an API)')
+        url_tooltip: _('Link to a URL on the internet (you can also link to an API)'),
+        no_files: _('No files in import directory')
       }
     },
 
@@ -31,7 +32,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       var options = this.options;
       var host_url = options.host_url.replace("http://", "");
       var username = options.username;
-      console.log(options.host_url);
+      console.log("pkg_id: " + options.pkg_id);
       
       // firstly setup the fields
       var field_upload = 'input[name="' + options.field_upload + '"]';
@@ -67,6 +68,9 @@ this.ckan.module('ccca-image-upload', function($, _) {
       
       // File selection
       this.select_sftp = $('<select id="select_sftp" size="5" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
+      .append('<option id=0"'
+	    				+'" name="file" class="filebutton" value="" disabled="true">' 
+	    				+ this.i18n('no_files') +'</option>')
       .appendTo(this.div_sftp);
       
       // Button to refresh the file list from sftp import dir
@@ -149,9 +153,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
    },
    
    _refreshSFTPFilelist: function() {
-//	   $('#select_sftp').hide();
 	   $.ajax({
-	    	  url: "/sftp_filelist?apikey=4d4b762b-f696-49e4-be00-79aacfb6cd0b",
+	    	  url: "/sftp_filelist?apikey="+this.options.apikey,
 	    	  context: document.body
 	    	}).done(function() {
 	    	  $(this).addClass( "done" );
@@ -168,7 +171,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    				+'" name="file" class="filebutton" value="'+ filelist[i] 
 	    				+'">' +filelist[i]+ '</option>');
 	   	        }
-//	    		$('#select_sftp').show();
 	    		$('#button_sftp').attr('disabled', true);
 	    	}).error(function(xhr, ajaxOptions, thrownError) {
 	    		console.log('file list request failed: ' + xhr.responseText);
@@ -217,13 +219,13 @@ this.ckan.module('ccca-image-upload', function($, _) {
     	if (selected.length>0) {
     		console.log("Importing file");
     		var formData=new FormData();
-    		formData.append("apikey", "4d4b762b-f696-49e4-be00-79aacfb6cd0b");
+    		formData.append("apikey", this.options.apikey);
     		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
     		formData.append("url", "/Users/ck/ccca-import/" + selected[0].value);
     		
     		 $.ajax({
     			 method: "POST",
-    			 headers: { 'Authorization': '4d4b762b-f696-49e4-be00-79aacfb6cd0b' },
+    			 headers: { 'Authorization': this.options.apikey },
 	   	    	 url: "/sftp_upload",
 	   	    	 context: document.body,
 	   	    	 

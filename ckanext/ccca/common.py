@@ -9,7 +9,7 @@ import ckan.controllers.admin as admin
 import ckan.plugins as plugins
 import ckan.config.middleware as middleware
 import pylons.config as pylons_config
-import ckan.lib.navl.dictization_functions as dictization_functions
-import ckan.lib.dictization as dictization
-import ckan.controllers.storage as storage
-from ckan.common import request, c, g, response, _
+#import ckan.lib.navl.dictization_functions as dictization_functions
+#import ckan.lib.dictization as dictization
+#import ckan.controllers.storage as storage
+from ckan.common import request, c, g, response
