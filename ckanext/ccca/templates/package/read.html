@@ -1,0 +1,10 @@
+{% ckan_extends %}
+
+{% block package_description %}
+    <span class="label label-inverse" style="float: right; margin-right: 10px;margin-left: 10px;">
+        <i class="icon-file-alt"></i>
+        <a style="color: lightgrey;" href="{{ h.url_for('dataset_read', id=c.pkg.id) }}/gmd">ISO19115/ISO19139 XML</a>
+      </span>
+
+    {{ super() }}
+{% endblock %}
