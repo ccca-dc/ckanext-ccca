@@ -219,6 +219,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
     	var obj = this;
     	if (selected.length>0) {
     		console.log("Importing file");
+    		var loc = window.location.pathname;
+    		var homeDir = loc.substring(0, loc.lastIndexOf('/'));
     		var formData=new FormData();
     		formData.append("apikey", this.options.apikey);
     		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
