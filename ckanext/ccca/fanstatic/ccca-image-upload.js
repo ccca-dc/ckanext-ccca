@@ -19,7 +19,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
         upload_label: _('Image'),
         upload_tooltip: _('Upload a file on your computer'),
         url_tooltip: _('Link to a URL on the internet (you can also link to an API)'),
-        no_files: _('No files in import directory')
+        no_files: _('No files found in import directory')
       }
     },
 
@@ -67,9 +67,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
       .appendTo(this.div_sftp);
       
       // File selection
-      this.select_sftp = $('<select id="select_sftp" size="5" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
-      .append('<option id=0"'
-	    				+'" name="file" class="filebutton" value="" disabled="true">' 
+      this.select_sftp = $('<select id="select_sftp" size="5" disabled="true" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
+      .append('<option id=0" name="file" class="filebutton" value="">' 
 	    				+ this.i18n('no_files') +'</option>')
       .appendTo(this.div_sftp);
       
@@ -92,6 +91,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.button_url = $('<a href="javascript:;" class="btn"><i class="icon-globe"></i> '+this.i18n('url')+'</a>')
         .prop('title', this.i18n('url_tooltip'))
         .on('click', this._onFromWeb)
+        .on('click', function() {$('#div_sftp').animate( { "opacity": "hide", top:"100"} , 500 );})
         .insertAfter(this.input);
 
       // Button to attach file from sftp to the form
@@ -102,7 +102,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       
       // Button to attach local file to the form
       this.button_upload = $('<a href="javascript:;" class="btn"><i class="icon-cloud-upload"></i>'+this.i18n('upload')+'</a>')
-        .insertAfter(this.input);
+      .insertAfter(this.input);
 
       // Button for resetting the form when there is a URL set
       $('<a href="javascript:;" class="btn btn-danger btn-remove-url"><i class="icon-remove"></i></a>')
@@ -118,6 +118,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
         .on('mouseover', this._onInputMouseOver)
         .on('mouseout', this._onInputMouseOut)
         .on('change', this._onInputChange)
+        .on('click', function() {$('#div_sftp').animate( { "opacity": "hide", top:"100"} , 500 );})
         .prop('title', this.i18n('upload_tooltip'))
         .css('width', this.button_upload.outerWidth());
 
