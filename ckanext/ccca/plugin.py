@@ -106,15 +106,20 @@ class UploadController(base.BaseController):
              return "no API key"
          
     def upload_file(self):
+        user = c.userobj
         reqData = base.request.params
         ckan_url = config.get('ckan.site_url', '//localhost:5000')
+        mypath = expanduser('~'+user.name)+'/ccca-import/'
+        url = mypath + reqData['filename']
+        log.debug('file url: '+ url)
+        log.debug('package id: '+ reqData['package_id'])
         response = requests.post(ckan_url+'/api/action/resource_create',
               data={'package_id': reqData['package_id'],
-                    'url': reqData['url'],
+                    'url': url,
                     #'name': reqData['name']
                     },
               headers={"X-CKAN-API-Key": reqData['apikey']},
-              files=[('upload', file(reqData['url']))])
+              files=[('upload', file(url))])
         return response
 
 class DownloadController(base.BaseController):    

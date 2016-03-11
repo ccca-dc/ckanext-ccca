@@ -67,7 +67,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       .appendTo(this.div_sftp);
       
       // File selection
-      this.select_sftp = $('<select id="select_sftp" size="5" disabled="true" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
+      this.select_sftp = $('<select id="select_sftp" size="5" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
       .append('<option id=0" name="file" class="filebutton" value="">' 
 	    				+ this.i18n('no_files') +'</option>')
       .appendTo(this.div_sftp);
@@ -223,8 +223,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		var homeDir = loc.substring(0, loc.lastIndexOf('/'));
     		var formData=new FormData();
     		formData.append("apikey", this.options.apikey);
-    		formData.append("package_id", "726a89e6-72db-459e-8aae-d4f3d2ab4751");
-    		formData.append("url", "/Users/ck/ccca-import/" + selected[0].value);
+    		formData.append("package_id", this.options.pkg_id);
+    		formData.append("filename", selected[0].value);
     		
     		 $.ajax({
     			 method: "POST",
