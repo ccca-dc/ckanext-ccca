@@ -8,5 +8,8 @@
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
 <path>/Users/ck/ckan/lib/default/lib/python2.7/site-packages/pylons</path>
 <path>/Users/ck/ckan/lib/default/lib/python2.7/site-packages/jinja2</path>
+<path>/Users/ck/ckan/lib/default/src</path>
+<path>/Users/ck/ckan/lib/default/src/ckanext-metadata</path>
+<path>/Users/ck/ckan/lib/default/src/ckanext-metadata/ckanext/metadata</path>
 </pydev_pathproperty>
 </pydev_project>
