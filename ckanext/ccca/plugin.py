@@ -40,7 +40,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/gmd', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
-        #map.connect('metadata_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
+        map.connect('metadata_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         return map
     
     def after_map(self, map):
