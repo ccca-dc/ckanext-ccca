@@ -1,13 +1,7 @@
 {% block contrib_format %}
-  <div id="select-usgin">
-    <h3>Use USGIN structured contribution form?</h3>
-    <div class="btn-group btn-justified">
-      <button type="button" id="toggle-structured-tab" class="btn" data-module="md_toggle_usgin">Yes</button>
-      <button type="button" id="toggle-unstructured-tab" class="btn" data-module="md_toggle_usgin">No</button>
-    </div>
-
     <div class="contrib-tab-pane" id="unstructured-tab">
       <div class="md-vanilla-title">
+        <div id="select-usgin">
         {% block package_basic_fields_title %}
           {{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full', 'control-large'], attrs={'data-module': 'slug-preview-target'}) }}
         {% endblock %}

@@ -13,6 +13,14 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
+  <h3>Profile:</h3>
+    <select class id="field-profile" name="profile">
+    	 <option value="ccca" selected="selected">CCCA</option>
+    	 <option value="iso">ISO</option>
+    	 <option value="inspire" disabled="disabled">INSPIRE</option>
+    	 <option value="wmo">WMO disabled="disabled"</option>
+    </select>
+
   <div class="accordion" id="accordion-two">
     <div class="accordion-group">
       <div class="accordion-heading">
