@@ -21,7 +21,7 @@ class ViewController(base.BaseController):
         """
         try:
             context = {'model': model, 'user': base.c.user}
-            obj = p.toolkit.get_action('iso_19139')(context, {'id': id})
+            obj = p.toolkit.get_action('show_iso_19139')(context, {'id': id})
             base.response.content_type = 'application/xml; charset=utf-8'
             base.response.headers['Content-Length'] = len(obj)
             return obj.encode('utf-8')

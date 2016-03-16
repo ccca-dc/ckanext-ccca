@@ -9,6 +9,7 @@ NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
 import logic.action as action
+import helpers as h
 
 import requests
 
@@ -27,6 +28,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.IDatasetForm)
     plugins.implements(plugins.IActions)
+    plugins.implements(plugins.ITemplateHelpers)
     
     # IConfigurer
     def update_config(self, config_):
@@ -40,7 +42,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/gmd', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
-        map.connect('metadata_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
+        map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
+        
+        pkg_controller = 'ckanext.ccca.controllers.package_override:PackageContributeOverride'
+        map.connect('pkg_skip_stage3', '/dataset/new_resource/{id}', controller=pkg_controller, action='new_resource')
         return map
     
     def after_map(self, map):
@@ -50,7 +55,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         # IActions
     def get_actions(self):
         return {
-         #   'iso_19139': action.iso_19139
+           'show_iso_19139': action.iso_19139
         }
         
     def create_package_schema(self):
@@ -85,4 +90,14 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def package_types(self):
         # This plugin doesn't handle any special package types, it just
         # registers itself as the default (above).
-        return [] 
+        return []
+    
+        # ITemplateHelpers
+    def get_helpers(self):
+        return {
+            'md_get_vanilla_ckan_version': h.md_get_vanilla_ckan_version,
+            'md_package_extras_processor': h.md_package_extras_processor,
+            'md_resource_extras_processer': h.md_resource_extras_processer,
+            'usgin_check_package_for_content_model': h.usgin_check_package_for_content_model,
+            #'geothermal_prospector_url': metahelper.get_prospector_url,
+        }
