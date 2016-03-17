@@ -41,11 +41,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.download:UploadController', action='upload_file')
         #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
-        #map.connect('/dataset/{id}/gmd', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         
-        pkg_controller = 'ckanext.ccca.controllers.package_override:PackageContributeOverride'
-        map.connect('pkg_skip_stage3', '/dataset/new_resource/{id}', controller=pkg_controller, action='new_resource')
+        map.connect('pkg_skip_stage3', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
         return map
     
     def after_map(self, map):

@@ -14,80 +14,19 @@ then itself be extended to add/remove blocks of functionality. #}
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
   <h3>Profile:</h3>
-    <form name="form-choose_profile" action="package/snippets/package_form_mdfields.html">
-    <select id="field-profile" name="profile">
+    <select id="field-profile" name="profile" onchange="changeProfileGUI(this);">
     	 <option value="ccca" selected="selected">CCCA</option>
     	 <option value="iso">ISO</option>
     	 <option value="inspire" disabled="disabled">INSPIRE</option>
     	 <option value="wmo" disabled="disabled">WMO</option>
     </select>
-    </form>
-    
-  {#{% block metadata_fields %}#}
-	{#{% snippet 'package/snippets/package_form_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}#}
-		<div class="accordion" id="accordion-two">
-	    <div class="accordion-group">
-	      <div class="accordion-heading">
-	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-basic-fields">
-	          Basic Package Fields
-	        </a>
-	      </div>
-	      <div id="collapse-basic-fields" class="accordion-body collapse in">
-	        <div class="accordion-inner">
-	          <div class="form-fields">
-	            <div class="md-input-form">
-	              {% block basic_fields %}
-	                {% snippet 'package/snippets/package_basic_fields.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
-	              {% endblock %}
-	            </div>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	
-	    <div class="accordion-group">
-	      <div class="accordion-heading">
-	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-md-author-fields">
-	          Authors
-	        </a>
-	      </div>
-	      <div id="collapse-md-author-fields" class="accordion-body collapse">
-	        <div class="accordion-inner">
-	          <div class="form-fields">
-	            <div class="md-cited-source-agent">
-	              {% block cited_source_agent %}
-	                {% snippet 'package/snippets/contrib_md_related_agent.html', data=data, errors=errors %}
-	              {% endblock %}
-	            </div>
-	          </div>
-	          <div class="form-actions">
-	            <button class="btn btn-success" type="button" data-module="md_add_author">Add author</button>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	
-	    <div class="accordion-group">
-	      <div class="accordion-heading">
-	        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-md-metadata-contact-fields">
-	          Metadata Contact
-	        </a>
-	      </div>
-	      <div id="collapse-md-metadata-contact-fields" class="accordion-body collapse">
-	        <div class="accordion-inner">
-	          <div class="form-fields">
-	            <div class="md-resource-contacts">
-	              {% block resource_contacts %}
-	                {% snippet 'package/snippets/contrib_md_related_agent.html', data=data, errors=errors %}
-	              {% endblock %}
-	            </div>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	
+
+  {% block metadata_fields %}
+    <div id='metadata_fields_ccca'>
+		{% snippet 'package/snippets/package_form_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
 	</div>
-  {#{% endblock %}#}
+
+  {% endblock %}
   
   {% block form_actions %}
     <div class="form-actions">
@@ -113,8 +52,21 @@ then itself be extended to add/remove blocks of functionality. #}
       {% endblock %}
       {{ form.required_message() }}
     </div>
+    <script language="javascript">
+		function changeProfileGUI(sel) {
+		     var profile = sel.options[sel.selectedIndex].value;
+		     console.log(profile);
+		     if (profile==="iso") {
+		     	$('#metadata_fields_ccca').hide();
+		     	$('#metadata_fields_iso').show();
+		     } else {
+		     	$('#metadata_fields_ccca').show();
+		     	$('#metadata_fields_iso').hide();
+		     }
+		}
+		
+	</script>
     {% resource "ccca/md_toggle_usgin_form.js" %}
-    {% resource "ccca/md_package_contribute_form.js" %}
     {% resource "ccca/md_package_contribute_form.js" %}
     {% resource "ccca/md_add_related_agent.js" %}
   {% endblock %}
