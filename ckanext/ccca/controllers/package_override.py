@@ -107,7 +107,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 		######## 	USGINModels File Validation 	#######
 		## Before activate dataset, validate files of all resources for dataset has usgin structure ##
 
-		isUsginUsed = p.toolkit.get_action('is_usgin_structure_used')(context, data_dict)
+		isUsginUsed = False#p.toolkit.get_action('is_usgin_structure_used')(context, data_dict)
 
 		#if dataset doesn't use usgin structure then no need for usginModel file validation
 		if isUsginUsed is True:
