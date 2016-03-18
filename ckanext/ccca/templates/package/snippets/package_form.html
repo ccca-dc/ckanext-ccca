@@ -22,10 +22,10 @@ then itself be extended to add/remove blocks of functionality. #}
     </select>
 
   {% block metadata_fields %}
-    <div id='metadata_fields_ccca'>
+    <div id='metadata_fields'>
 		{% snippet 'package/snippets/package_form_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+		{#{% snippet 'package/snippets/package_form_iso.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}#}
 	</div>
-
   {% endblock %}
   
   {% block form_actions %}
@@ -52,19 +52,21 @@ then itself be extended to add/remove blocks of functionality. #}
       {% endblock %}
       {{ form.required_message() }}
     </div>
+    
     <script language="javascript">
 		function changeProfileGUI(sel) {
 		     var profile = sel.options[sel.selectedIndex].value;
 		     console.log(profile);
-		     if (profile==="iso") {
-		     	$('#metadata_fields_ccca').hide();
-		     	$('#metadata_fields_iso').show();
-		     } else {
-		     	$('#metadata_fields_ccca').show();
-		     	$('#metadata_fields_iso').hide();
-		     }
+		     //var fields_iso = ;
+		     //if (profile==="iso") {
+		     	//$('#metadata_fields').text(fields_iso);
+		     	//$('#metadata_fields_iso').show();
+		     //} 
+		     //else {
+		     	//$('#metadata_fields_ccca').show();
+		     	//$('#metadata_fields_iso').hide();
+		     //}
 		}
-		
 	</script>
     {% resource "ccca/md_toggle_usgin_form.js" %}
     {% resource "ccca/md_package_contribute_form.js" %}

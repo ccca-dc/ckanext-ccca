@@ -213,11 +213,14 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         except NotAuthorized:
             abort(401, _('Unauthorized to create a resource for this package'))
 
+        package_type = pkg_dict['type'] or 'dataset'
+
         # required for nav menu
         vars['pkg_dict'] = pkg_dict
         template = 'package/new_resource_not_draft.html'
         if pkg_dict['state'] == 'draft':
             vars['stage'] = ['complete', 'active']
+            vars['resource_form_snippet'] = self._resource_form(package_type)
             template = 'package/new_resource.html'
         elif pkg_dict['state'] == 'draft-complete':
             vars['stage'] = ['complete', 'active', 'complete']
