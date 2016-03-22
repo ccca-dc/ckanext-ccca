@@ -14,31 +14,10 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
-	<script language="text/javascript">
-		var profile = getUrlParameter('profile');
-		console.log(profile);
-		//$('.field-profile option[value='+profile+']').attr('selected','selected');
-		
-		function getUrlParameter(sParam) {
-		    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-		        sURLVariables = sPageURL.split('&'),
-		        sParameterName,
-		        i;
-		
-		    for (i = 0; i < sURLVariables.length; i++) {
-		        sParameterName = sURLVariables[i].split('=');
-		
-		        if (sParameterName[0] === sParam) {
-		            return sParameterName[1] === undefined ? true : sParameterName[1];
-		        }
-		    }
-	    }
-	
-  </script>
   {% block metadata_fields %}
-    <div id='basic_fields'>
+    <div id='metadata_fields'>
 	{% block basic_fields %}
-    	{% snippet 'package/snippets/package_basic_fields_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+    	{% snippet 'package/snippets/package_metadata_fields_iso.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
   	{% endblock %}
 	</div>
   {% endblock %}
@@ -63,7 +42,7 @@ then itself be extended to add/remove blocks of functionality. #}
         {% endif %}
       {% endblock %}
       {% block save_button %}
-        <button id="contrib-submit" class="btn btn-primary" type="submit" name="save">{% block save_button_text %}{{ _('Next: Add Data') }}{% endblock %}</button>
+      	<button class="btn btn-primary" name="save" value="go-dataset-complete" type="submit">{% block save_button_text %}{{ _('Finish') }}{% endblock %}</button>
       {% endblock %}
       {{ form.required_message() }}
     </div>

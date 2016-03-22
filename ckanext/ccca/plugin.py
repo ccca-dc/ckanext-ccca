@@ -37,13 +37,16 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_resource('fanstatic', 'ccca')
         
     def before_map(self, map):
+                
         map.connect('sftp_filelist', '/sftp_filelist', controller='ckanext.ccca.controllers.upload:UploadController', action='show_filelist')
         map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.download:UploadController', action='upload_file')
         #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
+        map.connect('get_fields_iso', '/metadata/fields_iso', controller='ckanext.ccca.controllers.view:ViewController', action='get_fields_iso')
         map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         
-        map.connect('pkg_skip_stage3', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
+        map.connect('pkg_new', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
+        map.connect('metadata_new', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         return map
     
     def after_map(self, map):

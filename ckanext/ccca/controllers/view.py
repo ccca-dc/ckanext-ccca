@@ -3,6 +3,8 @@ from ckanext.metadata.common import model
 from ckanext.metadata.common import base
 from ckanext.metadata.common import pylons_i18n
 
+import ckan.lib.base as base 
+
 class ViewController(base.BaseController):
     """
     Controller object for rendering an ISO 19139 XML representation of a CKAN
@@ -33,3 +35,6 @@ class ViewController(base.BaseController):
         except Exception, e:
             msg = 'An error ocurred: [%s]' % str(e)
             base.abort(500, msg)
+
+    def get_fields_iso(self):
+        return base.render('package/snippets/package_form_iso.html')

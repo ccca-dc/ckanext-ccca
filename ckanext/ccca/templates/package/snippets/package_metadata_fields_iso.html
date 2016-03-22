@@ -1,0 +1,83 @@
+{% import 'macros/form.html' as form %}
+
+<div class="accordion" id="accordion-two">
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-basic-fields">
+          Basic Package Fields
+        </a>
+      </div>
+      <div id="collapse-basic-fields" class="accordion-body collapse in">
+        <div class="accordion-inner">
+          <div class="form-fields">
+            <div class="md-input-form">
+              {% block basic_fields %}
+                {% snippet 'package/snippets/package_basic_fields.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-md-author-fields">
+          Authors
+        </a>
+      </div>
+      <div id="collapse-md-author-fields" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="form-fields">
+            <div class="md-cited-source-agent">
+              {% block cited_source_agent %}
+                {% snippet 'package/snippets/contrib_md_related_agent.html', data=data, errors=errors %}
+              {% endblock %}
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-success" type="button" data-module="md_add_author">Add author</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-md-geographic-extent-fields">
+          Geographic Extent
+        </a>
+      </div>
+      <div id="collapse-md-geographic-extent-fields" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="form-fields">
+            <div class="md-geographic-extent">
+              {% block geographic_extent %}
+                {% snippet 'package/snippets/contrib_md_geographic_extent.html', data=data, errors=errors %}
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-group">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-two" href="#collapse-md-metadata-contact-fields">
+          Metadata Contact
+        </a>
+      </div>
+      <div id="collapse-md-metadata-contact-fields" class="accordion-body collapse">
+        <div class="accordion-inner">
+          <div class="form-fields">
+            <div class="md-resource-contacts">
+              {% block resource_contacts %}
+                {% snippet 'package/snippets/contrib_md_related_agent.html', data=data, errors=errors %}
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>

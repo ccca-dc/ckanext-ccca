@@ -30,7 +30,34 @@ clean_dict = logic.clean_dict
 parse_params = logic.parse_params
 
 class PackageContributeOverride(p.SingletonPlugin, PackageController):
+    
+    def new_metadata(self, id, data=None, errors=None, error_summary=None):
+        errors = errors or {}
+        error_summary = error_summary or {}
+        vars = {'data': data, 'errors': errors,
+                'error_summary': error_summary, 'action': 'new'}
+        vars['pkg_name'] = id
+        # get resources for sidebar
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+        
+        try:
+            pkg_dict = get_action('package_show')(context, {'id': id})
+        except NotFound:
+            abort(404, _('The dataset {id} could not be found.').format(id=id))
+        try:
+            check_access('resource_create', context, pkg_dict)
+        except NotAuthorized:
+            abort(401, _('Unauthorized to create a resource for this package'))
 
+        package_type = pkg_dict['type'] or 'dataset'
+        
+        # required for nav menu
+        vars['pkg_dict'] = pkg_dict
+        vars['stage'] = ['complete', 'complete', 'active']
+        template = 'package/ccca_metadata.html'
+        return render(template, extra_vars=vars)
+        
     def new_resource(self, id, data=None, errors=None, error_summary=None):
         ''' FIXME: This is a temporary action to allow styling of the
         forms. '''
@@ -80,8 +107,11 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                         error_summary = {_('Error'): msg}
                         return self.new_resource(id, data, errors, error_summary)
                 # we have a resource so let them add metadata
-                redirect(h.url_for(controller='package',
-                                   action='new_metadata', id=id))
+                #redirect(h.url_for(controller='package',
+                #                   action='new_metadata', id=id))
+                vars['pkg_dict'] = pkg_dict
+                template = 'package/metadata.html'
+                return render(template, extra_vars=vars)
 
             data['package_id'] = id
             try:
@@ -176,13 +206,16 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                 get_action('package_update')(
                     dict(context, allow_state_change=True),
                     dict(data_dict, state='active'))
-                redirect(h.url_for(controller='package',
+                """redirect(h.url_for(controller='package',
                                    action='read', id=id))
                 """
                 # this is the original route
                 # go to final stage of add dataset
                 redirect(h.url_for(controller='package',
                                    action='new_metadata', id=id))
+                """vars['pkg_dict'] = pkg_dict
+                template = 'package/metadata.html'
+                return render(template, extra_vars=vars)
                 """
             elif save_action == 'go-dataset':
                 # go to first stage of add dataset
@@ -217,10 +250,10 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 
         # required for nav menu
         vars['pkg_dict'] = pkg_dict
+        vars['resource_form_snippet'] = self._resource_form(package_type)
         template = 'package/new_resource_not_draft.html'
         if pkg_dict['state'] == 'draft':
             vars['stage'] = ['complete', 'active']
-            vars['resource_form_snippet'] = self._resource_form(package_type)
             template = 'package/new_resource.html'
         elif pkg_dict['state'] == 'draft-complete':
             vars['stage'] = ['complete', 'active', 'complete']

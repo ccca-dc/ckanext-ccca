@@ -1,7 +1,5 @@
 {% import 'macros/form.html' as form %}
 
-{% block package_metadata_fields %}
-
   {% block package_metadata_fields_url %}
     {{ form.input('url', label=_('Source'), id='field-url', placeholder=_('http://example.com/dataset.json'), value=data.url, error=errors.url, classes=['control-medium']) }}
   {% endblock %}
@@ -29,5 +27,3 @@
 
   {% block dataset_fields %}
   {% endblock %}
-
-{% endblock %}
