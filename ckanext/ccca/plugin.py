@@ -4,7 +4,6 @@ import ckan.plugins.toolkit as toolkit
 
 from ckanext.metadata.common import c, model, logic
 get_action = logic.get_action
-#import ckan.logic as logic
 NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
@@ -47,7 +46,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         
         map.connect('pkg_new', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
         map.connect('custom_resource_edit', '/dataset/{id}/resource_edit/{resource_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_edit')
-        map.connect('metadata_new', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
+        map.connect('new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata',  ckan_icon='edit')
         return map
     
     def after_map(self, map):
@@ -59,21 +58,22 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return {
            'show_iso_19139': action.iso_19139
         }
-        
-    def create_package_schema(self):
-        schema = super(CccaPlugin, self).create_package_schema()
+       
+    def _modify_package_schema(self, schema):
         schema.update({
             'res_access': [toolkit.get_validator('boolean_validator'),
-                            toolkit.get_converter('convert_to_extras')]
+                toolkit.get_converter('convert_to_extras')]
         })
+        return schema
+     
+    def create_package_schema(self):
+        schema = super(CccaPlugin, self).create_package_schema()
+        schema = self._modify_package_schema(schema)
         return schema
 
     def update_package_schema(self):
         schema = super(CccaPlugin, self).update_package_schema()
-        schema.update({
-            'res_access': [toolkit.get_validator('boolean_validator'),
-                            toolkit.get_converter('convert_to_extras')]
-        })
+        schema = self._modify_package_schema(schema)
         return schema
     
     def show_package_schema(self):

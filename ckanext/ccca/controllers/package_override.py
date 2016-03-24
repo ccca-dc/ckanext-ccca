@@ -34,7 +34,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
     def new_metadata(self, id, data=None, errors=None, error_summary=None):
         package_type = self._get_package_type(id)
         save_action = request.params.get('save')
-        if request.method == 'POST' and not data:
+        if not data:
             save_action = request.params.get('save')
             data = data or clean_dict(dictization_functions.unflatten(
                 tuplize_dict(parse_params(request.POST))))
@@ -424,9 +424,11 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         if not data:
             data = resource_dict
 
+        package_type = pkg_dict['type'] or 'dataset'
+
         errors = errors or {}
         error_summary = error_summary or {}
-        vars = {'data': data, 'errors': errors,
+        vars = {'data': data, 'errors': errors, 'resource_form_snippet': self._resource_form(package_type),
                 'error_summary': error_summary, 'action': 'new'}
         return render('package/resource_edit.html', extra_vars=vars)
 

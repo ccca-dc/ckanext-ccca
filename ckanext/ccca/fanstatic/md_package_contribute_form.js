@@ -3,6 +3,9 @@
 ckan.module('md-package-contribute', function (jQuery, _) {
   return {
     initialize: function () {
+    	
+      console.log("md_package_contribute called for %o", this.el);
+    	
       var message
         , form
         , button

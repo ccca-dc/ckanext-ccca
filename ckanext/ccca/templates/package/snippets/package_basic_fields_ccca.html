@@ -13,7 +13,12 @@
   {{ form.prepend('name', id='field-name', label=_('URL'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
 {% endblock %}
 
-{% block package_basic_fields_custom %}{% endblock %}
+{% block package_basic_fields_custom %}
+{% endblock %}
+
+{% block custom_fields %}
+{% endblock %}
+
 
 {% block package_basic_fields_description %}
   {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
@@ -96,7 +101,7 @@
         </div>
       </div>
        <div class="control-group">
-        <label for="field-private" class="control-label">{{ _('Resource access') }}</label>
+        <label for="field-res_access" class="control-label">{{ _('Resource access') }}</label>
         <div class="controls">
           <select id="field-res_access" name="res_access">
             {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
