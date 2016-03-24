@@ -95,16 +95,16 @@
           </select>
         </div>
       </div>
-      <div class="control-group">
-		<label for="field-res_access" class="control-label">{{ _('Resources Access') }}</label>
-		<div class="controls">
-		  <select id="field-res_access" name="res_access">
-		    {% for option in [('False', _('No public access')), ('True', _('Public access'))] %}
-		    <option value="{{ option[0] }}" {% if option[0] == data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
-		    {% endfor %}
-		  </select>
-		</div>
-	 </div>
+       <div class="control-group">
+        <label for="field-private" class="control-label">{{ _('Resource access') }}</label>
+        <div class="controls">
+          <select id="field-res_access" name="res_access">
+            {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
+            <option value="{{ option[0] }}" {% if option[0] == data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
     {% endblock %}
   {% endif %}
 

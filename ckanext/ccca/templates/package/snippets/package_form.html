@@ -35,13 +35,11 @@ then itself be extended to add/remove blocks of functionality. #}
 	    }
 	
   </script>
-  {% block metadata_fields %}
     <div id='basic_fields'>
 	{% block basic_fields %}
-    	{% snippet 'package/snippets/package_basic_fields_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+    	{% snippet 'package/snippets/package_basic_fields.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
   	{% endblock %}
 	</div>
-  {% endblock %}
   
   {% block form_actions %}
     <div class="form-actions">

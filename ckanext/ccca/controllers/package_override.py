@@ -32,11 +32,44 @@ parse_params = logic.parse_params
 class PackageContributeOverride(p.SingletonPlugin, PackageController):
     
     def new_metadata(self, id, data=None, errors=None, error_summary=None):
+        package_type = self._get_package_type(id)
+        save_action = request.params.get('save')
+        if request.method == 'POST' and not data:
+            save_action = request.params.get('save')
+            data = data or clean_dict(dictization_functions.unflatten(
+                tuplize_dict(parse_params(request.POST))))
+            # we don't want to include save as it is part of the form
+            #del data['save']
+            #resource_id = data['id']
+            #del data['id']
+        
+            
         errors = errors or {}
         error_summary = error_summary or {}
-        vars = {'data': data, 'errors': errors,
-                'error_summary': error_summary, 'action': 'new'}
-        vars['pkg_name'] = id
+    
+        package_type = self._get_package_type(id)
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'save': 'save' in request.params}
+
+        if context['save'] and not data:
+            return self._save_edit(id, context, package_type=package_type)
+        
+        try:
+            c.pkg_dict = get_action('package_show')(context, {'id': id})
+            #context['for_edit'] = True
+            old_data = get_action('package_show')(context, {'id': id})
+            # old data is from the database and data is passed from the
+            # user if there is a validation error. Use users data if there.
+            if data:
+                old_data.update(data)
+            data = old_data
+        except NotAuthorized:
+            abort(401, _('Unauthorized to read package %s') % '')
+        except NotFound:
+            abort(404, _('Dataset not found'))
+            
+       # vars['pkg_name'] = id
         # get resources for sidebar
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
@@ -52,11 +85,25 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 
         package_type = pkg_dict['type'] or 'dataset'
         
-        # required for nav menu
-        vars['pkg_dict'] = pkg_dict
-        vars['stage'] = ['complete', 'complete', 'active']
-        template = 'package/ccca_metadata.html'
-        return render(template, extra_vars=vars)
+        if save_action == 'go-metadata':
+            return self._save_edit(id, context, package_type=package_type)
+            data_dict = get_action('package_show')(context, {'id': id})
+            get_action('package_update')(
+                    dict(context, allow_state_change=True),
+                    dict(data_dict, state='active'))
+            redirect(h.url_for(controller='package',
+                                   action='read', id=id))
+        else:
+            vars = {'data': data, 'errors': errors,
+                'error_summary': error_summary, 'action': 'new',
+                'resource_form_snippet': self._resource_form(package_type),
+                'dataset_type': package_type}
+            vars['pkg_name'] = id
+            # required for nav menu
+            vars['pkg_dict'] = pkg_dict
+            vars['stage'] = ['complete', 'complete', 'active']
+            template = 'package/ccca_new_metadata.html'
+            return render(template, extra_vars=vars)
         
     def new_resource(self, id, data=None, errors=None, error_summary=None):
         ''' FIXME: This is a temporary action to allow styling of the
@@ -206,17 +253,19 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                 get_action('package_update')(
                     dict(context, allow_state_change=True),
                     dict(data_dict, state='active'))
-                """redirect(h.url_for(controller='package',
+                redirect(h.url_for(controller='package',
                                    action='read', id=id))
-                """
+                
                 # this is the original route
                 # go to final stage of add dataset
-                redirect(h.url_for(controller='package',
-                                   action='new_metadata', id=id))
                 """vars['pkg_dict'] = pkg_dict
                 template = 'package/metadata.html'
                 return render(template, extra_vars=vars)
-                """
+             """
+            elif save_action == 'go-md_edit':
+                # go to final stage of add dataset
+                redirect(h.url_for(controller='package',
+                                   action='new_metadata', id=id))
             elif save_action == 'go-dataset':
                 # go to first stage of add dataset
                 redirect(h.url_for(controller='package',

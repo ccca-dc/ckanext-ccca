@@ -46,6 +46,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         
         map.connect('pkg_new', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
+        map.connect('custom_resource_edit', '/dataset/{id}/resource_edit/{resource_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_edit')
         map.connect('metadata_new', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         return map
     
