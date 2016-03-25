@@ -76,6 +76,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         
         try:
             pkg_dict = get_action('package_show')(context, {'id': id})
+            pkg_dict['package_id'] = id
         except NotFound:
             abort(404, _('The dataset {id} could not be found.').format(id=id))
         try:
@@ -285,9 +286,11 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         vars['pkg_name'] = id
         # get resources for sidebar
         context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj
+        }
         try:
             pkg_dict = get_action('package_show')(context, {'id': id})
+            pkg_dict['package_id'] = id
         except NotFound:
             abort(404, _('The dataset {id} could not be found.').format(id=id))
         try:

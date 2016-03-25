@@ -28,6 +28,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IDatasetForm)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
+    #plugins.implements(p.IAuthFunctions)
     
     # IConfigurer
     def update_config(self, config_):
