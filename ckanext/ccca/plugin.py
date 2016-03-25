@@ -38,7 +38,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def before_map(self, map):
                 
         map.connect('sftp_filelist', '/sftp_filelist', controller='ckanext.ccca.controllers.upload:UploadController', action='show_filelist')
-        map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.download:UploadController', action='upload_file')
+        map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.upload:UploadController', action='upload_file')
         #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
         map.connect('get_fields_iso', '/metadata/fields_iso', controller='ckanext.ccca.controllers.view:ViewController', action='get_fields_iso')
@@ -64,6 +64,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'res_access': [toolkit.get_validator('boolean_validator'),
                 toolkit.get_converter('convert_to_extras')]
         })
+        schema.update({
+            'custom_text': [toolkit.get_validator('ignore_missing'),
+                toolkit.get_converter('convert_to_extras')]
+        })
         return schema
      
     def create_package_schema(self):
@@ -81,6 +85,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         schema.update({
             'res_access': [toolkit.get_converter('convert_from_extras'),
                            toolkit.get_validator('boolean_validator')]
+        })
+        schema.update({
+            'custom_text': [toolkit.get_converter('convert_from_extras'),
+                           toolkit.get_validator('ignore:missing')]
         })
         return schema
     

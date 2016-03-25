@@ -1,3 +1,4 @@
+import ckan.lib.base as base
 '''
 
 @author: Christoph Kinkeldey
