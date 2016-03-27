@@ -250,6 +250,12 @@
           <td class="dataset-details">{{ pkg_dict.state }}</td>
         </tr>
       {% endif %}
+        {% if 'res_access' in pkg_dict %}
+        	<tr>
+	          <th scope="row" class="dataset-label">{{ _("Resource access") }}</th>
+	          <td class="dataset-details">{{ pkg_dict.res_access }}</td>
+        	</tr>
+		{% endif %}
 
       {% block extras scoped %}
         {% for extra in h.sorted_extras(pkg_dict.extras) %}

@@ -2,18 +2,18 @@
 
 {% set logged_in = true if c.userobj else false %}
 
-{% block subtitle %}{{ _('Add data to the dataset') }}{% endblock %}
+{% block subtitle %}{{ _('Edit Metadata') }}{% endblock %}
 
 {% block breadcrumb_content_selected %}{% endblock %}
 {% block breadcrumb_content %}
   {{ super() }}
   {% if pkg %}
-    <li class="active"><a href="#">{{ _('Add New Resource') }}</a></li>
+    <li class="active"><a href="#">{{ _('') }}</a></li>
   {% endif %}
 {% endblock %}
 
 {% block form %}
-	{% snippet 'package/snippets/ccca_metadata_form.html', data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name, stage=stage, allow_upload=g.ofs_impl and logged_in, dataset_type=dataset_type %}
+	{% snippet 'package/snippets/ccca_metadata_form.html', form_style=form_style, data=data, errors=errors, error_summary=error_summary, include_metadata=false, pkg_name=pkg_name, stage=stage, allow_upload=g.ofs_impl and logged_in, dataset_type=dataset_type %}
 {% endblock %}
 
 

@@ -5,7 +5,9 @@
 then itself be extended to add/remove blocks of functionality. #}
 <form id="md-dataset-edit" class="package-form form-horizontal" method="post" action="{{ action }}" data-module="md-package-contribute">
   {% block stages %}
+  {% if form_style != 'edit' %}
     {{ h.snippet('package/snippets/stages.html', stages=stage) }}
+   {% endif %}
   {% endblock %}
 
   <input type="hidden" name="_ckan_phase" value="dataset_new_1" />

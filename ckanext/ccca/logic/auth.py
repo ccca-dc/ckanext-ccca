@@ -13,7 +13,6 @@ Created on Mar 25, 2016
 @author: ck
 '''
 
-
 def resource_show_ext(context, data_dict):
     model = context['model']
     user = context.get('user')

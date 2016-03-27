@@ -36,18 +36,17 @@ parse_params = logic.parse_params
 
 class PackageContributeOverride(p.SingletonPlugin, PackageController):
     
-    def new_metadata(self, id, data=None, errors=None, error_summary=None):
-        package_type = self._get_package_type(id)
+    def new_metadata(self, id, data=None, errors=None, error_summary=None, template=None):
+        #package_type = self._get_package_type(id)
         save_action = request.params.get('save')
         if not data:
-            save_action = request.params.get('save')
             data = data or clean_dict(dictization_functions.unflatten(
                 tuplize_dict(parse_params(request.POST))))
             # we don't want to include save as it is part of the form
-            #del data['save']
+ #           if 'save' in data:
+#                del data['save']
             #resource_id = data['id']
             #del data['id']
-        
             
         errors = errors or {}
         error_summary = error_summary or {}
@@ -57,12 +56,13 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'save': 'save' in request.params}
 
-        if context['save'] and not data:
+        if context['save']:
             return self._save_edit(id, context, package_type=package_type)
         
         try:
             c.pkg_dict = get_action('package_show')(context, {'id': id})
-            #context['for_edit'] = True
+            context['for_edit'] = True
+            context['form_style'] = 'edit'
             old_data = get_action('package_show')(context, {'id': id})
             # old data is from the database and data is passed from the
             # user if there is a validation error. Use users data if there.
@@ -92,7 +92,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         package_type = pkg_dict['type'] or 'dataset'
         
         if save_action == 'go-metadata':
-            return self._save_edit(id, context, package_type=package_type)
+            #return self._save_edit(id, context, package_type=package_type)
             data_dict = get_action('package_show')(context, {'id': id})
             get_action('package_update')(
                     dict(context, allow_state_change=True),
@@ -108,9 +108,76 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             # required for nav menu
             vars['pkg_dict'] = pkg_dict
             vars['stage'] = ['complete', 'complete', 'active']
-            template = 'package/ccca_new_metadata.html'
+            vars['form_style'] = 'edit'
+            if not template:
+                template = 'package/ccca_new_metadata.html'
             return render(template, extra_vars=vars)
+    
+    def metadata(self, id, data=None, errors=None, error_summary=None):
+        return self.new_metadata(id, data, {}, {}, 'package/ccca_metadata.html')
         
+    '''        
+        try:
+            check_access('package_update', context, data_dict)
+        except NotFound:
+            abort(404, _('Dataset not found'))
+        except NotAuthorized:
+            abort(401, _('User %r not authorized to edit %s') % (c.user, id))
+        # check if package exists
+        try:
+            c.pkg_dict = get_action('package_show')(context, data_dict)
+            c.pkg = context['package']
+        except NotFound:
+            abort(404, _('Dataset not found'))
+        except NotAuthorized:
+            abort(401, _('Unauthorized to read package %s') % id)
+        
+
+        try:
+            c.pkg_dict = get_action('package_show')(context, {'id': id})
+            context['for_edit'] = True
+            context['form_style'] = 'edit'
+            old_data = get_action('package_show')(context, {'id': id})
+            # old data is from the database and data is passed from the
+            # user if there is a validation error. Use users data if there.
+            if data:
+                old_data.update(data)
+            data = old_data
+        except NotAuthorized:
+            abort(401, _('Unauthorized to read package %s') % '')
+        except NotFound:
+            abort(404, _('Dataset not found'))
+            
+        package_type = c.pkg_dict['type'] or 'dataset'
+         
+        if save_action == 'go-metadata':
+            return self._save_edit(id, context, package_type=package_type)
+            data_dict = get_action('package_show')(context, {'id': id})
+            get_action('package_update')(
+                    dict(context, allow_state_change=True),
+                    dict(data_dict, state='active'))
+            redirect(h.url_for(controller='package',
+                                   action='read', id=id))
+        else:
+           
+#        self._setup_template_variables(context, {'id': id},
+ #                                      package_type=package_type)
+            data['id'] = id
+            vars = {'data': data, 
+                    'errors': {},
+                    'error_summary': {}, 
+                    'action': 'edit',
+                    'resource_form_snippet': self._resource_form(package_type),
+                    'dataset_type': package_type, 
+                    'form_style': 'edit'
+                    }      
+            # required for nav menu
+            c.pkg_dict['id'] = id
+            vars['pkg_dict'] = c.pkg_dict
+            return render('package/ccca_metadata.html',
+                          extra_vars=vars)
+            '''
+          
     def new_resource(self, id, data=None, errors=None, error_summary=None):
         ''' FIXME: This is a temporary action to allow styling of the
         forms. '''
@@ -440,7 +507,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                 'error_summary': error_summary, 'action': 'new'}
         return render('package/resource_edit.html', extra_vars=vars)
     
-    # resource_download() also passing 'resource access' field that we added
+    # resource_download() also checking 'resource access' field that we added
     def resource_download(self, id, resource_id, filename=None):
         """
         Provides a direct download by either redirecting the user to the url
