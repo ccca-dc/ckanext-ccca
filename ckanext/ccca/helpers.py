@@ -3,7 +3,7 @@ from ckan import model
 from common import plugins as p
 from common import logic
 from common import app_globals
-from logic import action
+from ckanext.ccca.logic.action import metadata
 
 def md_get_vanilla_ckan_version():
     try:
@@ -178,7 +178,7 @@ def usgin_check_package_for_content_model(pkg_id):
         try:
             models = app_globals.config.get('ngds.content_models')
         except:
-            models = action.http_get_content_models()
+            models = metadata.http_get_content_models()
         c_model = [m['versions'] for m in models if m['uri'] == \
                    cm['content_model_uri']][0]
         version = [m for m in c_model if m['uri'] == \
@@ -189,6 +189,6 @@ def usgin_check_package_for_content_model(pkg_id):
         
         
 def get_prospector_url(res):
-    from ckanext.ngds.client.logic import action
+    from ckanext.ccca.logic.action import metadata
     context= {'model': model, 'user': ''}    
     return logic.get_action('geothermal_prospector_url')(context, res)

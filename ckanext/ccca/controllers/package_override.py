@@ -3,11 +3,16 @@ import paste.fileapp
 import mimetypes
 import json
 import os
-from ckanext.metadata.common import helpers as h
-from ckanext.metadata.common import plugins as p
-from ckanext.metadata.common import request, c, g, _, response
-from ckanext.metadata.common import dictization_functions
-from ckanext.metadata.common import base, logic, model
+import ckan.model as model
+import ckan.logic as logic
+import pylons.config as config
+import ckan.lib.base as base
+import ckan.lib.helpers as h
+import ckan.plugins as p
+from ckan.common import request, c, g, response
+import ckan.lib.uploader as uploader
+import ckan.lib.navl.dictization_functions as dictization_functions
+import ckan.lib.dictization as dictization
 
 from ckan.controllers.package import PackageController
 
@@ -434,7 +439,47 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         vars = {'data': data, 'errors': errors, 'resource_form_snippet': self._resource_form(package_type),
                 'error_summary': error_summary, 'action': 'new'}
         return render('package/resource_edit.html', extra_vars=vars)
+    
+    # resource_download() also passing 'resource access' field that we added
+    def resource_download(self, id, resource_id, filename=None):
+        """
+        Provides a direct download by either redirecting the user to the url
+        stored or downloading an uploaded file directly.
+        """
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+        
+        if request.method == 'POST':
+            data = data or clean_dict(dict_fns.unflatten(tuplize_dict(parse_params(
+                request.POST))))
 
+        try:
+            rsc = get_action('resource_show')(context, {'id': resource_id})
+            get_action('package_show')(context, {'id': id})
+        except NotFound:
+            abort(404, _('Resource not found'))
+        except NotAuthorized:
+            abort(401, _('Unauthorized to read resource %s') % id)
+
+        if rsc.get('url_type') == 'upload':
+            upload = uploader.ResourceUpload(rsc)
+            filepath = upload.get_path(rsc['id'])
+            fileapp = paste.fileapp.FileApp(filepath)
+            try:
+                status, headers, app_iter = request.call_application(fileapp)
+            except OSError:
+                abort(404, _('Resource data not found'))
+            response.headers.update(dict(headers))
+            content_type, content_enc = mimetypes.guess_type(
+                rsc.get('url', ''))
+            if content_type:
+                response.headers['Content-Type'] = content_type
+            response.status = status
+            return app_iter
+        elif not 'url' in rsc:
+            abort(404, _('No download is available'))
+        redirect(rsc['url'])
+         
     #Custom resource download corrected data, resource_id only for generating the path to the file
     def resource_download_corrected_data(self, id, resource_id):
         """

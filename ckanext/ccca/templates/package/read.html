@@ -11,6 +11,12 @@
         {{ _('Private') }}
       </span>
     {% endif %}
+    {# Add our custom res_access field to the dataset read page. #}
+	{% if pkg.get('res_access') %}
+	    <section id="dataset-res_access" class="resources module-content">
+	    <p><strong>Resource Access</strong>: {{ pkg.res_access[0] }}</p>
+	    </section>
+	{% endif %}
     <h1>
       {% block page_heading %}
         {{ pkg.title or pkg.name }}

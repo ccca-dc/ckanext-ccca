@@ -2,14 +2,17 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 #import ckan.lib.base as base
 
-from ckanext.metadata.common import c, model, logic
+import ckan.model as model
+import ckan.logic as logic
 get_action = logic.get_action
 NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
-import logic.action as action
+import ckanext.ccca.logic.action.metadata as action
 import helpers as h
-
+import ckanext.ccca.logic.auth as auth
+import ckanext.ccca.logic.action.metadata as metadata
+import ckanext.ccca.logic.action.get as get
 import requests
 
 from pylons import g, c, config, response, request
@@ -23,12 +26,12 @@ import json
 log = logging.getLogger(__name__)
 
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
-    plugins.implements(plugins.IConfigurer, inherit=True)
+    plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
-    plugins.implements(plugins.IDatasetForm)
+    plugins.implements(plugins.IDatasetForm, inherit=False)
     plugins.implements(plugins.IActions)
     plugins.implements(plugins.ITemplateHelpers)
-    #plugins.implements(p.IAuthFunctions)
+    plugins.implements(plugins.IAuthFunctions)
     
     # IConfigurer
     def update_config(self, config_):
@@ -40,13 +43,15 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 
         map.connect('sftp_filelist', '/sftp_filelist', controller='ckanext.ccca.controllers.upload:UploadController', action='show_filelist')
         map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.upload:UploadController', action='upload_file')
-        #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
-        #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.plugin:DownloadController', action='resource_download_ext')
+        #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.controllers.download:DownloadController', action='resource_download_ext')
+        #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.download:DownloadController', action='resource_download_ext')
         map.connect('get_fields_iso', '/metadata/fields_iso', controller='ckanext.ccca.controllers.view:ViewController', action='get_fields_iso')
         map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         
         map.connect('pkg_new', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
         map.connect('custom_resource_edit', '/dataset/{id}/resource_edit/{resource_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_edit')
+        map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_download')
+                  
         map.connect('new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata',  ckan_icon='edit')
         return map
     
@@ -54,15 +59,17 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         #log.fatal("==================================> %s" % map)
         return map
     
-        # IActions
+    # IActions
     def get_actions(self):
         return {
-           'show_iso_19139': action.iso_19139
+           'show_iso_19139': metadata.iso_19139,
+           'resource_show': get.resource_show
         }
-       
+        
+    # IDatasetForm   
     def _modify_package_schema(self, schema):
         schema.update({
-            'res_access': [toolkit.get_validator('boolean_validator'),
+            'res_access': [toolkit.get_validator('ignore_missing'),
                 toolkit.get_converter('convert_to_extras')]
         })
         schema.update({
@@ -85,18 +92,18 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         schema = super(CccaPlugin, self).show_package_schema()
         schema.update({
             'res_access': [toolkit.get_converter('convert_from_extras'),
-                           toolkit.get_validator('boolean_validator')]
+                           toolkit.get_validator('ignore_missing')]
         })
         schema.update({
             'custom_text': [toolkit.get_converter('convert_from_extras'),
-                           toolkit.get_validator('ignore:missing')]
+                           toolkit.get_validator('ignore_missing')]
         })
         return schema
     
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
         # package types not handled by any other IDatasetForm plugin.
-        return False
+        return True
 
     def package_types(self):
         # This plugin doesn't handle any special package types, it just
@@ -112,3 +119,8 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'usgin_check_package_for_content_model': h.usgin_check_package_for_content_model,
             #'geothermal_prospector_url': metahelper.get_prospector_url,
         }
+    # IAuthFunctions
+    
+    def get_auth_functions(self):
+        return {'resource_show': auth.resource_show_ext}
+    

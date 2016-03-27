@@ -1,4 +1,26 @@
+import ckan.plugins as plugins
+import ckan.plugins.toolkit as toolkit
 import ckan.lib.base as base
+
+from ckanext.metadata.common import c, model, logic
+get_action = logic.get_action
+NotFound = logic.NotFound
+NotAuthorized = logic.NotAuthorized
+ValidationError = logic.ValidationError
+import logic.action as action
+#import helpers as h
+
+import requests
+
+from pylons import g, c, config, response, request
+from jinja2 import Environment, FileSystemLoader
+from os import listdir
+from os.path import isfile, join, expanduser
+
+import logging
+import json
+
+log = logging.getLogger(__name__)
 '''
 
 @author: Christoph Kinkeldey
@@ -15,8 +37,8 @@ class DownloadController(base.BaseController):
         """
         context = {'model': model, 'session': model.Session,
                    'user': c.user, 'auth_user_obj': c.userobj}
-        
-        res_access = c.package.res_access
+        data = base.request.params
+        res_access = c.package.extras.res_access
         mydataset = (c.userobj.id == c.package.creator_user_id)
 
         if not (res_access or mydataset):
