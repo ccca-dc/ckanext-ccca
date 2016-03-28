@@ -100,6 +100,13 @@
             <option value="{{ option[0] }}" {% if option[0] == data.private|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
             {% endfor %}
           </select>
+          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+		    <span class="info-block info-inline">
+		      <i class="icon-info-sign"></i>
+		      {% trans %}
+		        Dataset accessible for anyone?
+		      {% endtrans %}
+		    </span>
         </div>
       </div>
        <div class="control-group">
@@ -110,6 +117,13 @@
             <option value="{{ option[0] }}" {% if option[0] == data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
             {% endfor %}
           </select>
+          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+		    <span class="info-block info-inline">
+		      <i class="icon-info-sign"></i>
+		      {% trans %}
+		        Resources publicly downloadable?
+		      {% endtrans %}
+		    </span>
         </div>
       </div>
     {% endblock %}
