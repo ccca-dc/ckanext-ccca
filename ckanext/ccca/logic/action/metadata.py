@@ -43,8 +43,9 @@ def iso_19139(context, data_dict):
 
     # ---- Reformat extras so they can be looked up
     pkg["additional"] = {}
-    for extra in pkg["extras"]:
-        pkg["additional"][extra["key"]] = extra["value"]
+    if 'extras' in pkg:
+        for extra in pkg["extras"]:
+            pkg["additional"][extra["key"]] = extra["value"]
 
     # ---- Remove milliseconds from metadata dates
     pkg["metadata_modified"] = date_parser.parse(pkg.get("metadata_modified", "")).replace(microsecond=0).isoformat()
