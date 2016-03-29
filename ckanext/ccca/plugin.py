@@ -74,7 +74,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 toolkit.get_converter('convert_to_extras')]
         })
         schema.update({
-            'custom_text': [toolkit.get_validator('ignore_missing'),
+            'md-person-name': [toolkit.get_validator('ignore_missing'),
                 toolkit.get_converter('convert_to_extras')]
         })
         return schema
@@ -96,7 +96,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                            toolkit.get_validator('boolean_validator')]
         })
         schema.update({
-            'custom_text': [toolkit.get_converter('convert_from_extras'),
+            'md-person-name': [toolkit.get_converter('convert_from_extras'),
                            toolkit.get_validator('boolean_validator')]
         })
         return schema

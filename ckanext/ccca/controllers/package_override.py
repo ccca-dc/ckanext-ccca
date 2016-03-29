@@ -321,7 +321,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                                            action='new_resource', id=id))
 		### END USGINModels File Validation ###
 
-	    if save_action == 'go-metadata':
+	    if save_action == 'go-metadata' or save_action == 'go-dataset-complete':
 		data_dict = get_action('package_show')(context, {'id': id})
                 get_action('package_update')(
                     dict(context, allow_state_change=True),
@@ -414,7 +414,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 	    ########        USGINModels File Validation     #######
             pkg_dict = get_action('package_show')(context, {'id': id})
 
-            isUsginUsed = p.toolkit.get_action('is_usgin_structure_used')(context, pkg_dict)
+            isUsginUsed = False # p.toolkit.get_action('is_usgin_structure_used')(context, pkg_dict)
 
             #if dataset doesn't use usgin structure then no need for usginModel file validation
             if isUsginUsed is True:
