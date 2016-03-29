@@ -52,7 +52,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('custom_resource_edit', '/dataset/{id}/resource_edit/{resource_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_edit')
         map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_download')
                   
-        map.connect('new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
+        map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         map.connect('dataset_metadata', '/dataset/metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='metadata',  ckan_icon='edit')
         return map
     

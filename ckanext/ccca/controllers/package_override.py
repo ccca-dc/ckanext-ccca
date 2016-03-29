@@ -338,8 +338,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
              """
             elif save_action == 'go-md_edit':
                 # go to final stage of add dataset
-                redirect(h.url_for(controller='package',
-                                   action='new_metadata', id=id))
+                redirect(h.url_for('dataset_new_metadata', id=id))
             elif save_action == 'go-dataset':
                 # go to first stage of add dataset
                 redirect(h.url_for(controller='package',
