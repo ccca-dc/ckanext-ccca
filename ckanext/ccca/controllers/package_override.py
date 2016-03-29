@@ -48,6 +48,8 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 #                del data['save']
             #resource_id = data['id']
             #del data['id']
+        
+
             
         errors = errors or {}
         error_summary = error_summary or {}
@@ -74,7 +76,12 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             abort(401, _('Unauthorized to read package %s') % '')
         except NotFound:
             abort(404, _('Dataset not found'))
-            
+        
+        # convert tags if not supplied in data
+        if not 'tag_string' in data:
+            data['tag_string'] = ', '.join(h.dict_list_reduce(
+            c.pkg_dict.get('tags', {}), 'name'))
+                
        # vars['pkg_name'] = id
         # get resources for sidebar
         context = {'model': model, 'session': model.Session,
