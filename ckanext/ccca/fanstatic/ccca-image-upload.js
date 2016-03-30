@@ -248,7 +248,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 			   	obj._showOnlyFieldUrl();
 			   	obj.div_sftp.hide();
 			   	$('#upload_type').val('sftp');
-			   	//$('#id').val(response.result.id);
+			   	$('#res_id').val(response.result.id);
    	    	}).error(function(xhr, status, thrownError) {
 	    		console.log('file import request failed: ' + thrownError);
 	    	});
