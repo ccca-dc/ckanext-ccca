@@ -120,67 +120,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
     def metadata(self, id, data=None, errors=None, error_summary=None):
         return self.new_metadata(id, data, {}, {}, 'package/ccca_metadata.html')
         
-    '''        
-        try:
-            check_access('package_update', context, data_dict)
-        except NotFound:
-            abort(404, _('Dataset not found'))
-        except NotAuthorized:
-            abort(401, _('User %r not authorized to edit %s') % (c.user, id))
-        # check if package exists
-        try:
-            c.pkg_dict = get_action('package_show')(context, data_dict)
-            c.pkg = context['package']
-        except NotFound:
-            abort(404, _('Dataset not found'))
-        except NotAuthorized:
-            abort(401, _('Unauthorized to read package %s') % id)
-        
-
-        try:
-            c.pkg_dict = get_action('package_show')(context, {'id': id})
-            context['for_edit'] = True
-            context['form_style'] = 'edit'
-            old_data = get_action('package_show')(context, {'id': id})
-            # old data is from the database and data is passed from the
-            # user if there is a validation error. Use users data if there.
-            if data:
-                old_data.update(data)
-            data = old_data
-        except NotAuthorized:
-            abort(401, _('Unauthorized to read package %s') % '')
-        except NotFound:
-            abort(404, _('Dataset not found'))
-            
-        package_type = c.pkg_dict['type'] or 'dataset'
-         
-        if save_action == 'go-metadata':
-            return self._save_edit(id, context, package_type=package_type)
-            data_dict = get_action('package_show')(context, {'id': id})
-            get_action('package_update')(
-                    dict(context, allow_state_change=True),
-                    dict(data_dict, state='active'))
-            redirect(h.url_for(controller='package',
-                                   action='read', id=id))
-        else:
-           
-#        self._setup_template_variables(context, {'id': id},
- #                                      package_type=package_type)
-            data['id'] = id
-            vars = {'data': data, 
-                    'errors': {},
-                    'error_summary': {}, 
-                    'action': 'edit',
-                    'resource_form_snippet': self._resource_form(package_type),
-                    'dataset_type': package_type, 
-                    'form_style': 'edit'
-                    }      
-            # required for nav menu
-            c.pkg_dict['id'] = id
-            vars['pkg_dict'] = c.pkg_dict
-            return render('package/ccca_metadata.html',
-                          extra_vars=vars)
-            '''
+ 
           
     def new_resource(self, id, data=None, errors=None, error_summary=None):
         ''' FIXME: This is a temporary action to allow styling of the
