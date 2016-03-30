@@ -193,15 +193,23 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             context = {'model': model, 'session': model.Session,
                        'user': c.user or c.author, 'auth_user_obj': c.userobj}
             
-            #if data['upload_type'] == 'sftp':
-            #    data['id'] = request.params.get('id')
-            #    log.debug('resource_id: ' + data['id'][0])
-            #    get_action('resource_delete')(context, data)
-                
             # we don't want to include save as it is part of the form
             del data['save']
-            resource_id = data['id']
-            del data['id'] 
+            if data['id'] and not data['id'] is list:
+                resource_id = data['id']
+                del data['id']
+            
+            if data['upload_type'] == 'sftp':
+                data['id'] = request.params.get('id')
+                get_action('resource_update')(context, data)
+                if save_action == 'go-md_edit':
+                    # go to final stage of add dataset
+                    redirect(h.url_for('dataset_new_metadata', id=id))
+                else: 
+                    redirect(h.url_for(controller='package',
+                                   action='read', id=id))
+                
+ 
             
             # see if we have any data that we are trying to save
             data_provided = False
