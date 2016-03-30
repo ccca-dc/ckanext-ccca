@@ -6,6 +6,8 @@ import os
 import usginmodels
 import shutil
 
+import ckan.lib.base as base
+
 from shapely.geometry import asShape
 from dateutil import parser as date_parser
 from ckanext.ccca.common import plugins as p
@@ -19,6 +21,11 @@ import re
 
 log = logging.getLogger(__name__)
 get_action = logic.get_action
+render = base.render
+
+@logic.side_effect_free
+def get_html_iso(context, data_dict):
+    return render("package/snippets/package_basic_fields_iso.html", data_dict)
 
 """
 Lifted from ckanext-ngds/ckanext/ngds/csw/logic/view.py

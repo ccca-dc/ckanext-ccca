@@ -15,6 +15,17 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
+	<div id="select_mdprofile" class="control-group">
+		<label class="control-label" for="field-md_profile">{{ _("Metadata Profile") }}</label>
+		<div class="controls">
+			<select id="md_profile" onChange="md_toggle_profiles()">
+			  <option value="ccca" selected="selected">CCCA</option>
+			  <option value="iso">ISO</option>
+			  <option value="inspire">INSPIRE</option>
+			</select> 
+		</div>
+	</div>
+
   {% block basic_fields %}
     <div id='basic_fields'>
     	{% snippet 'package/snippets/package_basic_fields_ccca.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
@@ -23,7 +34,7 @@ then itself be extended to add/remove blocks of functionality. #}
   
     {% block metadata_fields %}
     <div id='metadata_fields'>
-    	{% snippet 'package/snippets/package_metadata_fields_iso.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}
+    	{#{% snippet 'package/snippets/package_metadata_fields_iso.html', form=form, data=data, errors=errors, licenses=c.licenses, groups_available=c.groups_available %}#}
 	</div>
   {% endblock %}
   
@@ -52,7 +63,7 @@ then itself be extended to add/remove blocks of functionality. #}
       {{ form.required_message() }}
     </div>
 
-    {% resource "ccca/md_toggle_usgin_form.js" %}
+    {% resource "ccca/md_toggle_profiles.js" %}
     {% resource "ccca/md_package_contribute_form.js" %}
     {% resource "ccca/md_add_related_agent.js" %}
   {% endblock %}

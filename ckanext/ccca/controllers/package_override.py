@@ -2,6 +2,7 @@ import cgi
 import paste.fileapp
 import mimetypes
 import json
+import logging
 import os
 import ckan.model as model
 import ckan.logic as logic
@@ -34,6 +35,8 @@ get_action = logic.get_action
 tuplize_dict = logic.tuplize_dict
 clean_dict = logic.clean_dict
 parse_params = logic.parse_params
+
+log = logging.getLogger(__name__)
 
 class PackageContributeOverride(p.SingletonPlugin, PackageController):
     
@@ -186,14 +189,20 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             save_action = request.params.get('save')
             data = data or clean_dict(dictization_functions.unflatten(
                 tuplize_dict(parse_params(request.POST))))
+            
+            context = {'model': model, 'session': model.Session,
+                       'user': c.user or c.author, 'auth_user_obj': c.userobj}
+            
+            #if data['upload_type'] == 'sftp':
+            #    data['id'] = request.params.get('id')
+            #    log.debug('resource_id: ' + data['id'][0])
+            #    get_action('resource_delete')(context, data)
+                
             # we don't want to include save as it is part of the form
             del data['save']
             resource_id = data['id']
-            del data['id']
-
-            context = {'model': model, 'session': model.Session,
-                       'user': c.user or c.author, 'auth_user_obj': c.userobj}
-
+            del data['id'] 
+            
             # see if we have any data that we are trying to save
             data_provided = False
             for key, value in data.iteritems():

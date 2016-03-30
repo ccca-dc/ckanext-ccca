@@ -63,8 +63,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # IActions
     def get_actions(self):
         return {
-           'show_iso_19139': metadata.iso_19139,
-           'resource_show': get.resource_show
+            'get_html_iso': metadata.get_html_iso,    
+            'show_iso_19139': metadata.iso_19139,
+            'resource_show': get.resource_show
         }
         
     # IDatasetForm   

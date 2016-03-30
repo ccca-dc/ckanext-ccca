@@ -1,28 +1,26 @@
-'use strict';
-
-ckan.module('md_toggle_profiles', function ($, _) {
-  return {
-    data: {
-      content: ''
-    },
-    initialize: function () {
-        var module = this;
-        $.proxyAll(this, /_on/);
-        module.el.on('click', this._onClick);
-        module._getContent(function (res) {
-          if (res.success) {
-            module.data.content = res.result;
-          }
-        });
-      },
-      _getContent: function (callback) {
-        $.ajax({
-          url: '/api/action/get_content',
-          success: function (res) {
-            if (res.success) {
-              callback(res);
-            }
-          }
-        })
-      }
-}});
+function md_toggle_profiles() {
+	return;
+	var selected = $("#select_mdprofile option:selected");
+	var action = 'get_html_iso';
+	if (selected=="ISO") {
+		action = 'get_html_iso';
+	}
+	 $.ajax({
+		 method: "GET",
+		 headers: {},
+    	 url: "/api/action/"+action,
+    	 context: document.body,
+    	 
+    	 //data: formData,
+    	 cache: false,
+    	 contentType: false,
+    	 processData: false
+    	}).done(function() {
+//	    	  $(this).addClass( "done" );
+    	}).success(function(response) {
+    		$('#basic_fields').html(response.result);
+    	}).error(function(xhr, status, thrownError) {
+		console.log('file import request failed: ' + thrownError);
+	});
+	
+}
