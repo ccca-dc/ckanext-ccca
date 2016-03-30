@@ -116,7 +116,9 @@
         </select>
       </div>
     </div>
+    
   {% endif %}
+{% endblock %}
 
   {% if show_visibility_selector %}
     {% block package_metadata_fields_visibility %}
@@ -160,8 +162,3 @@
   {% if show_organizations_selector and show_visibility_selector %}
     </div>
   {% endif %}
-
-
- 
-
-{% endblock %}
