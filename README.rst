@@ -41,20 +41,20 @@ ckanext-ccca
 Requirements
 ------------
 
-This plugin is tested with CKAN version 2.6.0.
+This plugin is tested with CKAN version 2.6.0a.
 Change your INI-File (development.ini / production.ini) in the following way:
 
-
-    ckan.plugins = spatial_metadata text_view image_view recline_view geo_view geojson_view ccca
-    [...]
+```
+ckan.plugins = spatial_metadata text_view image_view recline_view geo_view geojson_view ccca
+[...]
     ckan.views.default_views = image_view text_view recline_view geojson_view geo_view
     [...]
     ## Front-End Settings
     ckan.site_title = CCCA
     ckan.site_logo = /base/images/ccca.png
     ckan.site_description =
-    ckan.favicon = /images/icons/ckan.ico
-
+ckan.favicon = /images/icons/ckan.ico
+```
 
 ------------
 Installation
