@@ -49,7 +49,7 @@ Change your INI-File (development.ini / production.ini) in the following way::
     [...]  
     ## Front-End Settings  
     ckan.site_title = CCCA  
-    ckan.site_logo = /base/images/ccca.png  
+    ckan.site_logo = /images/ccca-logo.png
     ckan.site_description =  
     ckan.favicon = /images/icons/ckan.ico  
  
