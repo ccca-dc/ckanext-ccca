@@ -189,13 +189,16 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             save_action = request.params.get('save')
             data = data or clean_dict(dictization_functions.unflatten(
                 tuplize_dict(parse_params(request.POST))))
-            
+            if type(data['id']) is list:
+                del data['id']
+                
             context = {'model': model, 'session': model.Session,
                        'user': c.user or c.author, 'auth_user_obj': c.userobj}
             
             # we don't want to include save as it is part of the form
             del data['save']
-            if data['id'] and not data['id'] is list:
+            resource_id = None
+            if 'id' in data and data['id']:
                 resource_id = data['id']
                 del data['id']
             
