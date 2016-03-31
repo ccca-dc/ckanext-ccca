@@ -36,7 +36,7 @@ class UploadController(base.BaseController):
         user = c.userobj
         reqData = base.request.params
         ckan_url = config.get('ckan.site_url', '//localhost:5000')
-        mypath = expanduser('~'+user.name)+'/ccca-import/'
+        mypath = expanduser('~'+user.name)+'/'
         url = mypath + reqData['filename']
         log.debug('file url: '+ url)
         log.debug('package id: '+ reqData['package_id'])
