@@ -32,7 +32,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       var options = this.options;
       var host_url = options.host_url.replace("http://", "");
       var username = options.username;
-      console.log("pkg_id: " + options.pkg_id);
+      //console.log("pkg_id: " + options.pkg_id);
       
       // firstly setup the fields
       var field_upload = 'input[name="' + options.field_upload + '"]';
@@ -56,6 +56,9 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.field_clear = $('<input type="hidden" name="clear_upload">')
         .appendTo(this.el);
       
+      this.field_clear = $('<input id="input_sftp_apikey" type="hidden" name="input_sftp_apikey" value="'+this.options.apikey+'">')
+      .appendTo(this.el);
+      
       // Adds the hidden text field for sftp upload
       this.div_sftp = $('<div id="div_sftp" style="display: none;" name="sftp_upload">')
         .appendTo(this.el);
@@ -73,7 +76,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       .appendTo(this.div_sftp);
       
       // Button to refresh the file list from sftp import dir
-      this.button_sftp_refresh = $('<a href="javascript:;" id="button_sftp_refresh" class="btn">Refresh</a>')
+      this.button_sftp_refresh = $('<a href="javascript:;" id="button_sftp_refresh" apikey="'+ options.apikey + '" class="btn">Refresh</a>')
       .on('click', this._refreshSFTPFilelist)
       .appendTo(this.div_sftp);
       
@@ -154,8 +157,10 @@ this.ckan.module('ccca-image-upload', function($, _) {
    },
    
    _refreshSFTPFilelist: function() {
+	   apikey = $("#input_sftp_apikey").val();
+	   console.log('_refreshSFTPFilelist()');
 	   $.ajax({
-	    	  url: "/sftp_filelist?apikey="+this.options.apikey,
+	    	  url: "/sftp_filelist?apikey=" + apikey,
 	    	  context: document.body
 	    	}).done(function() {
 	    	  $(this).addClass( "done" );
@@ -177,6 +182,8 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    		console.log('file list request failed: ' + xhr.responseText);
 	    	});
    },
+   
+   
    
     /* Event listener for when someone sets the field to URL mode
      *
