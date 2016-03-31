@@ -24,11 +24,25 @@ get_action = logic.get_action
 render = base.render
 
 @logic.side_effect_free
+def get_html_ccca(context, data_dict):
+    pkg_dict = logic.get_action('package_show')(context, data_dict)
+    data_dict['data']=pkg_dict;
+    data_dict['errors']={};
+    return render("package/snippets/package_basic_fields_ccca.html", data_dict)
+
+@logic.side_effect_free
 def get_html_iso(context, data_dict):
     pkg_dict = logic.get_action('package_show')(context, data_dict)
     data_dict['data']=pkg_dict;
-    data_dict['errors']={'notes': ''};
+    data_dict['errors']={};
     return render("package/snippets/package_basic_fields_iso.html", data_dict)
+
+@logic.side_effect_free
+def get_html_inspire(context, data_dict):
+    pkg_dict = logic.get_action('package_show')(context, data_dict)
+    data_dict['data']=pkg_dict;
+    data_dict['errors']={};
+    return render("package/snippets/package_basic_fields_inspire.html", data_dict)
 
 """
 Lifted from ckanext-ngds/ckanext/ngds/csw/logic/view.py

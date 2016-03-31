@@ -8,9 +8,11 @@ ckan.module('md-toggle-profiles', function ($, _) {
     },
     _onChange: function () {
     	var selected = $("#select_mdprofile option:selected").val();
-    	var action = 'get_html_iso';
-    	if (selected=="ISO") {
+    	var action = 'get_html_ccca';
+    	if (selected=="iso") {
     		action = 'get_html_iso';
+    	} else if (selected=="inspire") {
+    		action = 'get_html_inspire';
     	}
     	$.ajax({
     		 method: "GET",
@@ -26,7 +28,6 @@ ckan.module('md-toggle-profiles', function ($, _) {
 //    	    	  $(this).addClass( "done" );
     	}).success(function(response) {
     		$('#basic_fields').html(response.result);
-    		console.log(module.options);
     	}).error(function(xhr, status, thrownError) {
     		console.log('file import request failed: ' + thrownError);
     	});
