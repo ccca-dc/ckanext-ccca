@@ -25,7 +25,7 @@ class UploadController(base.BaseController):
         log.debug('username: '+user.name)
         log.debug('apikey: '+user.apikey)
         if 'apikey' in data and data['apikey']==user.apikey:
-            mypath = expanduser('~'+user.name)+'/ccca-import/'
+            mypath = expanduser('~'+user.name)+'/'
             log.debug('my path: '+mypath)
             onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and not f.startswith('.'))]
             return json.dumps(onlyfiles)
