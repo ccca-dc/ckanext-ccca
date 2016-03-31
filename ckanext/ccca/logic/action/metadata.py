@@ -25,6 +25,9 @@ render = base.render
 
 @logic.side_effect_free
 def get_html_iso(context, data_dict):
+    pkg_dict = logic.get_action('package_show')(context, data_dict)
+    data_dict['data']=pkg_dict;
+    data_dict['errors']={'notes': ''};
     return render("package/snippets/package_basic_fields_iso.html", data_dict)
 
 """
