@@ -64,8 +64,9 @@ this.ckan.module('ccca-image-upload', function($, _) {
         .appendTo(this.el);
 
       // Adds an info string for SFTP upload
-      this.info_sftp = $('<p>All files you upload to ​<a href="'+username+'@'+host_url+'">'+username+'@'+host_url
-    		  +'</a> will appear here.<br>'
+      var sftp_link = username+'@'+host_url;
+      this.info_sftp = $('<p>All files you upload to ​<a id="a_sftplink" value='+sftp_link+' onclick="_copyLinkToClipboard()">'+sftp_link+'</a>'
+    		  +' will appear here.<br>'
     		  +'Please select a file to import:</p>')
       .appendTo(this.div_sftp);
       
@@ -145,10 +146,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
       }
     },
     
-    /* Event listener 
-    *
-    * Returns nothing.
-    */
    _onSFTP: function() {
 	   if (this.div_sftp.css('display')=='none') {
 		   this._refreshSFTPFilelist();
@@ -182,8 +179,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    		console.log('file list request failed: ' + xhr.responseText);
 	    	});
    },
-   
-   
    
     /* Event listener for when someone sets the field to URL mode
      *
@@ -238,13 +233,9 @@ this.ckan.module('ccca-image-upload', function($, _) {
     			 headers: { 'Authorization': this.options.apikey },
 	   	    	 url: "/sftp_upload",
 	   	    	 context: document.body,
-	   	    	 
 	   	    	 data: formData,
-	   	    	 cache: false,
 	   	    	 contentType: false,
 	   	    	 processData: false
-   	    	}).done(function() {
-//   	    	  $(this).addClass( "done" );
    	    	}).success(function(json) {
    	    		var response = jQuery.parseJSON(json);
    	    		var url = response.result.url;

@@ -4,6 +4,7 @@
   {% block basic_fields_url %}
 
   {% resource 'ccca/ccca-image-upload.js' %}
+  {% resource "ccca/clipboard.js" %}
   
   {% set placeholder = placeholder if placeholder else _('http://example.com/my-image.jpg') %}
   {% set url_label = url_label or _('Image URL')  %}

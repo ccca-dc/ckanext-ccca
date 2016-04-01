@@ -43,8 +43,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 
         map.connect('sftp_filelist', '/sftp_filelist', controller='ckanext.ccca.controllers.upload:UploadController', action='show_filelist')
         map.connect('sftp_upload', '/sftp_upload', controller='ckanext.ccca.controllers.upload:UploadController', action='upload_file')
-        #map.connect('/dataset/{id}/resource/{resource_id}/download', controller='ckanext.ccca.controllers.download:DownloadController', action='resource_download_ext')
-        #map.connect('/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.download:DownloadController', action='resource_download_ext')
+        
         map.connect('get_fields_iso', '/metadata/fields_iso', controller='ckanext.ccca.controllers.view:ViewController', action='get_fields_iso')
         map.connect('show_iso_19139', '/metadata/iso-19139/{id}.xml', controller='ckanext.ccca.controllers.view:ViewController', action='show_iso_19139')
         
