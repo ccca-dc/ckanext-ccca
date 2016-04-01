@@ -47,8 +47,8 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
             data = data or clean_dict(dictization_functions.unflatten(
                 tuplize_dict(parse_params(request.POST))))
             # we don't want to include save as it is part of the form
- #           if 'save' in data:
-#                del data['save']
+            if 'save' in data:
+                del data['save']
             #resource_id = data['id']
             #del data['id']
             
@@ -215,75 +215,8 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                 ## here's where we're doing the route override
                 data_dict = get_action('package_show')(context, {'id': id})
 
-		######## 	USGINModels File Validation 	#######
-		## Before activate dataset, validate files of all resources for dataset has usgin structure ##
-
-		isUsginUsed = False#p.toolkit.get_action('is_usgin_structure_used')(context, data_dict)
-
-		#if dataset doesn't use usgin structure then no need for usginModel file validation
-		if isUsginUsed is True:
-
-                    resources = data_dict.get('resources', [])
-		    messages = {'result': []}
-		    validationProcess = True
-
-                    for resource in resources:
-			#Bugfix: skip all resources created by ckan, e.g (geoserver wfs, wms ...) on add resource (after dataset is created)
-			if save_action == 'go-dataset-complete':
-			    protocol = resource.get('protocol', None)
-			    if protocol is not None:
-				continue
-			
-                        result = p.toolkit.get_action('usginmodels_validate_file') (context, {'resource_id': resource.get('id', None),
-                                                                                'package_id': id,
-                                                                                'resource_name': resource.get('name', None)})
-
-		        valid = result.get('valid', None)
-			message = result.get('message', None)
-		        if valid is False or ( valid is True and message ):
-			    #validation process has failed
-			    validationProcess = False
-			    #Link to download the corrected data from usginmodels
-			    link = p.toolkit.url_for('custom_resource_download', id=id, resource_id=result.get('resourceId', None))
-			    resourceId = resource.get('id', None)
-			    resourceUrl = resource.get('url', None)
-			    fileName = None
-
-  			    if resourceUrl:
-	         		parseObject = urlparse(resourceUrl)
-			    	fileName = basename(parseObject.path)
-
-			    try:
-			        get_action('resource_delete')(context, {'id': resource.get('id', None)})
-			    except:
-			        #deleting non existing resource
-			        continue
-
-			    if not message:
-                                message = [_("An error occurred while saving the data, please try again.")]
-
-			    messages['result'].append({
-                                'resource': result.get('resourceName', ''),
-                                'valid': valid,
-                                'messages': message,
-                                'link': link,
-                                'resourceId': resourceId,
-				'fileName': fileName,
-                            })
-
-		    #if at least one resource file validation is failed, redirect user to new_resource page with error message
-		    if not validationProcess:
-			html = "The file(s) provided might have changes to be applied or might have failed the validation. For more details, please click <a href='#' class='btn btn-info btn-small openUSGINModelValidationMessage' style='color:white !important'>here</a>"
-			# </div><div> HACK template (close alert div) and open div
-			html = html + "</div><div>" + render('usginmodels/modalValidationMessages.html', messages)
-			h.flash_error(html, True)
-
-		        redirect(h.url_for(controller='package',
-                                           action='new_resource', id=id))
-		### END USGINModels File Validation ###
-
-	    if save_action == 'go-metadata' or save_action == 'go-dataset-complete':
-		data_dict = get_action('package_show')(context, {'id': id})
+            if save_action == 'go-metadata' or save_action == 'go-dataset-complete':
+                data_dict = get_action('package_show')(context, {'id': id})
                 get_action('package_update')(
                     dict(context, allow_state_change=True),
                     dict(data_dict, state='active'))

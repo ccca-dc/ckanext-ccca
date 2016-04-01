@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('INSPIRE Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_tags %}
@@ -125,7 +125,7 @@
         </div>
       </div>
        <div class="control-group">
-        <label for="field-res_access" class="control-label">{{ _('Resource access') }}</label>
+        <label for="field-res_access" class="control-label">{{ _('Limitations on public access') }}</label>
         <div class="controls">
           <select id="field-res_access" name="res_access">
             {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
