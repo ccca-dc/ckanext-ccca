@@ -268,6 +268,7 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
         # required for nav menu
         vars['pkg_dict'] = pkg_dict
         vars['resource_form_snippet'] = self._resource_form(package_type)
+        vars['ckan_url'] = config.get('ckan.site_url', '//localhost:5000')
         template = 'package/new_resource_not_draft.html'
         if pkg_dict['state'] == 'draft':
             vars['stage'] = ['complete', 'active']

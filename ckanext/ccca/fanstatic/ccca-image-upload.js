@@ -223,19 +223,18 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		console.log("Importing file");
     		var loc = window.location.pathname;
     		var homeDir = loc.substring(0, loc.lastIndexOf('/'));
-    		var formData=new FormData();
-    		formData.append("apikey", this.options.apikey);
-    		formData.append("package_id", this.options.pkg_id);
-    		formData.append("filename", selected[0].value);
+    		var paramString="?apikey=" + this.options.apikey
+    		+ "&package_id=" + this.options.pkg_id
+    		+ "&filename=" + selected[0].value;
     		
     		 $.ajax({
-    			 method: "POST",
-    			 headers: { 'Authorization': this.options.apikey },
-	   	    	 url: "/sftp_upload",
+    			 method: "GET",
+    			 headers: { },
+	   	    	 url: "/sftp_upload"+paramString,
 	   	    	 context: document.body,
-	   	    	 data: formData,
-	   	    	 contentType: false,
-	   	    	 processData: false
+	   	    	 //data: formData
+	   	    	 //contentType: false,
+	   	    	 //processData: false
    	    	}).success(function(json) {
    	    		var response = jQuery.parseJSON(json);
    	    		var url = response.result.url;

@@ -9,8 +9,25 @@
 {% block custom_fields %}
 {% endblock %}
 
+{% block package_metadata_fields_language %}
+      <div class="control-group">
+        <label for="field-language" class="control-label">{{ _('Resource language') }}</label>
+        <div class="controls">
+          <select id="field-language" name="language">
+          	{% snippet 'package/snippets/language_select_options.html' %}
+          </select>
+          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+		    <span class="info-block info-inline">
+		      <i class="icon-info-sign"></i>
+		      {% trans %}
+		      {% endtrans %}
+		    </span>
+        </div>
+      </div>
+{% endblock %}
+
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('INSPIRE Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_tags %}
@@ -57,7 +74,6 @@
     {{ form.input('maintainer_email', label=_('Contact Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
   {% endblock %}
 
-{# {% if data.id and h.check_access('package_delete', {'id': data.id}) and data.state != 'active' %}
     <div class="control-group">
       <label for="field-state" class="control-label">{{ _('State') }}</label>
       <div class="controls">
@@ -67,8 +83,7 @@
         </select>
       </div>
     </div>
-  {% endif %}
-#}
+
 {% block package_basic_fields_org %}
   {# if we have a default group then this wants remembering #}
   {% if data.group_id %}
