@@ -232,9 +232,6 @@ this.ckan.module('ccca-image-upload', function($, _) {
     			 headers: { },
 	   	    	 url: "/sftp_upload"+paramString,
 	   	    	 context: document.body,
-	   	    	 //data: formData
-	   	    	 //contentType: false,
-	   	    	 //processData: false
    	    	}).success(function(json) {
    	    		var response = jQuery.parseJSON(json);
    	    		var url = response.result.url;

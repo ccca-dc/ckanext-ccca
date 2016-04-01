@@ -38,8 +38,8 @@ class UploadController(base.BaseController):
         ckan_url = config.get('ckan.site_url', '//localhost:5000')
         mypath = expanduser('~'+user.name)+'/'
         url = mypath + reqData['filename']
-        log.debug('file url: '+ url)
-        log.debug('package id: '+ reqData['package_id'])
+        log.debug('upload file url: '+ url)
+        log.debug('upload package id: '+ reqData['package_id'])
         response = requests.post(ckan_url+'/api/action/resource_create',
               data={'package_id': reqData['package_id'],
                     'url': url,
@@ -47,4 +47,5 @@ class UploadController(base.BaseController):
                     },
               headers={"X-CKAN-API-Key": reqData['apikey']},
               files=[('upload', file(url))])
+        log.debug('upload response: '+ response.content)
         return response
