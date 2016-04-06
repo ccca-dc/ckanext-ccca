@@ -117,6 +117,10 @@ this.ckan.module('ccca-image-upload', function($, _) {
       // Update the main label
       $('label[for="field-image-upload"]').text(options.upload_label || this.i18n('upload_label'));
 
+      // set double click for file list
+      $('#select_sftp')
+        .on('dblclick', this._onInputChangeSFTP);
+      
       // Setup the file input
       this.input
         .on('mouseover', this._onInputMouseOver)
@@ -229,12 +233,12 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		
     		 $.ajax({
     			 method: "GET",
-    			 headers: { },
+    			 headers: {},
 	   	    	 url: "/sftp_upload"+paramString,
 	   	    	 context: document.body,
    	    	}).success(function(json) {
    	    		var response = jQuery.parseJSON(json);
-   	    		var url = response.result.url;
+   	    		var url = response.url;
    	    		console.log(url);
 	   	     	obj.field_url_input.val(url);
 	   	     	obj.field_url_input.prop('readonly', true);
@@ -242,7 +246,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 			   	obj._showOnlyFieldUrl();
 			   	obj.div_sftp.hide();
 			   	$('#upload_type').val('sftp');
-			   	$('#res_id').val(response.result.id);
+			   	$('#res_id').val(response.id);
    	    	}).error(function(xhr, status, thrownError) {
 	    		console.log('file import request failed: ' + thrownError);
 	    	});

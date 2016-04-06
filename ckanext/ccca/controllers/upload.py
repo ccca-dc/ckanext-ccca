@@ -3,11 +3,15 @@ from os import listdir
 
 import ckan.lib.base as base
 import requests
-
+from ckanext.ccca.controllers.package_override import PackageContributeOverride
 from pylons import config
 
+import cgi
 import logging
 import json
+import ckan.model as model
+import ckan.logic as logic
+get_action = logic.get_action
 
 c = base.c
 request = base.request
@@ -30,22 +34,34 @@ class UploadController(base.BaseController):
             onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and not f.startswith('.'))]
             return json.dumps(onlyfiles)
         else:
-             return "no API key"
+            return "no API key"
          
     def upload_file(self):
         user = c.userobj
         reqData = base.request.params
-        ckan_url = config.get('ckan.site_url', '//localhost:5000')
+        #ckan_url = config.get('ckan.site_url', '//localhost:5000')
         mypath = expanduser('~'+user.name)+'/'
+        filename = reqData['filename']
         url = mypath + reqData['filename']
         log.debug('upload file url: '+ url)
         log.debug('upload package id: '+ reqData['package_id'])
-        response = requests.post(ckan_url+'/api/action/resource_create',
-              data={'package_id': reqData['package_id'],
-                    'url': url,
-                    #'name': reqData['name']
-                    },
-              headers={"X-CKAN-API-Key": reqData['apikey']},
-              files=[('upload', file(url))])
-        log.debug('upload response: '+ response.content)
-        return response
+        #response = requests.post(ckan_url+'/api/action/resource_create',
+        upload = cgi.FieldStorage()
+        upload.filename = filename
+        upload.filepath = mypath
+        upload.file=file(url)
+        data={'package_id': reqData['package_id'],
+            'url': url,
+            'upload': upload
+            #'upload': file(url)
+            #'apikey': reqData['apikey']
+            #'name': reqData['name']
+        }
+        #headers={"X-CKAN-API-Key": reqData['apikey']},
+        #files=[('upload', file(url))])
+        #log.debug('upload response: '+ response.content)
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj}
+        resource_dict = get_action('resource_create')(context, data)
+        #pkg_dict = get_action('package_show')(context, {'id': resource_dict['package_id']})
+        return json.dumps(resource_dict);

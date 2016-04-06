@@ -17,7 +17,6 @@ import ckan.lib.dictization as dictization
 from pylons.i18n.translation import _, ungettext
 import ckan.lib.i18n as i18n
 from ckan.controllers.package import PackageController
-
 import ckan.lib.navl.dictization_functions as dict_fns
 
 from urlparse import urlparse
@@ -151,8 +150,6 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
                 else: 
                     redirect(h.url_for(controller='package',
                                    action='read', id=id))
-                
- 
             
             # see if we have any data that we are trying to save
             data_provided = False
