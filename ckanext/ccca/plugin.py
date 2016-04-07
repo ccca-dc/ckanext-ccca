@@ -76,7 +76,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                 toolkit.get_converter('convert_to_extras')]
         })
         schema.update({
-            'md-person-name': [toolkit.get_validator('ignore_missing'),
+            'md_profile': [toolkit.get_validator('ignore_missing'),
                 toolkit.get_converter('convert_to_extras')]
         })
         return schema
@@ -98,9 +98,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                            toolkit.get_validator('boolean_validator')]
         })
         schema.update({
-            'md-person-name': [toolkit.get_converter('convert_from_extras'),
-                           toolkit.get_validator('boolean_validator')]
+            'md_profile': [toolkit.get_converter('convert_from_extras'),
+                           toolkit.get_validator('ignore_missing')]
         })
+        
         return schema
     
     def is_fallback(self):

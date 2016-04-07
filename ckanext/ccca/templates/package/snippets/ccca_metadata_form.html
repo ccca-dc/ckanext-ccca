@@ -18,10 +18,11 @@ then itself be extended to add/remove blocks of functionality. #}
 	<div id="div_mdprofile" class="control-group">
 		<label class="control-label" for="field-md_profile">{{ _("Metadata Profile") }}</label>
 		<div class="controls">
-			<select id="select_mdprofile" action="md_toggle_profiles" data-module="md-toggle-profiles" data-module-pkg_id="{{tmpl_context.id}}">
-			  <option value="ccca" selected="selected">CCCA</option>
-			  <option value="iso">ISO</option>
-			  <option value="inspire">INSPIRE</option>
+			<select id="field-md_profile" name="md_profile" action="md_toggle_profiles" data-module="md-toggle-profiles" data-module-pkg_id="{{tmpl_context.id}}">
+			{% set existing_md_profile = data.get('md_profile') %}
+		    {% for profile_id, profile_desc in [('ccca', _('CCCA')), ('iso', _('ISO 19139')), ('inspire', _('INSPIRE'))] %}
+		      <option value="{{ profile_id }}" {% if existing_md_profile == profile_id %}selected="selected"{% endif %}>{{ profile_desc }}</option>
+		    {% endfor %}
 			</select> 
 		</div>
 	</div>

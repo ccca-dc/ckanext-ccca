@@ -14,7 +14,7 @@
         <label for="field-language" class="control-label">{{ _('Resource language') }}</label>
         <div class="controls">
           <select id="field-language" name="language">
-          	{% snippet 'package/snippets/language_select_options.html' %}
+          	{% snippet 'package/snippets/md_language_select_options.html' %}
           </select>
           {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
 		    <span class="info-block info-inline">
