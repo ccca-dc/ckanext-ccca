@@ -53,6 +53,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                   
         map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         map.connect('dataset_metadata', '/dataset/metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='metadata',  ckan_icon='edit')
+        
+        map.connect('export_metadata', '/export_metadata', controller='ckanext.ccca.controllers.export:ExportController', action='export_metadata')
+        
         return map
     
     def after_map(self, map):

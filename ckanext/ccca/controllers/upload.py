@@ -53,15 +53,8 @@ class UploadController(base.BaseController):
         data={'package_id': reqData['package_id'],
             'url': url,
             'upload': upload
-            #'upload': file(url)
-            #'apikey': reqData['apikey']
-            #'name': reqData['name']
         }
-        #headers={"X-CKAN-API-Key": reqData['apikey']},
-        #files=[('upload', file(url))])
-        #log.debug('upload response: '+ response.content)
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj}
         resource_dict = get_action('resource_create')(context, data)
-        #pkg_dict = get_action('package_show')(context, {'id': resource_dict['package_id']})
         return json.dumps(resource_dict);
