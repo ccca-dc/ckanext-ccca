@@ -28,22 +28,20 @@
     :target: https://pypi.python.org/pypi/ckanext-ccca/
     :alt: License
 
-=============
+============
 ckanext-ccca
-=============
+============
 
-.. Put a description of your extension here:
-   What does it do? What features does it have?
-   Consider including some screenshots or embedding a video!
+This is a plugin for the CKAN data portal software http://ckan.org/ to extend its functionality for the CCCA data centre http://ccca.ac.at
 
 
 ------------
 Requirements
 ------------
 
-This plugin is tested with CKAN version 2.6.0a. :+1:
+This plugin is tested with CKAN version 2.6.0a. :+1:  
 Change your INI-File (development.ini / production.ini) in the following way::
-    ckan.plugins = spatial_metadata text_view image_view recline_view geo_view geojson_view ccca  
+    ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca 
     [...]  
     ckan.views.default_views = image_view text_view recline_view geojson_view geo_view  
     [...]  
@@ -99,7 +97,7 @@ Development Installation
 To install ckanext-ccca for development, activate your CKAN virtualenv and
 do::
 
-    git clone https://github.com/ckinkeldey/ckanext-ccca.git
+    git clone https://github.com/ccca-dc/ckanext-ccca.git
     cd ckanext-ccca
     python setup.py develop
     pip install -r dev-requirements.txt
@@ -119,9 +117,9 @@ coverage installed in your virtualenv (``pip install coverage``) then run::
     nosetests --nologcapture --with-pylons=test.ini --with-coverage --cover-package=ckanext.ccca --cover-inclusive --cover-erase --cover-tests
 
 
----------------------------------
+--------------------------------
 Registering ckanext-ccca on PyPI
----------------------------------
+--------------------------------
 
 ckanext-ccca should be availabe on PyPI as
 https://pypi.python.org/pypi/ckanext-ccca. If that link doesn't work, then
@@ -148,9 +146,9 @@ steps:
        git push --tags
 
 
-----------------------------------------
+---------------------------------------
 Releasing a New Version of ckanext-ccca
-----------------------------------------
+---------------------------------------
 
 ckanext-ccca is availabe on PyPI as https://pypi.python.org/pypi/ckanext-ccca.
 To publish a new version to PyPI follow these steps:
