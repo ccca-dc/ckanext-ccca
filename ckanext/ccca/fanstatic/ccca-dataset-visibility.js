@@ -3,7 +3,7 @@
  * public always and disable dropdown
  * Extended: same with field 'resource access'
  */
-this.ckan.module('dataset-visibility', function ($, _) {
+this.ckan.module('ccca-dataset-visibility', function ($, _) {
   return {
     currentValue: false,
     options: {
@@ -25,15 +25,15 @@ this.ckan.module('dataset-visibility', function ($, _) {
           .prop('disabled', false)
           .val(this.options.currentValue);
         this.options.res_access
-        .prop('disabled', false)
-        .val(this.options.currentValue);
+	      .prop('disabled', false)
+	      .val(this.options.currentValue);
       } else {
         this.options.visibility
           .prop('disabled', true)
           .val('False');
         this.options.res_access
-        .prop('disabled', true)
-        .val('False');
+          .prop('disabled', true)
+          .val('False');
       }
     }
   };

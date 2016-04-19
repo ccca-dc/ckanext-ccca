@@ -3,10 +3,10 @@ import json
 import logging
 import usginmodels
 import os.path as path
-from ckanext.metadata.common import config
-from ckanext.metadata.common import pylons_i18n
-from ckanext.metadata.common import base, logic
-from ckanext.metadata.common import helpers as h
+from ckanext.ccca.common import config
+from ckanext.ccca.common import pylons_i18n
+from ckanext.ccca.common import base, logic
+from ckanext.ccca.common import helpers as h
 from itertools import count
 from ckan.lib.navl.dictization_functions import Invalid
 from ckan.model import (MAX_TAG_LENGTH, MIN_TAG_LENGTH)

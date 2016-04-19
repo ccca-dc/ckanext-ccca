@@ -82,7 +82,7 @@
   {% set show_organizations_selector = organizations_available %}
   {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
-    <div data-module="dataset-visibility">
+    <div data-module="ccca-dataset-visibility">
 
   {#{% if show_organizations_selector %}#}
     {% set existing_org = data.owner_org or data.group_id %}
@@ -147,4 +147,5 @@
   {#{% if show_organizations_selector and show_visibility_selector %}#}
     </div>
   {#{% endif %}#}
+
 

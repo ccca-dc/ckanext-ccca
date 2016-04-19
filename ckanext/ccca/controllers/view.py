@@ -1,7 +1,7 @@
-from ckanext.metadata.common import plugins as p
-from ckanext.metadata.common import model
-from ckanext.metadata.common import base
-from ckanext.metadata.common import pylons_i18n
+from ckanext.ccca.common import plugins as p
+from ckanext.ccca.common import model
+from ckanext.ccca.common import base
+from ckanext.ccca.common import pylons_i18n
 
 import ckan.lib.base as base 
 

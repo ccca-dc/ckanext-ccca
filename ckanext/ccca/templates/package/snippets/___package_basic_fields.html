@@ -27,7 +27,7 @@
   {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
   {% if show_organizations_selector and show_visibility_selector %}
-    <div data-module="dataset-visibility">
+    <div data-module="ccca-dataset-visibility">
   {% endif %}
 
   {% if show_organizations_selector %}
@@ -47,7 +47,6 @@
         </select>
       </div>
     </div>
-    
   {% endif %}
 {% endblock %}
 

@@ -15,7 +15,7 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
-	<div id="div_mdprofile" class="control-group">
+	<div id="div-md_profile" class="control-group">
 		<label class="control-label" for="field-md_profile">{{ _("Metadata Profile") }}</label>
 		<div class="controls">
 			<select id="field-md_profile" name="md_profile" action="md_toggle_profiles" data-module="md-toggle-profiles" data-module-pkg_id="{{tmpl_context.id}}">

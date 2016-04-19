@@ -1,5 +1,7 @@
 {% import 'macros/form.html' as form %}
 
+{% resource "ccca/ccca-dataset-visibility.js" %}
+
 {% block package_basic_fields_title %}
   {#{{ form.input('title', id='field-title', label=_('Title'), placeholder=_('eg. A descriptive title'), value=data.title, error=errors.title, classes=['control-full', 'control-large'], attrs={'data-module': 'slug-preview-target'}) }}
   
@@ -94,8 +96,7 @@
   {% set show_organizations_selector = organizations_available %}
   {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
-    <div data-module="dataset-visibility">
-
+  <div data-module="ccca-dataset-visibility">
   {#{% if show_organizations_selector %}#}
     {% set existing_org = data.owner_org or data.group_id %}
     <div class="control-group">
@@ -159,3 +160,5 @@
   {#{% if show_organizations_selector and show_visibility_selector %}#}
     </div>
   {#{% endif %}#}
+  
+
