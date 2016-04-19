@@ -39,8 +39,7 @@ This is a plugin for the CKAN data portal software http://ckan.org/ to extend it
 Requirements
 ------------
 
-This plugin is tested with CKAN version 2.6.0a. :+1:
-
+This plugin is tested with CKAN version 2.6.0a. :+1: 
 Change your INI-File (development.ini / production.ini) in the following way::
     ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca 
     [...]  
