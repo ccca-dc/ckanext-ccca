@@ -54,7 +54,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         map.connect('dataset_metadata', '/dataset/metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='metadata',  ckan_icon='edit')
         
-        map.connect('export_metadata', '/export_metadata', controller='ckanext.ccca.controllers.export:ExportController', action='export_metadata')
+        map.connect('export_metadata', '/export_metadata', controller='ckanext.ccca.controllers.export:ExportController', action='export_metadata_xml')
         
         return map
     
@@ -67,7 +67,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return {
             'get_html_ccca': metadata.get_html_ccca,
             'get_html_iso': metadata.get_html_iso,
-            'get_html_inspire': metadata.get_html_inspire,    
+            'get_html_inspire': metadata.get_html_inspire, 
             'show_iso_19139': metadata.iso_19139,
             'resource_show': get.resource_show
         }
