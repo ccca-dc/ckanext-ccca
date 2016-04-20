@@ -7,6 +7,7 @@ from ckanext.ccca.controllers.package_override import PackageContributeOverride
 from ckanext.ccca.controllers.view import ViewController
 from pylons import config
 
+import sys
 import cgi
 import logging
 import json
@@ -34,16 +35,21 @@ class ExportController(base.BaseController):
             log.debug('creating dir: ' + mypath)
             makedirs(mypath)
         files = ''
+        count = 0;
         for p in package_list: 
-            log.debug('package: ' + p)
-            pkg_dict = get_action('package_show')(context, {'id': p})
-            log.debug('package_id: ' + pkg_dict['id'])
-            xml = get_action('show_iso_19139')(context, {'id': pkg_dict['id']})
-            log.debug('package_xml: ' + xml)
-            filename = mypath+'/'+ pkg_dict['id'] + '.xml'
-            f = open(filename, 'w')
-            f.write(xml.encode('utf8'))
-            f.close()
-            files = files + filename+'<br>'
-        return "<html><body>written files:<br>"+files+"</body></html>"
+            try:
+                log.debug('package: ' + p)
+                pkg_dict = get_action('package_show')(context, {'id': p})
+                log.debug('package_id: ' + pkg_dict['id'])
+                xml = get_action('show_iso_19139')(context, {'id': pkg_dict['id']})
+                #log.debug('package_xml: ' + xml)
+                filename = mypath+'/'+ pkg_dict['id'] + '.xml'
+                f = open(filename, 'w')
+                f.write(xml.encode('utf8'))
+                f.close()
+                count+=1
+                files = files + filename+'<br>'
+            except:
+                log.debug('Could not export package ' , str(p) , ": " , sys.exc_info()[0])
+        return "<html><body>CCCA CKAN metadata exporter<br><br>Exported ",count," files:<br>",files,"</body></html>"
         
