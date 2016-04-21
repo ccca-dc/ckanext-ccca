@@ -28,12 +28,12 @@ this.ckan.module('ccca-dataset-visibility', function ($, _) {
 	      .prop('disabled', false)
 	      .val(this.options.currentValue);
       } else {
-//        this.options.visibility
-//          .prop('disabled', true)
-//          .val('False');
-//        this.options.res_access
-//          .prop('disabled', true)
-//          .val('True');
+        this.options.visibility
+          .prop('disabled', true)
+          .val('False');
+        this.options.res_access
+          .prop('disabled', true)
+          .val('True');
       }
     }
   };
