@@ -50,6 +50,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('pkg_new', '/dataset/new_resource/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_resource')
         map.connect('custom_resource_edit', '/dataset/{id}/resource_edit/{resource_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_edit')
         map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_download')
+        #map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.download:DownloadController', action='resource_download_ext')
                   
         map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='new_metadata')
         map.connect('dataset_metadata', '/dataset/metadata/{id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='metadata',  ckan_icon='edit')
@@ -75,7 +76,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # IDatasetForm   
     def _modify_package_schema(self, schema):
         schema.update({
-            'res_access': [toolkit.get_validator('ignore_missing'),
+            'res_access': [toolkit.get_validator('boolean_validator'),
                 toolkit.get_converter('convert_to_extras')]
         })
         schema.update({
@@ -123,8 +124,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'md_get_vanilla_ckan_version': h.md_get_vanilla_ckan_version,
             'md_package_extras_processor': h.md_package_extras_processor,
             'md_resource_extras_processer': h.md_resource_extras_processer,
-            'usgin_check_package_for_content_model': h.usgin_check_package_for_content_model,
-            #'geothermal_prospector_url': metahelper.get_prospector_url,
+            'usgin_check_package_for_content_model': h.usgin_check_package_for_content_model
         }
     # IAuthFunctions
     

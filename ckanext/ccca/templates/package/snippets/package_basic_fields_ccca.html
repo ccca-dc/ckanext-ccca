@@ -142,7 +142,7 @@
         <div class="controls">
           <select id="field-res_access" name="res_access">
             {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
-            <option value="{{ option[0] }}" {% if option[0] != data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
+            <option value="{{ option[0] }}" {% if option[0] == data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
             {% endfor %}
           </select>
           {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
