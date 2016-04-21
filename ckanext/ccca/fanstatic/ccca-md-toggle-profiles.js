@@ -7,7 +7,7 @@ ckan.module('ccca-md-toggle-profiles', function ($, _) {
       this.el.on('change', this._onChange);
     },
     _onChange: function () {
-    	var selected = $("#select_mdprofile option:selected").val();
+    	var selected = $("#field-md_profile option:selected").val();
     	var action = 'get_html_ccca';
     	if (selected=="iso") {
     		action = 'get_html_iso';
@@ -24,7 +24,7 @@ ckan.module('ccca-md-toggle-profiles', function ($, _) {
         	 contentType: false,
         	 processData: false
     	}).success(function(response) {
-    		$('#basic_fields').html(response.result);
+    		$('#metadata_fields').html(response.result);
     	}).error(function(xhr, status, thrownError) {
     		console.log('file import request failed: ' + thrownError);
     	});
