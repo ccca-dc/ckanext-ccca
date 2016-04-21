@@ -1,6 +1,6 @@
 'use strict';
 
-ckan.module('md-toggle-profiles', function ($, _) {
+ckan.module('ccca-md-toggle-profiles', function ($, _) {
   return {
     initialize: function () {
       $.proxyAll(this, /_on/);

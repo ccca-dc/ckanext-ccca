@@ -1,6 +1,7 @@
 {% import 'macros/form.html' as form %}
 {% set action = c.form_action or '' %}
 
+
 {# This provides a full page that renders a form for adding a dataset. It can
 then itself be extended to add/remove blocks of functionality. #}
 <form id="md-dataset-edit" class="package-form form-horizontal" method="post" action="{{ action }}" data-module="md-package-contribute">
@@ -15,10 +16,10 @@ then itself be extended to add/remove blocks of functionality. #}
   <input type="hidden" name="pkg_name" value="{{ data.id }}" />
   {% block errors %}{{ form.errors(error_summary) }}{% endblock %}
 
-	<div id="div-md_profile" class="control-group">
+	<div id="div-md_profile" class="control-group" data-module="ccca-md-toggle-profiles">
 		<label class="control-label" for="field-md_profile">{{ _("Metadata Profile") }}</label>
 		<div class="controls">
-			<select id="field-md_profile" name="md_profile" action="md_toggle_profiles" data-module="md-toggle-profiles" data-module-pkg_id="{{tmpl_context.id}}">
+			<select id="field-md_profile" name="md_profile" action="ccca-md-toggle-profiles" data-module="ccca-md-toggle-profiles" data-module-pkg_id="{{tmpl_context.id}}">
 			{% set existing_md_profile = data.get('md_profile') %}
 		    {% for profile_id, profile_desc in [('ccca', _('CCCA')), ('iso', _('ISO 19139')), ('inspire', _('INSPIRE'))] %}
 		      <option value="{{ profile_id }}" {% if existing_md_profile == profile_id %}selected="selected"{% endif %}>{{ profile_desc }}</option>
@@ -65,7 +66,6 @@ then itself be extended to add/remove blocks of functionality. #}
       {{ form.required_message() }}
     </div>
 
-    {% resource "ccca/md_toggle_profiles.js" %}
     {% resource "ccca/md_package_contribute_form.js" %}
     {% resource "ccca/md_add_related_agent.js" %}
   {% endblock %}
