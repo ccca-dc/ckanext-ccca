@@ -253,7 +253,7 @@
         {% if 'res_access' in pkg_dict %}
         	<tr>
 	          <th scope="row" class="dataset-label">{{ _("Resource access") }}</th>
-	          <td class="dataset-details">{{ pkg_dict.res_access }}</td>
+	          <td class="dataset-details">{% if pkg_dict.res_access %}{{_('Public')}}{% else %}{{_('Not Public')}}{% endif %}</td>
         	</tr>
 		{% endif %}
 
