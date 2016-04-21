@@ -20,12 +20,9 @@ ckan.module('md-toggle-profiles', function ($, _) {
         	 url: "/api/action/"+action+"?id="+this.options.pkg_id,
         	 context: document.body,
         	 
-        	 //data: formData,
         	 cache: false,
         	 contentType: false,
         	 processData: false
-    	}).done(function() {
-//    	    	  $(this).addClass( "done" );
     	}).success(function(response) {
     		$('#basic_fields').html(response.result);
     	}).error(function(xhr, status, thrownError) {

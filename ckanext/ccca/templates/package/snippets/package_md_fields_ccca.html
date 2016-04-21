@@ -1,33 +1,7 @@
-{% import 'macros/form.html' as form %}
-
-{% block package_basic_fields_title %}
-{% endblock %}
-
-{% block package_basic_fields_custom %}
-{% endblock %}
-
-{% block custom_fields %}
-{% endblock %}
-
-{% block package_metadata_fields_language %}
-      <div class="control-group">
-        <label for="field-language" class="control-label">{{ _('Resource language') }}</label>
-        <div class="controls">
-          <select id="field-language" name="language">
-          	{% snippet 'package/snippets/md_language_select_options.html' %}
-          </select>
-          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-		    <span class="info-block info-inline">
-		      <i class="icon-info-sign"></i>
-		      {% trans %}
-		      {% endtrans %}
-		    </span>
-        </div>
-      </div>
-{% endblock %}
+{% extends "package/snippets/package_md_fields.html" %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('INSPIRE Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Description'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_tags %}
@@ -59,21 +33,22 @@
 {% endblock %}
 
 {% block package_metadata_fields_version %}
-    {{ form.input('version', label=_('standardVersion'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
+    {{ form.input('version', label=_('Version'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
   {% endblock %}
 
   {% block package_metadata_author %}
-    {{ form.input('author', label=_('citedResponsibleParty'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
+    {{ form.input('author', label=_('Author'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
 
-    {{ form.input('author_email', label=_('citedResponsibleParty Email'), id='field-author-email', placeholder=_('joe@example.com'), value=data.author_email, error=errors.author_email, classes=['control-medium']) }}
+    {{ form.input('author_email', label=_('Author Email'), id='field-author-email', placeholder=_('joe@example.com'), value=data.author_email, error=errors.author_email, classes=['control-medium']) }}
   {% endblock %}
 
   {% block package_metadata_fields_maintainer %}
-    {{ form.input('maintainer', label=_('Contact'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
+    {{ form.input('maintainer', label=_('Maintainer'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
 
-    {{ form.input('maintainer_email', label=_('Contact Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
+    {{ form.input('maintainer_email', label=_('Maintainer Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
   {% endblock %}
 
+ {% if data.id and h.check_access('package_delete', {'id': data.id}) and data.state != 'active' %}
     <div class="control-group">
       <label for="field-state" class="control-label">{{ _('State') }}</label>
       <div class="controls">
@@ -83,6 +58,7 @@
         </select>
       </div>
     </div>
+  {% endif %}
 
 {% block package_basic_fields_org %}
   {# if we have a default group then this wants remembering #}
@@ -97,8 +73,7 @@
   {% set show_organizations_selector = organizations_available %}
   {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
-    <div data-module="dataset-visibility">
-
+  <div data-module="ccca-dataset-visibility">
   {#{% if show_organizations_selector %}#}
     {% set existing_org = data.owner_org or data.group_id %}
     <div class="control-group">
@@ -116,50 +91,5 @@
         </select>
       </div>
     </div>
-    
-  {#{% endif %}#}
 {% endblock %}
-
-  {#{% if show_visibility_selector %}#}
-    {% block package_metadata_fields_visibility %}
-      <div class="control-group">
-        <label for="field-private" class="control-label">{{ _('Visibility') }}</label>
-        <div class="controls">
-          <select id="field-private" name="private">
-            {% for option in [('True', _('Private')), ('False', _('Public'))] %}
-            <option value="{{ option[0] }}" {% if option[0] == data.private|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
-            {% endfor %}
-          </select>
-          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-		    <span class="info-block info-inline">
-		      <i class="icon-info-sign"></i>
-		      {% trans %}
-		        Defines if a dataset is accessible for anyone or just by members of the author's organization. 
-		      {% endtrans %}
-		    </span>
-        </div>
-      </div>
-       <div class="control-group">
-        <label for="field-res_access" class="control-label">{{ _('Limitations on public access') }}</label>
-        <div class="controls">
-          <select id="field-res_access" name="res_access">
-            {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
-            <option value="{{ option[0] }}" {% if option[0] != data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
-            {% endfor %}
-          </select>
-          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
-		    <span class="info-block info-inline">
-		      <i class="icon-info-sign"></i>
-		      {% trans %}
-		        Defines if resources of this dataset are publicly downloadable or just by members of the author's organization.
-		      {% endtrans %}
-		    </span>
-        </div>
-      </div>
-    {% endblock %}
-  {#{% endif %}#}
-
-  {#{% if show_organizations_selector and show_visibility_selector %}#}
-    </div>
-  {#{% endif %}#}
 

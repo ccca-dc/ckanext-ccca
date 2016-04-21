@@ -1,4 +1,4 @@
-{% import 'macros/form.html' as form %}
+{% extends "package/snippets/package_md_fields.html" %}
 
 {% block package_basic_fields_title %}
 {% endblock %}
@@ -9,13 +9,30 @@
 {% block custom_fields %}
 {% endblock %}
 
+{% block package_metadata_fields_language %}
+      <div class="control-group">
+        <label for="field-language" class="control-label">{{ _('Resource language') }}</label>
+        <div class="controls">
+          <select id="field-language" name="language">
+          	{% snippet 'package/snippets/md_language_select_options.html' %}
+          </select>
+          {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+		    <span class="info-block info-inline">
+		      <i class="icon-info-sign"></i>
+		      {% trans %}
+		      {% endtrans %}
+		    </span>
+        </div>
+      </div>
+{% endblock %}
+
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('INSPIRE Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_tags %}
   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-  {{ form.input('tag_string', id='field-tags', label=_('Keywords'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
+  {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
 {% endblock %}
 
 {% block package_basic_fields_license %}
@@ -42,13 +59,13 @@
 {% endblock %}
 
 {% block package_metadata_fields_version %}
-    {{ form.input('version', label=_('Standard Version'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
+    {{ form.input('version', label=_('standardVersion'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
   {% endblock %}
 
   {% block package_metadata_author %}
-    {{ form.input('author', label=_('Cited Responsible Party'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
+    {{ form.input('author', label=_('citedResponsibleParty'), id='field-author', placeholder=_('Joe Bloggs'), value=data.author, error=errors.author, classes=['control-medium']) }}
 
-    {{ form.input('author_email', label=_('Cited Responsible Party Email'), id='field-author-email', placeholder=_('joe@example.com'), value=data.author_email, error=errors.author_email, classes=['control-medium']) }}
+    {{ form.input('author_email', label=_('citedResponsibleParty Email'), id='field-author-email', placeholder=_('joe@example.com'), value=data.author_email, error=errors.author_email, classes=['control-medium']) }}
   {% endblock %}
 
   {% block package_metadata_fields_maintainer %}
@@ -57,7 +74,6 @@
     {{ form.input('maintainer_email', label=_('Contact Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
   {% endblock %}
 
-{# {% if data.id and h.check_access('package_delete', {'id': data.id}) and data.state != 'active' %}
     <div class="control-group">
       <label for="field-state" class="control-label">{{ _('State') }}</label>
       <div class="controls">
@@ -67,8 +83,7 @@
         </select>
       </div>
     </div>
-  {% endif %}
-#}
+
 {% block package_basic_fields_org %}
   {# if we have a default group then this wants remembering #}
   {% if data.group_id %}
@@ -82,7 +97,7 @@
   {% set show_organizations_selector = organizations_available %}
   {% set show_visibility_selector = dataset_has_organization or (organizations_available and (user_is_sysadmin or dataset_is_draft)) %}
 
-    <div data-module="ccca-dataset-visibility">
+    <div data-module="dataset-visibility">
 
   {#{% if show_organizations_selector %}#}
     {% set existing_org = data.owner_org or data.group_id %}
@@ -125,7 +140,7 @@
         </div>
       </div>
        <div class="control-group">
-        <label for="field-res_access" class="control-label">{{ _('Resource access') }}</label>
+        <label for="field-res_access" class="control-label">{{ _('Limitations on public access') }}</label>
         <div class="controls">
           <select id="field-res_access" name="res_access">
             {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
@@ -147,5 +162,4 @@
   {#{% if show_organizations_selector and show_visibility_selector %}#}
     </div>
   {#{% endif %}#}
-
 
