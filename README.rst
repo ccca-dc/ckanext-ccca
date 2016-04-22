@@ -39,7 +39,7 @@ This is a plugin for the CKAN data portal software http://ckan.org/ to extend it
 Requirements
 ------------
 
-This plugin is tested with CKAN version 2.6.0a. :+1: 
+This plugin is tested with CKAN version 2.6.0a. 
 Change your INI-File (development.ini / production.ini) in the following way::
     ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca 
     [...]  
@@ -176,7 +176,7 @@ To publish a new version to PyPI follow these steps:
 Copying and License
 -------------------
 
-This material is copyright (c) 2016 Claimate Change Centre Austria (CCCA) http://www.ccca.ac.at
+This material is copyright (c) 2016 Climate Change Centre Austria (CCCA) http://www.ccca.ac.at
 
 It is open and licensed under the GNU Affero General Public License (AGPL) v3.0 whose full text may be found at:
 
