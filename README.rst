@@ -1,33 +1,3 @@
-.. You should enable this project on travis-ci.org and coveralls.io to make
-   these badges work. The necessary Travis and Coverage config files have been
-   generated for you.
-
-.. image:: https://travis-ci.org/ckinkeldey/ckanext-ccca.svg?branch=master
-    :target: https://travis-ci.org/ckinkeldey/ckanext-ccca
-
-.. image:: https://coveralls.io/repos/ckinkeldey/ckanext-ccca/badge.svg
-  :target: https://coveralls.io/r/ckinkeldey/ckanext-ccca
-
-.. image:: https://pypip.in/download/ckanext-ccca/badge.svg
-    :target: https://pypi.python.org/pypi//ckanext-ccca/
-    :alt: Downloads
-
-.. image:: https://pypip.in/version/ckanext-ccca/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-ccca/
-    :alt: Latest Version
-
-.. image:: https://pypip.in/py_versions/ckanext-ccca/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-ccca/
-    :alt: Supported Python versions
-
-.. image:: https://pypip.in/status/ckanext-ccca/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-ccca/
-    :alt: Development Status
-
-.. image:: https://pypip.in/license/ckanext-ccca/badge.svg
-    :target: https://pypi.python.org/pypi/ckanext-ccca/
-    :alt: License
-
 ============
 ckanext-ccca
 ============
