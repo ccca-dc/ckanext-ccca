@@ -38,8 +38,7 @@
 
    <div data-module="ccca-dataset-visibility">
 
-  {#{% if show_organizations_selector %}#}
-    {% set existing_org = data.owner_org or data.group_id %}
+   {% set existing_org = data.owner_org or data.group_id %}
     <div class="control-group">
       <label for="field-organizations" class="control-label">{{ _('organizationName') }}</label>
       <div class="controls">
@@ -55,8 +54,6 @@
         </select>
       </div>
     </div>
-    
-  {#{% endif %}#}
 {% endblock %}
 
 {% block package_metadata_fields_visibility %}
