@@ -38,7 +38,10 @@ parse_params = logic.parse_params
 log = logging.getLogger(__name__)
 
 class PackageContributeOverride(p.SingletonPlugin, PackageController):
-    
+    ''' Package Controller
+    Extended from ngds/ckanext-metadata project
+    https://github.com/ngds/ckanext-metadata/blob/master/ckanext/metadata/controllers/package_override.py 
+    '''    
     def new_metadata(self, id, data=None, errors=None, error_summary=None, template=None):
         #package_type = self._get_package_type(id)
         save_action = request.params.get('save')

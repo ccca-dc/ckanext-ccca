@@ -1,5 +1,4 @@
-/* Image Upload
- * 
+/* Extends upload functionality by import from a local directory.
  */ 
 
 this.ckan.module('ccca-image-upload', function($, _) {

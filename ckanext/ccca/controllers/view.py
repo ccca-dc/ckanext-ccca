@@ -9,7 +9,8 @@ class ViewController(base.BaseController):
     """
     Controller object for rendering an ISO 19139 XML representation of a CKAN
     package.
-    @param BaseController: Vanilla CKAN object for extending controllers
+    Extended from ngds/ckanext-datastorecsw
+    https://github.com/ngds/ckanext-datastorecsw/blob/master/ckanext/csw/controllers/view.py
     """
     def show_iso_19139(self, id):
         """

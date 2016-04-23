@@ -3,6 +3,15 @@
 {% block package_basic_fields_title %}
 {% endblock %}
 
+{% block package_basic_fields_url %}
+  {% set prefix = h.url_for(controller='package', action='read', id='') %}
+  {% set domain = h.url_for(controller='package', action='read', id='', qualified=true) %}
+  {% set domain = domain|replace("http://", "")|replace("https://", "") %}
+  {% set attrs = {'data-module': 'slug-preview-slug', 'data-module-prefix': domain, 'data-module-placeholder': '<dataset>'} %}
+  
+  {{ form.prepend('name', id='field-name', label=_('Resource locator'), prepend=prefix, placeholder=_('eg. my-dataset'), value=data.name, error=errors.name, attrs=attrs, is_required=true) }}
+{% endblock %}
+
 {% block package_basic_fields_custom %}
 {% endblock %}
 
@@ -27,18 +36,18 @@
 {% endblock %}
 
 {% block package_basic_fields_description %}
-  {{ form.markdown('notes', id='field-notes', label=_('Abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
+  {{ form.markdown('notes', id='field-notes', label=_('Resource abstract'), placeholder=_('eg. Some useful notes about the data'), value=data.notes, error=errors.notes) }}
 {% endblock %}
 
 {% block package_basic_fields_tags %}
   {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/tag/autocomplete?incomplete=?'} %}
-  {{ form.input('tag_string', id='field-tags', label=_('Tags'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
+  {{ form.input('tag_string', id='field-tags', label=_('Keyword value'), placeholder=_('eg. economy, mental health, government'), value=data.tag_string, error=errors.tags, classes=['control-full'], attrs=tag_attrs) }}
 {% endblock %}
 
 {% block package_basic_fields_license %}
 <div class="control-group">
   {% set error = errors.license_id %}
-  <label class="control-label" for="field-license">{{ _("License") }}</label>
+  <label class="control-label" for="field-license">{{ _("Limitations on public access (use constraints)") }}</label>
   <div class="controls">
     <select id="field-license" name="license_id" data-module="autocomplete">
       {% set existing_license_id = data.get('license_id') %}
@@ -59,7 +68,7 @@
 {% endblock %}
 
 {% block package_metadata_fields_version %}
-    {{ form.input('version', label=_('Standard Version'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
+    {{ form.input('version', label=_('Version (CKAN element)'), id='field-version', placeholder=_('1.0'), value=data.version, error=errors.version, classes=['control-medium']) }}
   {% endblock %}
 
   {% block package_metadata_author %}
@@ -69,9 +78,9 @@
   {% endblock %}
 
   {% block package_metadata_fields_maintainer %}
-    {{ form.input('maintainer', label=_('Contact'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
+    {{ form.input('maintainer', label=_('Metadata point of contact'), id='field-maintainer', placeholder=_('Joe Bloggs'), value=data.maintainer, error=errors.maintainer, classes=['control-medium']) }}
 
-    {{ form.input('maintainer_email', label=_('Contact Email'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
+    {{ form.input('maintainer_email', label=_('Contact e-mail'), id='field-maintainer-email', placeholder=_('joe@example.com'), value=data.maintainer_email, error=errors.maintainer_email, classes=['control-medium']) }}
   {% endblock %}
 
     <div class="control-group">

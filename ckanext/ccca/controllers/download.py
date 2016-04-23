@@ -8,7 +8,6 @@ NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
 import logic.action as action
-#import helpers as h
 
 import requests
 
@@ -21,12 +20,11 @@ import logging
 import json
 
 log = logging.getLogger(__name__)
-'''
 
-@author: Christoph Kinkeldey
-'''
 class DownloadController(base.BaseController):    
-    
+    """ Download of resources
+    Extended by check if resources are set to publicly available.
+    """    
     def resource_download_ext(self, id, resource_id, filename=None):
         """
         Provides a direct download by either redirecting the user to the url 

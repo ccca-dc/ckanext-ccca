@@ -19,11 +19,9 @@ c = base.c
 request = base.request
 log = logging.getLogger(__name__)
 
-'''
-@author: Christoph Kinkeldey
-'''
 class ExportController(base.BaseController):
-    
+    ''' Export metadata from CKAN to a local directory.
+    '''    
     def export_metadata_xml(self):
         user = c.userobj
         context = {'model': model, 'session': model.Session,

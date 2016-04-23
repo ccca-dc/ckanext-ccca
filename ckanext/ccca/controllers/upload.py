@@ -17,12 +17,10 @@ c = base.c
 request = base.request
 log = logging.getLogger(__name__)
 
-'''
 
-@author: Christoph Kinkeldey
-'''
 class UploadController(base.BaseController):
-    
+    ''' Controller for extended upload functionality.
+    '''    
     def show_filelist(self):
         user = c.userobj
         data = base.request.params
@@ -45,7 +43,6 @@ class UploadController(base.BaseController):
         url = mypath + reqData['filename']
         log.debug('upload file url: '+ url)
         log.debug('upload package id: '+ reqData['package_id'])
-        #response = requests.post(ckan_url+'/api/action/resource_create',
         upload = cgi.FieldStorage()
         upload.filename = filename
         upload.filepath = mypath

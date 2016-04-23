@@ -1,3 +1,6 @@
+/* 
+ * 
+ */
 'use strict';
 
 ckan.module('ccca-md-toggle-profiles', function ($, _) {
@@ -5,6 +8,7 @@ ckan.module('ccca-md-toggle-profiles', function ($, _) {
     initialize: function () {
       $.proxyAll(this, /_on/);
       this.el.on('change', this._onChange);
+      this._onChange();
     },
     _onChange: function () {
     	var selected = $("#field-md_profile option:selected").val();
