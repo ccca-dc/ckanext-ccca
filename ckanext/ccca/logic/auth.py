@@ -28,17 +28,17 @@ def resource_show_ext(context, data_dict):
     if not authorized:
         return {'success': False, 'msg': _('User %s not authorized to read resource %s') % (user, resource.id)}
     
-    #if 'res_access' in data_dict:
-    #    res_access = data_dict['res_access']
-    #else:
-    #    res_access = True
+    if 'res_access' in data_dict:
+        res_access = data_dict['res_access']
+    else:
+        res_access = True
         
-    #if userobj == None: 
-    #    mydataset = False
-    #else:
-    #    mydataset = (userobj.id == pkg.creator_user_id)
+    if userobj == None: 
+        mydataset = False
+    else:
+        mydataset = (userobj.id == pkg.creator_user_id)
         
-    #if not (mydataset or res_access):
-    #    return {'success': False, 'msg': _('User %s not authorized to read resource (access not public) %s') % (user, resource.id)}
+    if not (mydataset or res_access):
+        return {'success': False, 'msg': _('User %s not authorized to read resource (access not public) %s') % (user, resource.id)}
     
     return {'success': True}
