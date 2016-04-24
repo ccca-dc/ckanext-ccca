@@ -416,11 +416,12 @@ class PackageContributeOverride(p.SingletonPlugin, PackageController):
 
         # check if resources in package are publicly accessible 
         pkg_dict = get_action('package_show')(context, {'id': id})
-        if 'res_access' in pkg_dict and pkg_dict['res_access']==False:
-            abort(401, _('Unauthorized to read resource %s (resource access not public)') % id)
+        res_access = True;
+        if 'res_access' in pkg_dict:
+            res_access = pkg_dict['res_access']
             
         try:
-            rsc = get_action('resource_show')(context, {'id': resource_id})
+            rsc = get_action('resource_show')(context, {'id': resource_id, 'res_access': res_access})
             get_action('package_show')(context, {'id': id})
         except NotFound:
             abort(404, _('Resource not found'))

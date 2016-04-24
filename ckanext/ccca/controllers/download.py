@@ -39,7 +39,7 @@ class DownloadController(base.BaseController):
         res_access = c.package.extras.res_access
         mydataset = (c.userobj.id == c.package.creator_user_id)
 
-        if not (res_access or mydataset):
+        if not (mydataset or res_access):
             abort(404, _('The resource is not accessible.'))
         
         try:
