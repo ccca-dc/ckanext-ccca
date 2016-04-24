@@ -133,11 +133,10 @@
    <div class="control-group">
     <label for="field-res_access" class="control-label">{{ _('Limitations on public access') }}</label>
     <div class="controls">
-      <select id="field-res_access" name="res_access">
-        {% for option in [('True', _('Public')), ('False', _('Not public'))] %}
-        <option value="{{ option[0] }}" {% if option[0] == data.res_access|trim %}selected="selected"{% endif %}>{{ option[1] }}</option>
-        {% endfor %}
-      </select>
+          <select id="field-res_access" name="res_access">
+            <option value="True" {% if data.res_access  %}selected="selected"{% endif %}>Public</option>
+            <option value="False" {% if not data.res_access %}selected="selected"{% endif %}>Not Public</option>
+          </select>
       {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
 	    <span class="info-block info-inline">
 	      <i class="icon-info-sign"></i>

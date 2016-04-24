@@ -85,8 +85,8 @@
         <label for="field-res_access" class="control-label">{{ _('resource access') }}</label>
         <div class="controls">
           <select id="field-res_access" name="res_access">
-            <option value="True" {% if not data.res_access or data.res_access == true |trim %}selected="selected"{% endif %}>Public</option>
-            <option value="False" {% if data.res_access == false|trim %}selected="selected"{% endif %}>Not Public</option>
+            <option value="True" {% if data.res_access  %}selected="selected"{% endif %}>Public</option>
+            <option value="False" {% if not data.res_access %}selected="selected"{% endif %}>Not Public</option>
           </select>
           {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
 		    <span class="info-block info-inline">
