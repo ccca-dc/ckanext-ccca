@@ -1,0 +1,18 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='terms' %}</li>
+{% endblock %}
+
+{% block about_content %}
+    <h1 class="page-heading">{{ title }}</h1>
+
+
+<p>The CCCA Data Portal is built with CKAN, an open-source data-publishing platform.<br>
+The CCCA Data Centre has extended and customized CKAN according to its needs.<br>
+The code is licensed under the terms of the GNU Affero, and the extensions are going to be published on <a href="https://github.com/ccca-dc">github</a>.</p>
+
+{% endblock %}

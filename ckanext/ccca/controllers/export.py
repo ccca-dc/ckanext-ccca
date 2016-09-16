@@ -50,4 +50,3 @@ class ExportController(base.BaseController):
             except:
                 log.debug('Could not export package ' , str(p) , ": " , sys.exc_info()[0])
         return "<html><body>CCCA CKAN metadata exporter<br><br>Exported ",count," files:<br>",files,"</body></html>"
-        

@@ -1,0 +1,40 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='citation' %}</li>
+{% endblock %}
+
+{% block about_content %}
+
+    {% set api_link = h.link_to(_('API'), h.url_for(controller='api', action='get_api', ver=3)) %}
+    {% set api_doc_link = h.api_doc_link() %}
+
+    <h1 class="page-heading">{{ title }}</h1>
+
+      <h2>Citation</h2>
+      <p>If you use data downloaded from the CCCA Data Portal, we strongly encourage
+      citing this work as any other scientific research, with respect to resource
+      authors and people in charge, even if the data license does not specifically
+      demand you to do so.</p>
+      <p>Resource packages and data stored within this data portal in general are the
+      result of hard work and dedication of the authors, collaborators and the CCCA
+      Data Centre staff. Some of these resources are individual long-term work of
+      researchers, while some belong to important institutions. With citation of used
+      data, we are able to keep track of the significance of this research and work,
+      to estimate the importance of our role in the process. Furthermore, you
+      encourage other community members to share their data without fear of later harm
+      on their intellectual property rights.</p>
+
+      <h2>Identification</h2>
+      <p>Each resource uploaded to the data portal is assigned with a unique Uniform
+      Resource Locator, a type of Uniform Resource Identifier (URI), as a reference to
+      a web resource location on a computer network along with a mechanism for
+      retrieval of this resource. For upcoming development, Persistent Identifiers
+      (PID) will be implemented.</p>
+      <p>Please use the appropriate URL in all citations.</p>
+
+
+{% endblock %}

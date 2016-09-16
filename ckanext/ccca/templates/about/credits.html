@@ -1,0 +1,39 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='credits' %}</li>
+{% endblock %}
+
+{% block about_content %}
+    <h1 class="page-heading">{{ title }}</h1>
+
+<p>The CCCA Data Portal has been developed by the Climate Change Centre Austria
+Data Centre, with the help and support of the CCCA Service Centre and
+Administration Office, and the Zentralanstalt für Meteorologie und Geodynamik
+(ZAMG).</p>
+<p>We would like to give credits and thanks for feedback and cooperation to the
+whole climate change community, with hopes that the implementation and use of
+this data portal will strengthen our collaboration and provide us with comments,
+ideas and suggestions for maintenance and further development.</p>
+<p><strong>Project members</strong>:</p>
+<ol>
+<li>Chris Schubert - Director, CCCA Data Centre</li>
+<li>Georg Seyerl - System administrator, CCCA Data Centre</li>
+</ol>
+<p><strong>Project support</strong>:</p>
+<ol>
+<li>Christoph Kinkeldey, February-April, 2016 - Technical support and development</li>
+<li>Jelena Markovic, March-August 2016 - Bachelor of Geoinformatics, Erasmus</li>
+</ol>
+
+<h2>Open source data platform</h2>
+<p>The CCCA Data Portal is built with CKAN, an open-source data-publishing
+platform.<br> The CCCA Data Centre has extended and customized CKAN according to
+its needs.<br> The code is licensed under the terms of the GNU Affero, and the
+extensions are going to be published
+on <a href="https://github.com/ccca-dc">github</a>.</p>
+
+{% endblock %}

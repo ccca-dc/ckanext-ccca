@@ -31,8 +31,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       var options = this.options;
       var host_url = options.host_url.replace("http://", "");
       var username = options.username;
-      //console.log("pkg_id: " + options.pkg_id);
-      
+
       // firstly setup the fields
       var field_upload = 'input[name="' + options.field_upload + '"]';
       var field_url = 'input[name="' + options.field_url + '"]';
@@ -54,32 +53,32 @@ this.ckan.module('ccca-image-upload', function($, _) {
       // Adds the hidden clear input to the form
       this.field_clear = $('<input type="hidden" name="clear_upload">')
         .appendTo(this.el);
-      
-      this.field_clear = $('<input id="input_sftp_apikey" type="hidden" name="input_sftp_apikey" value="'+this.options.apikey+'">')
-      .appendTo(this.el);
-      
+
+      // this.field_clear = $('<input id="input_sftp_apikey" type="hidden" name="input_sftp_apikey" value="'+this.options.apikey+'">')
+      // .appendTo(this.el);
+
       // Adds the hidden text field for sftp upload
       this.div_sftp = $('<div id="div_sftp" style="display: none;" name="sftp_upload">')
         .appendTo(this.el);
 
       // Adds an info string for SFTP upload
-      var sftp_link = username+'@'+host_url;
+      var sftp_link = username+'@'+'inp.ccca.ac.at';
       this.info_sftp = $('<p>All files you upload to ​<a id="a_sftplink" value='+sftp_link+' onclick="_copyLinkToClipboard()">'+sftp_link+'</a>'
     		  +' will appear here.<br>'
     		  +'Please select a file to import:</p>')
       .appendTo(this.div_sftp);
-      
+
       // File selection
       this.select_sftp = $('<select id="select_sftp" size="5" onchange="$(&quot;#button_sftp&quot;).removeAttr(&quot;disabled&quot;);">')
-      .append('<option id=0" name="file" class="filebutton" value="">' 
+      .append('<option id=0" name="file" class="filebutton" value="">'
 	    				+ this.i18n('no_files') +'</option>')
       .appendTo(this.div_sftp);
-      
+
       // Button to refresh the file list from sftp import dir
       this.button_sftp_refresh = $('<a href="javascript:;" id="button_sftp_refresh" apikey="'+ options.apikey + '" class="btn">Refresh</a>')
       .on('click', this._refreshSFTPFilelist)
       .appendTo(this.div_sftp);
-      
+
       // Button to cancel sftp import
       this.button_sftp_cancel = $('<a href="javascript:;" id="button_sftp_cancel" class="btn">Cancel</a>')
       .on('click', function() {$('#div_sftp').animate( { "opacity": "hide", top:"100"} , 500 );})
@@ -89,7 +88,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.button_sftp = $('<a href="javascript:;" id="button_sftp" class="btn btn-primary" disabled>Import</a>')
       .on('click', this._onInputChangeSFTP)
       .appendTo(this.div_sftp);
-      
+
       // Button to set the field to be a URL
       this.button_url = $('<a href="javascript:;" class="btn"><i class="icon-globe"></i> '+this.i18n('url')+'</a>')
         .prop('title', this.i18n('url_tooltip'))
@@ -102,7 +101,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       .prop('title', 'Upload file imported from SFTP directory')
       .on('click', this._onSFTP)
       .insertAfter(this.input);
-      
+
       // Button to attach local file to the form
       this.button_upload = $('<a href="javascript:;" class="btn"><i class="icon-cloud-upload"></i>'+this.i18n('upload')+'</a>')
       .insertAfter(this.input);
@@ -119,7 +118,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       // set double click for file list
       $('#select_sftp')
         .on('dblclick', this._onInputChangeSFTP);
-      
+
       // Setup the file input
       this.input
         .on('mouseover', this._onInputMouseOver)
@@ -148,16 +147,17 @@ this.ckan.module('ccca-image-upload', function($, _) {
         this._showOnlyButtons();
       }
     },
-    
+
    _onSFTP: function() {
 	   if (this.div_sftp.css('display')=='none') {
-		   this._refreshSFTPFilelist();
+		     this._refreshSFTPFilelist();
 	   }
 	   this.div_sftp.animate( { "opacity": "show", top:"100"} , 500 );
    },
-   
+
    _refreshSFTPFilelist: function() {
-	   apikey = $("#input_sftp_apikey").val();
+     var apikey = this.options.apikey
+	   console.log('apikey: ' + apikey);
 	   console.log('_refreshSFTPFilelist()');
 	   $.ajax({
 	    	  url: "/sftp_filelist?apikey=" + apikey,
@@ -174,7 +174,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    		for (var i=0; i < filelist.length; i++) {
 	    			var id = 'file'+i;
 	    			$('#select_sftp').append('<option id="'+id
-	    				+'" name="file" class="filebutton" value="'+ filelist[i] 
+	    				+'" name="file" class="filebutton" value="'+ filelist[i]
 	    				+'">' +filelist[i]+ '</option>');
 	   	        }
 	    		$('#button_sftp').attr('disabled', true);
@@ -182,7 +182,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    		console.log('file list request failed: ' + xhr.responseText);
 	    	});
    },
-   
+
     /* Event listener for when someone sets the field to URL mode
      *
      * Returns nothing.
@@ -193,7 +193,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       if (this.options.is_upload) {
         this.field_clear.val('true');
       }
-      
+
     },
 
     /* Event listener for resetting the field back to the blank state
@@ -218,7 +218,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
       this.field_clear.val('');
       this._showOnlyFieldUrl();
     },
-    
+
     _onInputChangeSFTP: function() {
     	var selected = $("#select_sftp option:selected");
     	var obj = this;
@@ -229,7 +229,7 @@ this.ckan.module('ccca-image-upload', function($, _) {
     		var paramString="?apikey=" + this.options.apikey
     		+ "&package_id=" + this.options.pkg_id
     		+ "&filename=" + selected[0].value;
-    		
+
     		 $.ajax({
     			 method: "GET",
     			 headers: {},
@@ -250,9 +250,9 @@ this.ckan.module('ccca-image-upload', function($, _) {
 	    		console.log('file import request failed: ' + thrownError);
 	    	});
     	}
-    	
+
     },
-    
+
     /* Show only the buttons, hiding all others
      *
      * Returns nothing.

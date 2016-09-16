@@ -1,0 +1,18 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='prototype' %}</li>
+{% endblock %}
+
+{% block about_content %}
+    <h1 class="page-heading">{{ title }}</h1>
+
+<p>This data portal provides an overview of the climate change community research and available data. The data portal is currently running in a prototype version. You may send your registration request at any time and start using the data portal and its functionalities.</p>
+<p>Suggestions, requests, feedback, or ideas may be submitted through our <a href="https://sandboxdc.ccca.ac.at/contact">contact form</a>. We
+thank you for your understanding and cooperation and hope that, through joint
+effort, this data portal will be developed to its full capacity.</p>
+
+{% endblock %}

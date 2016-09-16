@@ -1,9 +1,13 @@
 import json
+import ckanext.ccca.helpers
 from ckan import model
 from common import plugins as p
 from common import logic
 from common import app_globals
 from ckanext.ccca.logic.action import metadata
+from ckan.lib.helpers import link_to
+from ckan.common import _
+
 
 def md_get_vanilla_ckan_version():
     try:
@@ -12,6 +16,7 @@ def md_get_vanilla_ckan_version():
     except:
         version = None
     return version
+
 
 def make_author(data):
     individual = data.get('individual', None)
@@ -31,12 +36,14 @@ def make_author(data):
         'Email': data.get('contactEmail', None),
     }
 
+
 def check_harvest_info(data):
     original_id = data.get('originalFileIdentifier', None)
     if original_id:
         return True
     else:
         return False
+
 
 def check_author(data):
     name = data.get('Name', None)
@@ -54,6 +61,7 @@ def check_author(data):
     else:
         return True
 
+
 def check_geo_ext(data):
     north = data.get('northBoundLatitude', None)
     south = data.get('southBoundLatitude', None)
@@ -65,6 +73,7 @@ def check_geo_ext(data):
         return False
     else:
         return True
+
 
 def md_package_extras_processor(extras):
     try:
@@ -130,7 +139,7 @@ def md_package_extras_processor(extras):
 
         # geographic extent
         geo_ext = md.get('resourceDescription').get('geographicExtent', None)
-        
+
         if geo_ext != None and geo_ext[0]:
             has_geo_ext = check_geo_ext(geo_ext[0])
             if has_geo_ext:
@@ -144,6 +153,7 @@ def md_package_extras_processor(extras):
             return None
         else:
             return details_obj
+
 
 def md_resource_extras_processer(res):
     md_res = res.get('md_resource', None)
@@ -166,8 +176,9 @@ def md_resource_extras_processer(res):
             'resource': res_obj,
         }
 
+
 def usgin_check_package_for_content_model(pkg_id):
-    context= {'model': model, 'user': ''}
+    context = {'model': model, 'user': ''}
     search = logic.action.get.package_show(context, {'id': pkg_id})
     try:
         extras = search.get('extras')
@@ -186,9 +197,18 @@ def usgin_check_package_for_content_model(pkg_id):
         return {'success': True, 'data': version}
     except:
         return {'success': False, 'data': ''}
-        
-        
+
+
 def get_prospector_url(res):
     from ckanext.ccca.logic.action import metadata
-    context= {'model': model, 'user': ''}    
+    context = {'model': model, 'user': ''}
     return logic.get_action('geothermal_prospector_url')(context, res)
+
+
+def api_doc_link():
+    """
+    Link to API documentation
+    @return:
+    """
+    attr = {'class': 'external', 'target': '_blank'}
+    return link_to(_('API guide'), 'http://docs.ckan.org/en/latest/api/index.html', **attr)

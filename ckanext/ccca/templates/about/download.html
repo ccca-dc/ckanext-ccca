@@ -1,0 +1,30 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='download' %}</li>
+{% endblock %}
+
+{% block about_content %}
+
+    {% set api_link = h.link_to(h.url_for(controller='api', action='get_api', ver=3, qualified=True), h.url_for(controller='api', action='get_api', ver=3), target='_blank') %}
+    {% set api_doc_link = h.api_doc_link() %}
+
+    <h1 class="page-heading">{{ title }}</h1>
+
+    <p>Datasets can be downloaded via the download button on the dataset page.</p>
+
+    <h4>Application Programming Interface (API)</h4>
+    <p>If you want to use data from the portal in your own software or applications, you can access it using the API.  You do not need a key to use the API.</p>
+
+    <p>The base URL for the API is:  {{ api_link }} </p>
+
+    <p>The API provides a RESTful interface, returning data in JSON format.</p>
+    <p>Please see the {{ api_doc_link }} for full documentation on API methods.</p>
+
+    <h4>API limits</h4>
+    <p>Please use common sense when using the API, and cache results wherever possible.  We reserve the right to suspend API access if you continuously make multiple calls per second.</p>
+
+{% endblock %}

@@ -59,6 +59,9 @@
           {% if res.can_be_previewed %}
             <i class="icon-download"></i>
             {{ _('Download') }}
+          {% elif res.url_type == 'sftp' %}
+            <i class="icon-download"></i>
+            {{ _('Create Symlink') }}
           {% else %}
             <i class="icon-external-link"></i>
             {{ _('Go to resource') }}

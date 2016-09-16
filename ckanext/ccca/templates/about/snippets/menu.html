@@ -1,0 +1,27 @@
+{#
+Displays the about menu
+#}
+
+<section class="module module-narrow">
+  <div class="module context-info">
+
+
+      {% block about_menu %}
+        <nav class="section navigation">
+          <ul class="nav nav-aside" id="about-menu">
+              {{ h.build_nav_main(
+                ('about', _('About')),
+                ('about_prototype', _('Prototype Declaration')),
+                ('about_citation', _('Citation and Identification')),
+                ('about_download', _('Download and API')),
+                ('about_credits', _('Acknowledgments')),
+              ) }}
+            </ul>
+         </nav>
+        {% endblock %}
+
+
+  </div>
+</section>
+
+
