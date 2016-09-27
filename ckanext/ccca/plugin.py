@@ -58,7 +58,6 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.view:ViewController',
                     action='show_iso_19139')
 
-        map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_download')
         #map.connect('resource_views', '/dataset/{id}/resource/{resource_id}/view/{view_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_datapreview')
 
 
