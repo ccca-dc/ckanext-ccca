@@ -87,7 +87,7 @@ class UserController(p.toolkit.BaseController):
             captcha.check_recaptcha(request)
 
             send_from = 'test@sandboxdc.ccca.ac.at'
-            send_to = ['georg.seyerl@ccca.ac.at']
+            send_to = ['datenzentrum@ccca.ac.at']
             subject = 'New user request CKAN: ' + data_dict['name']
             text = '''
             Attached you will find the ldif import file. \n

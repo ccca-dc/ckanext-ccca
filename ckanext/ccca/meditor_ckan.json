@@ -1,0 +1,688 @@
+{
+  "scheming_version": "1",
+  "dataset_type": "dataset",
+  "about": "A reimplementation of the default CKAN dataset schema - CCCA Metadata Editor",
+  "about_url": "https://github.com/ccca-dc/ckanext-ccca",
+  "dataset_fields": [
+    {
+      "field_name": "resTitle",
+      "label": "Title",
+      "required": "true",
+      "preset": "title",
+      "form_snippet": "large_text.html",
+      "help_text": "A title for your dataset.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "mdFileID",
+      "label": "File Identifier",
+      "form_snippet": "text.html",
+      "help_text": "A unique identifier for this metadata file.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "mdLang",
+      "label": "Metadata Language",
+      "form_snippet": "text.html",
+      "help_text": "Language used for documenting metadata.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "mdHrLv",
+      "label": "Hierarchy Level",
+      "preset": "select",
+      "form_snippet": "select.html",
+      "select_size": 2,
+      "display_snippet": "multiple_choice.html",
+      "help_text": "Scope to which the metadata applies.",
+      "help_inline": "true",
+      "choices": [
+        {"value": "005",
+         "label": "dataset"},
+        {"value": "006",
+         "label": "series"}
+      ]
+    },
+    {
+      "field_name": "dataSetURI",
+      "label": "Dataset URI",
+      "form_snippet": "text.html",
+      "help_text": "Uniformed Resource Identifier (URI) of the resource to which the metadata applies.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "OnlineRes",
+      "label": "Online Resource",
+      "preset": "resource_url_upload",
+      "form_snippet": "slug.html",
+      "display_snippet": "link.html",
+      "help_text": "Information about on-line sources from which the dataset, specification, or community profile name and extended metadata elements can be obtained.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "refSystem",
+      "label": "Reference System",
+      "form_snippet": "text.html",
+      "help_text": "Information about the reference system. Please use one of the EPSG codes listed at http://spatialreference.org/.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "statement",
+      "label": "Statement",
+      "required": "true",
+      "form_snippet": "markdown.html",
+      "help_text": "General explanation of the data producer's knowledge abount the lineage of a dataset.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "rpIndName",
+      "label": "Individual Name",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "help_text": "Name of the responsible organization.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "rpOrgName",
+      "label": "Organisation Name",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "help_text": "Name of the responsible organization.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "rpCntInfo",
+      "label": "Contact Information",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "text.html",
+      "display_snippet": "text.html",
+      "help_text": "Address of the responsible party.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "role",
+      "label": "Role",
+      "required": "true",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "select.html",
+      "select_size": "1",
+      "display_snippet": "select.html",
+      "sorted_choices": "true",
+      "choices": [
+        {"value": "author",
+         "label": "Author"},
+        {"value": "custodian",
+         "label": "Custodian"},
+        {"value": "distributor",
+         "label": "Distributor"},
+        {"value": "originator",
+         "label": "Originator"},
+        {"value": "owner",
+         "label": "Owner"},
+        {"value": "pointOfContact",
+         "label": "Point of Contact"},
+        {"value": "principalInvestigator",
+         "label": "Principal Investigator"},
+        {"value": "processor",
+         "label": "Processor"},
+        {"value": "publisher",
+         "label": "Publisher"},
+        {"value": "resourceProvider",
+         "label": "Resource Provider"},
+        {"value": "user",
+         "label": "User"}
+      ]
+    },
+    {
+      "field_name": "electronicMailAddress",
+      "label": "E-Mail Address",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "display_snippet": "email.html",
+      "help_text": "Address of the electronic mailbox of the responsible organization or individual.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "cntOnlineRes",
+      "label": "Contact Online Resource",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "slug.html",
+      "display_snippet": "link.html",
+      "help_text": "On-line information that can be used to contact the individual or organization.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "idAbs",
+      "label": "Abstract",
+      "required": "true",
+      "form_snippet": "markdown.html",
+      "help_text": "Brief narrative summary of the content of the dataset(s).",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "idStatus",
+      "label": "Status",
+      "preset": "select",
+      "form_snippet": "multiple_select.html",
+      "select_size": 3,
+      "display_snippet": "multiple_choice.html",
+      "help_text": "Status of the resource(s).",
+      "help_inline": "true",
+      "choices": [
+        {"value": "001",
+         "label": "completed"
+        },
+        {"value": "002",
+         "label": "historical archive"
+        },
+        {"value": "003",
+         "label": "obsolete"
+        },
+        {"value": "004",
+         "label": "ongoing"
+        },
+        {"value": "005",
+         "label": "planned"
+        },
+        {"value": "006",
+         "label": "required"
+        },
+        {"value": "007",
+         "label": "under development"
+        }
+      ]
+    },
+    {
+      "field_name": "dataLang",
+      "label": "Dataset Language",
+      "required": "true",
+      "form_snippet": "text.html",
+      "display_snippet": "text.html",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "help_text": "Language(s) used within the dataset.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "tpCat",
+      "label": "Topic Category",
+      "required": "true",
+      "preset": "select",
+      "form_snippet": "multiple_select.html",
+      "select_size": 3,
+      "display_snippet": "multiple_choice",
+      "help_text": "Main theme(s) of the dataset.",
+      "help_inline": "true",
+      "choices": [
+        {"value": "001",
+         "label": "farming"},
+        {"value": "002",
+         "label": "biota"},
+        {"value": "003",
+         "label": "boundaries"},
+        {"value": "004",
+         "label": "climatology, meteorology, atmosphere"},
+        {"value": "005",
+         "label": "economy"},
+        {"value": "006",
+         "label": "elevation"},
+         {"value": "007",
+          "label": "environment"},
+         {"value": "008",
+          "label": "geoscientific information"},
+         {"value": "009",
+          "label": "health"},
+         {"value": "010",
+          "label": "imagery, basemaps, earth cover"},
+         {"value": "011",
+          "label": "intelligence military"},
+         {"value": "012",
+          "label": "inland waters"},
+         {"value": "013",
+          "label": "location"},
+         {"value": "014",
+          "label": "oceans"},
+         {"value": "015",
+          "label": "planning cadastre"},
+         {"value": "016",
+          "label": "society"},
+         {"value": "017",
+          "label": "structure"},
+         {"value": "018",
+          "label": "transportation"},
+         {"value": "019",
+          "label": "utilities communication"}
+      ]
+    },
+        {
+          "field_name": "formatName",
+          "label": "Format Name",
+          "required": "true",
+          "preset": "resource_format_autocomplete",
+          "form_snippet": "text.html",
+          "help_text": "Name of the data transfer format(s) for the dataset.",
+          "help_inline": "true"
+        },
+        {
+          "field_name": "formatVer",
+          "label": "Format Version",
+          "required": "true",
+          "form_snippet": "text.html",
+          "help_text": "Version of the format(date, number, etc.).",
+          "help_inline": "true"
+        },
+            {
+              "field_name": "keyword",
+              "label": "Keyword",
+              "required": "true",
+              "preset": "repeating_text",
+              "form_blanks": "3",
+              "form_snippet": "text.html",
+              "help_text": "Commonly used word(s) or formalised word(s) or phrase(s) used to describe the subject.",
+              "help_inline": "true"
+            },
+            {
+              "field_name": "keyTyp",
+              "label": "Keyword Type",
+              "preset": "repeating_text",
+              "form_blanks": "3",
+              "form_snippet": "select.html",
+              "select_size": 1,
+              "display_snippet": "select.html",
+              "help_text": "Subject matter used to group similar keywords.",
+              "help_inline": "true",
+              "choices": [
+                { "value": "001",
+                  "label": "discipline"
+                },
+                { "value": "002",
+                  "label": "place"
+                },
+                { "value": "003",
+                  "label": "stratum"
+                },
+                { "value": "004",
+                  "label": "temporal"
+                },
+                { "value": "005",
+                  "label": "theme"
+                }
+              ]
+            },
+            {
+              "field_name": "thesaName",
+              "label": "Thesaurus Name",
+              "preset": "repeating_text",
+              "form_blanks": "3",
+              "form_snippet": "text.html",
+              "help_text": "Name of the formaly registered thesaurus or a similar authoritative source of keywords.",
+              "help_inline": "true"
+            },
+            {
+              "field_name": "resTitle",
+              "label": "Title",
+              "required": "true",
+              "preset": "repeating_text",
+              "form_blanks": "3",
+              "form_snippet": "large_text.html",
+              "help_text": "Name by which the cited resource is known.",
+              "help_inline": "true"
+            },
+            {
+              "field_name": "refDate",
+              "label": "Reference Date",
+              "required": "true",
+              "form_snippet": "date.html",
+              "preset": "repeating_text",
+              "form_blanks": 3,
+              "help_text": "Reference date for the cited resource.",
+              "help_inline": "true"
+            },
+            {
+              "field_name": "refDateType",
+              "label": "Date Type",
+              "required": "true",
+              "preset": "repeating_text",
+              "form_blanks": 3,
+              "form_snippet": "select.html",
+              "select_size": "1",
+              "display_snippet": "select.html",
+              "help_text": "Datetype for the cited resource reference date.",
+              "help_inline": "true",
+              "choices": [
+                {"value": "001",
+                 "label": "creation"},
+                {"value": "002",
+                 "label": "publication"},
+                {"value": "003",
+                 "label": "revision"}
+              ]
+            },
+{
+    "field_name": "spatRpType",
+    "label": "Spatial Representation Type",
+    "preset": "select",
+    "select_size": 3,
+    "form_snippet": "multiple_select.html",
+    "display_snippet": "multiple_choice.html",
+    "help_text": "Main theme(s) of the dataset.",
+    "help_inline": "true",
+    "choices": [
+      {"value": "001",
+       "label": "vector"},
+      {"value": "002",
+       "label": "grid"},
+      {"value": "003",
+       "label": "text table"},
+      {"value": "004",
+       "label": "tin"},
+      {"value": "005",
+       "label": "stereo model"},
+      {"value": "006",
+       "label": "video"}
+    ]
+  },
+  {
+    "field_name": "equScale",
+    "label": "Equivalent Scale",
+    "form_snippet": "text.html",
+    "display_snippet": "text.html",
+    "help_text": "Level of detail expressed as the scale of a comparable hardcopy map or chart.",
+    "help_inline": "true"
+  },
+  {
+    "field_name": "scaleDist",
+    "label": "distance",
+    "form_snippet": "text.html",
+    "display_snippet": "text.html",
+    "help_text": "Ground sample distance.",
+    "help_inline": "true"
+  },
+    {
+      "field_name": "useLimit",
+      "label": "Use Limitation",
+      "preset": "select",
+      "select_size": 3,
+      "form_snippet": "license.html",
+      "display_snippet": "multiple_choice.html",
+      "help_text": "Limitation affecting the fitness for use of the resource or metadata. License definitions and additional information can be found at https://creativecommons.org/licenses/?lang=en.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "accessConsts",
+      "label": "Access Constraints",
+      "preset": "select",
+      "form_snippet": "select.html",
+      "select_size": 3,
+      "display_snippet": "multiple_choice.html",
+      "help_text": "Access constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations on obtaining the resource or metadata.",
+      "help_inline": "true",
+      "choices": [
+        {"value": "001",
+         "label": "copyright"},
+        {"value": "002",
+         "label": "patent"},
+        {"value": "003",
+         "label": "patent pending"},
+        {"value": "004",
+         "label": "trademark"},
+        {"value": "005",
+         "label": "license"},
+        {"value": "006",
+         "label": "intellectual property rights"},
+        {"value": "007",
+         "label": "restricted"},
+        {"value": "008",
+         "label": "other restrictions"}
+      ]
+    },
+    {
+      "field_name": "useConsts",
+      "label": "Use Constraints",
+      "preset": "select",
+      "form_snippet": "select.html",
+      "select_size": 3,
+      "display_snippet": "multiple_choice.html",
+      "help_text": "Constraints applied to assure the protection of privacy or intellectual property, and any special restrictions or limitations or warnings on using the resource or metadata.",
+      "help_inline": "true",
+      "choices": [
+        {"value": "001",
+         "label": "copyright"},
+        {"value": "002",
+         "label": "patent"},
+        {"value": "003",
+         "label": "patent pending"},
+        {"value": "004",
+         "label": "trademark"},
+        {"value": "005",
+         "label": "license"},
+        {"value": "006",
+         "label": "intellectual property rights"},
+        {"value": "007",
+         "label": "restricted"},
+        {"value": "008",
+         "label": "other restrictions"}
+      ]
+    },
+    {
+      "field_name": "class",
+      "label": "Classification",
+      "required": "true",
+      "preset": "select",
+      "form_snippet": "select.html",
+      "select_size": "1",
+      "display_snippet": "select.html",
+      "help_text": "Name of the handling restrictions on the resource or metadata.",
+      "help_inline": "true",
+      "choices": [
+        {"value": "001",
+         "label": "unclassified"},
+        {"value": "002",
+         "label": "restricted"},
+        {"value": "003",
+         "label": "confidential"},
+        {"value": "004",
+         "label": "secret"},
+        {"value": "005",
+         "label": "top secret"}
+      ]
+    },
+    { "field_name": "westBL",
+      "label": "West Bound Longitude",
+      "required": "true",
+      "form_snippet": "text.html",
+      "help_text": "Western-most coordinate of the limit of the resource extent, expressed in longitude in decimal degrees (positive east).",
+      "help_inline": "true"
+    },
+    { "field_name": "eastBL",
+      "label": "East Bound Longitude",
+      "required": "true",
+      "form_snippet": "text.html",
+      "help_text": "Eastern-most coordinate of the limit of the resource extent, expressed in longitude in decimal degrees (positive east).",
+      "help_inline": "true"
+    },
+    { "field_name": "southBL",
+      "label": "South Bound Latitude",
+      "required": "true",
+      "form_snippet": "text.html",
+      "help_text": "Southern-most coordinate of the limit of the resource extent, expressed in latitude in decimal degrees (positive north).",
+      "help_inline": "true"
+    },
+    { "field_name": "northBL",
+      "label": "North Bound Latitude",
+      "required": "true",
+      "form_snippet": "text.html",
+      "help_text": "Northern-most coordinate of the limit of the resource extent, expressed in latitude in decimal degrees (positive north).",
+      "help_inline": "true"
+    },
+    {"field_name": "exTemp",
+     "label": "Starting Date",
+     "required": "true",
+     "preset": "date",
+     "form_snippet": "date.html",
+     "help_text": "Starting date for the datasets temporal extent.",
+     "help_inline": "true"
+   },
+   {"field_name": "exTemp",
+    "label": "Ending Date",
+    "required": "true",
+    "preset": "date",
+    "form_snippet": "date.html",
+    "help_text": "Ending date for the datasets temporal extent.",
+    "help_inline": "true"
+  },
+  {
+    "field_name": "refDate",
+    "label": "Date of creation",
+    "preset": "datetime",
+    "form_snippet": "date.html",
+    "help_text": "Date of creation for the dataset.",
+    "help_inline": "true"
+  },
+  {
+    "field_name": "refDate",
+    "label": "Date of publication",
+    "preset": "datetime",
+    "form_snippet": "date.html",
+    "help_text": "Date of publication for the dataset.",
+    "help_inline": "true"
+  },
+    {
+    "field_name": "refDate",
+    "label": "Date of revision",
+    "preset": "datetime",
+    "form_snippet": "date.html",
+    "help_text": "Date of revision for the dataset.",
+    "help_inline": "true"
+  },
+    {
+      "field_name": "rpIndName",
+      "label": "Individual Name",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "text.html",
+      "help_text": "Name of the responsible person - surname, given name, title separated by a delimiter.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "rpOrgName",
+      "label": "Organisation Name",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "text.html",
+      "help_text": "Name of the responsible organization.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "rpCntInfo",
+      "label": "Contact Information",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "text.html",
+      "help_text": "Address of the responsible party.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "role",
+      "label": "Role",
+      "required": "true",
+      "preset": "select",
+      "form_blanks": 3,
+      "form_snippet": "select.html",
+      "select_size": "1",
+      "display_snippet": "multiple_choice.html",
+      "sorted_choices": "true",
+      "choices": [
+        {"value": "author",
+         "label": "Author"},
+        {"value": "custodian",
+         "label": "Custodian"},
+        {"value": "distributor",
+         "label": "Distributor"},
+        {"value": "originator",
+         "label": "Originator"},
+        {"value": "owner",
+         "label": "Owner"},
+        {"value": "pointOfContact",
+         "label": "Point of Contact"},
+        {"value": "principalInvestigator",
+         "label": "Principal Investigator"},
+        {"value": "processor",
+         "label": "Processor"},
+        {"value": "publisher",
+         "label": "Publisher"},
+        {"value": "resourceProvider",
+         "label": "Resource Provider"},
+        {"value": "user",
+         "label": "User"}
+      ]
+    },
+    {
+      "field_name": "electronicMailAddress",
+      "label": "E-Mail Address",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "text.html",
+      "display_snippet": "email.html",
+      "help_text": "Address of the electronic mailbox of the responsible organization or individual.",
+      "help_inline": "true"
+    },
+    {
+      "field_name": "cntOnlineRes",
+      "label": "Contact Online Resource",
+      "preset": "repeating_text",
+      "form_blanks": 3,
+      "form_snippet": "slug.html",
+      "display_snippet": "link.html",
+      "help_text": "On-line information that can be used to contact the individual or organization.",
+      "help_inline": "true"
+    }
+  ],
+  "resource_fields": [
+    {"field_name": "resTitle",
+    "label": "Title",
+    "required": "true",
+    "preset": "title",
+    "form_snippet": "large_text.html",
+    "help_text": "Name by which the resource is known.",
+    "help_inline": "true"
+  },
+  {
+    "field_name": "linkage",
+    "label": "Online Resource",
+    "preset": "resource_url_upload",
+    "form_snippet": "slug.html",
+    "display_snippet": "link.html",
+    "help_text": "Online resource from which the resource is retrievable.",
+    "help_inline": "true"
+  },
+  {
+      "field_name": "idAbs",
+      "label": "Description",
+      "required": "true",
+      "form_snippet": "markdown.html",
+      "help_text": "Brief narrative summary of the content of the resource.",
+      "help_inline": "true"
+    },
+      {
+          "field_name": "formatName",
+          "label": "Format Name",
+          "required": "true",
+          "preset": "resource_format_autocomplete",
+          "form_snippet": "text.html",
+          "help_text": "Name of the data transfer format(s) of the resource.",
+          "help_inline": "true"
+        },
+        {
+          "field_name": "formatVer",
+          "label": "Format Version",
+          "required": "true",
+          "form_snippet": "text.html",
+          "help_text": "Version of the format(date, number, etc.).",
+          "help_inline": "true"
+        }
+]
+}

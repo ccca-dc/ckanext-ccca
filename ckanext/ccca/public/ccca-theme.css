@@ -1,0 +1,53 @@
+
+/****************** Layout ******************/
+/* Pages */
+.wrapper {
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: White;
+}
+
+
+/****************** Beta label ******************/
+header.navbar-static-top.masthead::before {
+  content: url(images/beta.png);
+  float: left;
+}
+
+div.nav-collapse.collapse {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+img {
+  /* Responsive images (ensure images don't scale beyond their parents) */
+  max-width: 80%;
+}
+
+/* .alert { */
+/* 	margin-bottom:0px; */
+/* } */
+
+/* About page */
+/* .nav-aside li a i { */
+/*   display: none; */
+/* } */
+/* #datacite { */
+/*   margin: 50px 20px 0 0; */
+/* } */
+/* ol#credits { */
+/*   list-style: none; */
+/*   margin-left: 20px; */
+/* } */
+/* ol#credits li { */
+/*   margin: 5px 0; */
+/* } */
+/* .record-content table#determinations tbody tr th.name { */
+/*   width: 50%; */
+/* } */
+
+
+

@@ -3,7 +3,6 @@ import logging
 import urllib2
 import simplejson
 import os
-import usginmodels
 import shutil
 
 import ckan.lib.base as base
@@ -262,103 +261,6 @@ def get_file_path(context, data_dict):
     storage_base = config.get('ckan.storage_path', 'default')
 
     return {'path': os.path.join(storage_base, 'resources', dir_1, dir_2, file+suffix)}
-
-@logic.side_effect_free
-def usginmodels_validate_file(context, data_dict):
-
-    NewFilePath = ''
-    resourceId = data_dict.get('resource_id', None)
-    resourceName = data_dict.get('resource_name', None)
-    packageId = data_dict.get('package_id', None)
-
-    if None in [resourceId, packageId, resourceName]:
-        log.info("Missing Package ID or Resource ID")
-        return {'valid': False, 'message': '', 'log': 'Missing Package ID or Resource ID or Resource name', 'resourceId': resourceId}
-
-    pkg = get_action('package_show')(context, {'id': packageId})
-
-    md_package = get_md_package(context, pkg)
-
-    if None in [md_package]:
-        log.info("Missing md_package")
-        return {'valid': False, 'message': '', 'log': 'Missing md_package', 'resourceName': resourceName, 'resourceId': resourceId}
-
-    resourceDescription = md_package.get('resourceDescription', {})
-    uri = resourceDescription.get('usginContentModel', None)
-    version = resourceDescription.get('usginContentModelVersion', None)
-    layer = resourceDescription.get('usginContentModelLayer', None)
-
-    if None in [uri, version, layer] or 'none' in [uri.lower(), version.lower(), layer.lower()]:
-        log.info("Missing content model information (URI, Version, Layer)")
-        return {'valid': False, 'message': ['Missing content model information (URI, Version, Layer) or none given.'], 'resourceName': resourceName, 'resourceId': resourceId}
-
-    #def get_file_path(res_id):
-    #    dir_1 = res_id[0:3]
-    #    dir_2 = res_id[3:6]
-    #    file = res_id[6:]
-    #    storage_base = config.get('ckan.storage_path', 'default')
-    #    return os.path.join(storage_base, 'resources', dir_1, dir_2, file)
-
-    path = get_file_path(context, {'resourceId': resourceId, 'suffix': ''})
-    csv_file = path.get('path', None)
-
-    if csv_file:
-        log.info("Filename full path: %s " % csv_file)
-    else:
-        log.info("Cannot find the full path of the resources from %s" % resourceName)
-        return {'valid': False, 'message': '', 'log': "Cannot find the full path of the resources from %s" % resourceName, 'resourceName': resourceName, 'resourceId': resourceId}
-
-    try:
-        log.debug("Start USGIN content model validation")
-
-        # intializing variables to resove this issue:
-        # Error - <type 'exceptions.UnboundLocalError'>: local variable 'valid, messages ...' referenced before assignment
-        valid = False
-	messages = None
-	dataCorrected = None
-	long_fields = None
-	srs = None
-
-        csv = open(csv_file, 'rbU')
-        valid, messages, dataCorrected, long_fields, srs = usginmodels.validate_file(csv, version, layer, True) # True to fill default on row1
-    except:
-        log.info("the file format is not supported.")
-	return {'valid': False, 'message': ["the file format is not supported."], 'resourceName': resourceName, 'resourceId': resourceId}
-
-    #close the file
-    csv.close()
-
-    #write the correcte data into a new file
-    if (valid and messages) or (not valid):
-	#No automatic erasing content, let the user fix his file, https://github.com/REI-Systems/ckanext-metadata/issues/3
-	#Create a new file has correctedData instead
-	if dataCorrected:
-	#    try:
-	#	shutil.copy2(csv_file, csv_file+'_original')
-	#	log.debug("%s: New file copy is made %s." % (resourceName, csv_file+'_original'))
-	#    except:
-	#	log.debug("%s: Couldn't make a file copy." % resourceName)
-	    import csv
-	    try:
-		NewFilePath = csv_file+'_CorrectedData'
-		with open(NewFilePath, "wb") as f:
-			writer = csv.writer(f)
-			writer.writerows(dataCorrected)
-		log.debug("%s: The new corrected data file has been created %s" % (resourceName, NewFilePath))
-            except:
-            	log.debug("%s: Couldn't erase the file content." % resourceName)
-
-    if valid and messages:
-	log.debug('%s: With changes the USGIN document will be valid' % resourceName)
-    elif valid and not messages:
-        log.debug("%s: USGIN document is valid" % resourceName)
-    else:
-        log.debug('%s: USGIN document is not valid' % resourceName)
-
-    log.debug("%s: Finished USGIN content model validation." % resourceName)
-
-    return {'valid': valid, 'message': messages, 'dataCorrected': dataCorrected, 'long_fields': long_fields, 'srs': srs, 'resourceName': resourceName, 'resourceId': resourceId}
-
 
 def package_create(context, data_dict):
     

@@ -29,11 +29,6 @@ log = logging.getLogger(__name__)
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
-    plugins.implements(plugins.IDatasetForm, inherit=False)
-    plugins.implements(plugins.IActions)
-    plugins.implements(plugins.ITemplateHelpers)
-    plugins.implements(plugins.IAuthFunctions)
-    plugins.implements(plugins.IResourceController, inherit=True)
 
     # IConfigurer
     def update_config(self, config_):
@@ -63,12 +58,16 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.view:ViewController',
                     action='show_iso_19139')
 
-        map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}',
-                    controller='ckanext.ccca.controllers.package_override:PackageContributeOverride',
-                    action='new_metadata')
-        map.connect('dataset_metadata', '/dataset/metadata/{id}',
-                    controller='ckanext.ccca.controllers.package_override:PackageContributeOverride',
-                    action='metadata',  ckan_icon='edit')
+        map.connect('resource_download', '/dataset/{id}/resource/{resource_id}/download/{filename}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_download')
+        #map.connect('resource_views', '/dataset/{id}/resource/{resource_id}/view/{view_id}', controller='ckanext.ccca.controllers.package_override:PackageContributeOverride', action='resource_datapreview')
+
+
+        # map.connect('dataset_new_metadata', '/dataset/new_metadata/{id}',
+        #             controller='ckanext.ccca.controllers.package_override:PackageContributeOverride',
+        #             action='new_metadata')
+        # map.connect('dataset_metadata', '/dataset/metadata/{id}',
+        #             controller='ckanext.ccca.controllers.package_override:PackageContributeOverride',
+        #             action='metadata',  ckan_icon='edit')
 
         map.connect('export_metadata', '/export_metadata',
                     controller='ckanext.ccca.controllers.export:ExportController',
@@ -84,95 +83,3 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def after_map(self, map):
         #log.fatal("==================================> %s" % map)
         return map
-
-    # IActions
-    def get_actions(self):
-        return {
-            'get_html_ccca': metadata.get_html_ccca,
-            'get_html_iso': metadata.get_html_iso,
-            'get_html_inspire': metadata.get_html_inspire,
-            'show_iso_19139': metadata.iso_19139,
-            'resource_show': get.resource_show
-        }
-
-    # IDatasetForm
-    def _modify_package_schema(self, schema):
-        schema.update({
-            'res_access': [toolkit.get_validator('boolean_validator'),
-                           toolkit.get_converter('convert_to_extras')]
-        })
-        schema.update({
-            'md_profile': [toolkit.get_validator('ignore_missing'),
-                           toolkit.get_converter('convert_to_extras')]
-        })
-        schema.update({
-            'md_pid': [toolkit.get_validator('ignore_missing'),
-                       toolkit.get_converter('convert_to_extras')]
-        })
-
-        # Add our custom_pid metadata field to the resource schema
-        schema['resources'].update({
-               'res_pid': [toolkit.get_validator('ignore_missing')]
-        })
-
-        return schema
-
-    def create_package_schema(self):
-        schema = super(CccaPlugin, self).create_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-
-    def update_package_schema(self):
-        schema = super(CccaPlugin, self).update_package_schema()
-        schema = self._modify_package_schema(schema)
-        return schema
-
-    def show_package_schema(self):
-        schema = super(CccaPlugin, self).show_package_schema()
-        schema.update({
-            'res_access': [toolkit.get_converter('convert_from_extras'),
-                           toolkit.get_validator('boolean_validator')]
-        })
-        schema.update({
-            'md_profile': [toolkit.get_converter('convert_from_extras'),
-                           toolkit.get_validator('ignore_missing')]
-        })
-        schema.update({
-            'md_pid': [toolkit.get_converter('convert_from_extras'),
-                       toolkit.get_validator('ignore_missing')]
-        })
-
-        # Add our res_pid metadata field to the schema
-        schema['resources'].update({
-               'res_pid': [toolkit.get_validator('ignore_missing')]
-        })
-
-        return schema
-
-    def is_fallback(self):
-        # Return True to register this plugin as the default handler for
-        # package types not handled by any other IDatasetForm plugin.
-        return True
-
-    def package_types(self):
-        # This plugin doesn't handle any special package types, it just
-        # registers itself as the default (above).
-        return []
-
-        # ITemplateHelpers
-    def get_helpers(self):
-        h = {}
-        #  Build a list of helpers from import ckanext.ccca.helpers as cccahelpers
-        for helper in dir(helpers):
-            #  Exclude private
-            if not helper.startswith('_'):
-                func = getattr(helpers, helper)
-
-                #  Ensure it's a function
-                if hasattr(func, '__call__'):
-                    h[helper] = func
-        return h
-
-    # IAuthFunctions
-    def get_auth_functions(self):
-        return {'resource_show': auth.resource_show_ext}
