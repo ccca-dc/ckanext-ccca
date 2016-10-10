@@ -5,7 +5,6 @@ from common import plugins as p
 from common import logic
 from common import app_globals
 from ckanext.ccca.logic.action import metadata
-from ckan.lib.helpers import link_to
 from ckan.common import _
 
 
@@ -203,12 +202,3 @@ def get_prospector_url(res):
     from ckanext.ccca.logic.action import metadata
     context = {'model': model, 'user': ''}
     return logic.get_action('geothermal_prospector_url')(context, res)
-
-
-def api_doc_link():
-    """
-    Link to API documentation
-    @return:
-    """
-    attr = {'class': 'external', 'target': '_blank'}
-    return link_to(_('API guide'), 'http://docs.ckan.org/en/latest/api/index.html', **attr)
