@@ -7,7 +7,7 @@
           <ul class="unstyled">
             {% block footer_links %}
               <li><a href="{{ h.url_for(controller='home', action='about') }}">CCCA Data Centre</a></li>
-              <li><a href="disclaimer.html">Disclaimer</a></li>
+              {% link_for _('Disclaimer'), controller='ckanext.ccca.controllers.disclaimer:DisclaimerController', action='disclaimer' %}
             {% endblock %}
           </ul>
           <ul class="unstyled">

@@ -77,6 +77,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.user:UserController',
                     action='mail_request')
 
+        map.connect('disclaimer', '/disclaimer',
+                    controller='ckanext.ccca.controllers.disclaimer:DisclaimerController',
+                    action='disclaimer')
+
         return map
 
     def after_map(self, map):
