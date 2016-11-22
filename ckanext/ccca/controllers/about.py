@@ -19,7 +19,7 @@ class AboutController(p.toolkit.BaseController):
         return p.toolkit.render('about/prototype.html', {'title': 'Prototype Declaration'})
 
     def credits(self):
-        return p.toolkit.render('about/credits.html', {'title': 'Acknowledgments'})
+        return p.toolkit.render('about/credits.html', {'title': 'Acknowledgements'})
 
     def terms(self):
         return p.toolkit.render('about/terms.html', {'title': 'Open Source Data Platform'})
