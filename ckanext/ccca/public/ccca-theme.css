@@ -26,6 +26,10 @@ div.nav-collapse.collapse {
   right: 0;
 }
 
+.header-image.pull-left {
+  max-width:25%;
+}
+
 /* Anja : removed: 28.11.16 */
 /* Responsive images (ensure images don't scale beyond their parents) */
 /*
