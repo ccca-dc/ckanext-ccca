@@ -1,204 +1,115 @@
-import json
-import ckanext.ccca.helpers
-from ckan import model
-from common import plugins as p
-from common import logic
-from common import app_globals
-from ckanext.ccca.logic.action import metadata
-from ckan.common import _
+import re
+import datetime
+import pytz
+
+from pylons import config
+from pylons.i18n import gettext
+
+import ckan.logic as logic
+get_action = logic.get_action
 
 
-def md_get_vanilla_ckan_version():
-    try:
-        status = logic.action.get.status_show({}, {})
-        version = status.get('ckan_version')
-    except:
-        version = None
-    return version
+""" Anja 29.9.2016 """
+import  ckan.plugins.toolkit as tk
+context = tk.c
+import ckan.lib.base as base
+Base_c = base.c
+from pylons import c
+import logging
+log = logging.getLogger(__name__)
+""" Anja 29.9.2016 """
+""" Anja 23.11.2016 """
+import random
+""" Anja 23.11.2016 """
+
+def ccca_count_resources():
+    """ Anja 21.11.2016
+    log.debug("ccca_count_resources ******************")
+    Attention: Hard limit of 1000 Datasets - parameter obviously "rows" not "limit" ...
+    """
+
+    all_sets = tk.get_action('package_search')({}, {"rows": 1000})
+    all_count = all_sets['count']
+
+    if all_count > 999:
+        all_count = 999
+
+    current_set = 0
+    all_resource_count = 0
+    while current_set < c.package_count:
+        all_sets['results'][current_set]['title']
+        all_resource_count += all_sets['results'][current_set]['num_resources']
+        current_set += 1
+    return all_resource_count
 
 
-def make_author(data):
-    individual = data.get('individual', None)
-    name = None
-    position = None
+def ccca_get_number_organizations():
+    # log.debug("ccca_get_number_organization ******************")
+    '''
+    Code adapted from ckan: get_featured_organizations(count=1):
+    '''
+    config_orgs = config.get('ckan.featured_orgs', '').split()
+    count = len(config_orgs)
+    # log.debug(count)
+    '''
+    orgs = h.featured_group_org(get_action='organization_show',
+                              list_action='organization_list',
+                              count=count,
+                              items=config_orgs)
+    log.debug(orgs)
+    '''
+    return count
 
-    if individual:
-        name = individual.get('personName', None)
-        position = individual.get('personPosition', None)
+def ccca_get_random_organization():
+    # log.debug("ccca_random_organization ******************")
+    '''
+    Code adapted from ckan: get_featured_organizations(count=1):
+    '''
+    config_orgs = config.get('ckan.featured_orgs', '').split()
 
-    return {
-        'Name': name,
-        'Position': position,
-        'Organization': data.get('organizationName', None),
-        'Address': data.get('contactAddress', None),
-        'Phone': data.get('phoneNumber', None),
-        'Email': data.get('contactEmail', None),
-    }
+    if not config_orgs:
+        return ""
+    # log.debug(config_orgs)
 
+    count = len(config_orgs)
+    rand_org = random.choice(config_orgs)
 
-def check_harvest_info(data):
-    original_id = data.get('originalFileIdentifier', None)
-    if original_id:
-        return True
-    else:
-        return False
+    # log.debug(count)
+    # log.debug(rand_org)
 
+    '''
+    orgs = h.featured_group_org(get_action='organization_show',
+                              list_action='organization_list',
+                              count=count,
+                              items=config_orgs)
+    log.debug(orgs)
+    '''
+    return rand_org
 
-def check_author(data):
-    name = data.get('Name', None)
-    phone = data.get('Phone', None)
-    org = data.get('Organization', None)
-    address = data.get('Address', None)
-    position = data.get('Position', None)
-    email = data.get('Email', None)
+def ccca_get_number_groups():
+    # log.debug("ccca_get_number_groups ******************")
 
-    items = [name, phone, org, address, position, email]
-    if all(value is None for value in items):
-        return False
-    elif all(value == '' for value in items):
-        return False
-    else:
-        return True
+    '''
+    Code adapted from ckan: get_featured_goups(count=1):
+    '''
+    config_groups = config.get('ckan.featured_groups', '').split()
+    count = len(config_groups)
+    # log.debug(count)
 
+    return count
 
-def check_geo_ext(data):
-    north = data.get('northBoundLatitude', None)
-    south = data.get('southBoundLatitude', None)
-    east = data.get('eastBoundLongitude', None)
-    west = data.get('westBoundLongitude', None)
+def ccca_get_random_group():
+    # log.debug("ccca_random_group ******************")
+    '''
+    Code adapted from ckan: get_featured_groups(count=1):
 
-    items = [north, south, east, west]
-    if all(value is None for value in items):
-        return False
-    else:
-        return True
+    '''
+    config_groups = config.get('ckan.featured_groups', '').split()
+    # log.debug(config_groups)
 
+    if not config_groups:
+        return ""
+    rand_group = random.choice(config_groups)
+    # log.debug(rand_group)
 
-def md_package_extras_processor(extras):
-    try:
-        pkg = [extra for extra in extras if extra.get('key') == 'md_package'][0]
-    except:
-        pkg = None
-
-    if pkg:
-        md = json.loads(pkg.get('value'))
-
-        details_obj = {}
-
-        # harvest information
-        harvest_info = md.get('harvestInformation', None)
-        has_harvest = check_harvest_info(harvest_info)
-        if has_harvest:
-            details_obj['harvest'] = harvest_info
-        else:
-            details_obj['harvest'] = None
-
-        # metadata properties
-        md_props_author = md.get('metadataProperties').get('metadataContact') \
-            .get('relatedAgent').get('agentRole', None)
-        has_md_props = check_author(md_props_author)
-        if has_md_props:
-            details_obj['props'] = {'author': md_props_author}
-        else:
-            details_obj['props'] = None
-
-        # citation date
-        cite_date = md.get('resourceDescription').get('citationDates') \
-            .get('EventDateObject').get('dateTime', None)
-        if cite_date:
-            details_obj['date'] = cite_date
-        else:
-            details_obj['date'] = None
-
-        # related agents
-        authors = []
-        for agent in md['resourceDescription']['citedSourceAgents']:
-            agent = agent['relatedAgent']['agentRole']
-            author = make_author(agent)
-            has_author = check_author(author)
-            if has_author:
-                authors.append(author)
-        if len(authors) > 0:
-            details_obj['authors'] = authors
-        else:
-            details_obj['authors'] = None
-
-        # resource contacts
-        contacts = []
-        for agent in md['resourceDescription']['resourceContact']:
-            agent = agent['relatedAgent']['agentRole']
-            contact = make_author(agent)
-            has_contact = check_author(contact)
-            if has_contact:
-                contacts.append(contact)
-        if len(contacts):
-            details_obj['contacts'] = contacts
-        else:
-            details_obj['contacts'] = None
-
-        # geographic extent
-        geo_ext = md.get('resourceDescription').get('geographicExtent', None)
-
-        if geo_ext != None and geo_ext[0]:
-            has_geo_ext = check_geo_ext(geo_ext[0])
-            if has_geo_ext:
-                details_obj['geography'] = geo_ext[0]
-            else:
-                details_obj['geography'] = None
-        else:
-            details_obj['geography'] = None
-
-        if all(value is None for value in details_obj.itervalues()):
-            return None
-        else:
-            return details_obj
-
-
-def md_resource_extras_processer(res):
-    md_res = res.get('md_resource', None)
-    if md_res:
-        md = json.loads(md_res)
-
-        res_obj = md.get('accessLink').get('LinkObject', None)
-        res_dist = md.get('distributors', None)
-
-        distributors = []
-        for agent in res_dist:
-            agent = agent['relatedAgent'].get('agentRole', None)
-            distributor = make_author(agent)
-            has_distributor = check_author(distributor)
-            if has_distributor:
-                distributors.append(distributor)
-
-        return {
-            'distributors': distributors,
-            'resource': res_obj,
-        }
-
-
-def usgin_check_package_for_content_model(pkg_id):
-    context = {'model': model, 'user': ''}
-    search = logic.action.get.package_show(context, {'id': pkg_id})
-    try:
-        extras = search.get('extras')
-        usgin = [i for i in extras if i['key'] == 'md_package']
-        usgin = json.loads(usgin[0]['value'])
-        cm = {'content_model_uri': usgin['usginContentModel'],
-              'content_model_version': usgin['usginContentModelVersion']}
-        try:
-            models = app_globals.config.get('ngds.content_models')
-        except:
-            models = metadata.http_get_content_models()
-        c_model = [m['versions'] for m in models if m['uri'] == \
-                   cm['content_model_uri']][0]
-        version = [m for m in c_model if m['uri'] == \
-                   cm['content_model_version']]
-        return {'success': True, 'data': version}
-    except:
-        return {'success': False, 'data': ''}
-
-
-def get_prospector_url(res):
-    from ckanext.ccca.logic.action import metadata
-    context = {'model': model, 'user': ''}
-    return logic.get_action('geothermal_prospector_url')(context, res)
+    return rand_group

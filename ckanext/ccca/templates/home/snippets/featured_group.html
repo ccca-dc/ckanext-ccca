@@ -1,0 +1,21 @@
+{#
+  Anja, 23.11.2016: Adpated from CKAN source
+  Enter ckan.featured_groups in development.ini (production.ini)
+  (CKAN names of Groups)
+  Example: ckan.featured_ groups= emil-gruppe ottogroup
+#}
+{% set count = h.ccca_get_number_groups() %}
+{% set rand_group = h.ccca_get_random_group() %}
+{% if count == 0 %}
+  {% set groups = h.get_featured_groups(count=1) %}
+{% else %}
+  {% set groups = h.get_featured_groups(count=count) %}
+{% endif %}
+
+{% for group in groups %}
+  {% if group.name == rand_group or rand_group == "" %}
+  <div class="box">
+    {% snippet 'snippets/group_item.html', group=group, truncate=50, truncate_title=35 %}
+  </div>
+  {% endif %}
+{% endfor %}

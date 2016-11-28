@@ -1,0 +1,20 @@
+{#
+  Anja, 23.11.2016: Adpated from CKAN source
+  Enter ckan.featured_orgs in development.ini (production.ini)
+  (CKAN names of Organizations)
+  Example: ckan.featured_orgs = otto susi-organization another-test-org a-test-organization
+#}
+{% set count = h.ccca_get_number_organizations() %}
+{% set rand_org = h.ccca_get_random_organization() %}
+{% if count == 0 %}
+  {% set organizations = h.get_featured_organizations(count=1) %}
+{% else %}
+  {% set organizations = h.get_featured_organizations(count=count) %}
+{% endif %}
+{% for organization in organizations %}
+    {% if organization.name == rand_org  or rand_org == "" %}
+      <div class="box">
+        {% snippet 'snippets/organization_item.html', organization=organization, truncate=50, truncate_title=35 %}
+      </div>
+    {% endif %}
+{% endfor %}

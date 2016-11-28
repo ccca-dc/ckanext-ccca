@@ -9,12 +9,16 @@
   background: White;
 }
 
-
-/****************** Beta label ******************/
-header.navbar-static-top.masthead::before {
-  content: url(images/beta.png);
-  float: left;
+/* Anja, 28.11.16 */
+.ccca-heading{
+  background: none;
 }
+.hero{
+background: white;
+background: url("/images/Background_DataServer_gas2.png") repeat;
+}
+
+/* Anja 28.11.16 */
 
 div.nav-collapse.collapse {
   position: absolute;
@@ -22,10 +26,14 @@ div.nav-collapse.collapse {
   right: 0;
 }
 
+/* Anja : removed: 28.11.16 */
+/* Responsive images (ensure images don't scale beyond their parents) */
+/*
 img {
-  /* Responsive images (ensure images don't scale beyond their parents) */
+
   max-width: 80%;
 }
+*/
 
 /* .alert { */
 /* 	margin-bottom:0px; */
@@ -48,6 +56,3 @@ img {
 /* .record-content table#determinations tbody tr th.name { */
 /*   width: 50%; */
 /* } */
-
-
-

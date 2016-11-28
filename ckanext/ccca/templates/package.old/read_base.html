@@ -1,8 +1,0 @@
-{% ckan_extends %}
-
-{% block links -%}
-    {{ super() }}
-    <link rel="alternate" type="application/vnd.iso.19139+xml"
-          href="{{ h.url_for(controller='package', action='read', id=pkg.id, qualified=True) }}/gmd"/>
-
-{% endblock -%}

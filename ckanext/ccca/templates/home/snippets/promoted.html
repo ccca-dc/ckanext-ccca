@@ -1,0 +1,25 @@
+{# Anja 10.11  Copied from CKAN with modifications #}
+
+{% set intro = g.site_intro_text %}
+
+<div class="module-content box">
+  <header>
+    {% if intro %}
+      {{ h.render_markdown(intro) }}
+    {% else %}
+      <h3 class="page-heading">{{ _("Welcome to the CCCA Datacenter") }}</h3>
+        {% trans %} Explore our possibilities:  {% endtrans %}
+    {% endif %}
+  </header>
+
+  {% block home_image %}
+    <section class="featured">
+      <h2 class="media-heading ccca-heading"></h2>
+      {% block home_image_content %}
+        <a class="media-image" href="/dataset">
+          <img src="/images/Temperature.gif" alt="Featured image"  width="1022" height="688" />
+        </a>
+      {% endblock %}
+    </section>
+  {% endblock %}
+</div>
