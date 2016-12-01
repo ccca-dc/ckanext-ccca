@@ -8,7 +8,14 @@
       {{ h.render_markdown(intro) }}
     {% else %}
       <h3 class="page-heading">{{ _("Welcome to the CCCA Data Centre") }}</h3>
-        {% trans %} Explore our possibilities:  {% endtrans %}
+      {% trans %}
+      The CCCA Data Centre provides the central national archive for  climate data and information, ensuring access to data relevant for climate research.
+      Our network infrastructure is kindly provided by the
+      <a href="http://zamg.ac.at" target="_blank">ZAMG</a>.
+      <br>
+      The data made accessible includes observation and measurement data, scenario data, quantitative and qualitative data, as well as the measurement data and findings of research projects.
+      {% endtrans %}
+      {% trans %} Explore our possibilities:  {% endtrans %}
     {% endif %}
   </header>
 
