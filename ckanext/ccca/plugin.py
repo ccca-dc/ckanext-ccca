@@ -60,11 +60,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     action='prototype')
 
         # Mail Request user registration
-        '''
-        map.connect('/user/mail_request',
+        map.connect('/user/register',
                     controller='ckanext.ccca.controllers.user:UserController',
-                    action='mail_request')
-        '''
+                    action='register')
         map.connect('disclaimer', '/disclaimer',
                     controller='ckanext.ccca.controllers.disclaimer:DisclaimerController',
                     action='disclaimer')

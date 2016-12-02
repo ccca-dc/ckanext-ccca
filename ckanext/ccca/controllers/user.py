@@ -47,7 +47,17 @@ class UserController(p.toolkit.BaseController):
     new_user_form = 'user/new_user_form.html'
     new_user_reply = 'user/new_user_reply.html'
 
-    def mail_request(self, data=None, errors=None, error_summary=None):
+    def register(self, data=None, errors=None, error_summary=None):
+        context = {'model': model, 'session': model.Session, 'user': c.user,
+                   'auth_user_obj': c.userobj}
+        try:
+            check_access('user_create', context)
+        except NotAuthorized:
+            abort(403, _('Unauthorized to register as a user.'))
+
+        return self.new_mail_request(data, errors, error_summary)
+
+    def new_mail_request(self, data=None, errors=None, error_summary=None):
         '''GET to display a form for registering a new user.
            or POST the form data to actually mail the user
            ldif file to side admin.
@@ -56,6 +66,7 @@ class UserController(p.toolkit.BaseController):
         context = {'model': model, 'session': model.Session,
                    'user': c.user,
                    'auth_user_obj': c.userobj,
+                   'schema': self._new_form_to_db_schema(),
                    'save': 'save' in request.params}
 
         try:
@@ -64,7 +75,7 @@ class UserController(p.toolkit.BaseController):
             abort(403, _('Unauthorized to create a user'))
 
         if context['save'] and not data:
-            return self.request_user(context)
+            return self._request_user(context)
 
         if c.user and not data:
             # #1799 Don't offer the registration form if already logged in
@@ -79,7 +90,7 @@ class UserController(p.toolkit.BaseController):
         c.form = render(self.new_user_form, extra_vars=vars)
         return render('user/new.html')
 
-    def request_user(self, context):
+    def _request_user(self, context):
         try:
             data_dict = logic.clean_dict(unflatten(
                 logic.tuplize_dict(logic.parse_params(request.params))))
