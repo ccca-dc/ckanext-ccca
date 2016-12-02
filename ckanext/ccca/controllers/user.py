@@ -9,6 +9,7 @@ import pylons
 import ckan.plugins as p
 import ckan.model as model
 import ckan.logic as logic
+import ckan.logic.schema as schema
 import ckan.lib.helpers as h
 import ckan.lib.base as base
 import ckan.authz as authz
@@ -46,6 +47,9 @@ class UserConflictError(Exception):
 class UserController(p.toolkit.BaseController):
     new_user_form = 'user/new_user_form.html'
     new_user_reply = 'user/new_user_reply.html'
+
+    def _new_form_to_db_schema(self):
+        return schema.user_new_form_schema()
 
     def register(self, data=None, errors=None, error_summary=None):
         context = {'model': model, 'session': model.Session, 'user': c.user,
