@@ -128,7 +128,7 @@ class UserController(p.toolkit.BaseController):
         except ValidationError, e:
             errors = e.error_dict
             error_summary = e.error_summary
-            return self.mail_request(data_dict, errors, error_summary)
+            return self.new_mail_request(data_dict, errors, error_summary)
 
         h.flash_success('''Your request was delivered to the CCCA Datacentre.
         It will be processed within the upcoming working days.''')
@@ -172,8 +172,8 @@ def _make_ldif(context, data_dict, filepath):
     """
     Create ldif file in filepath from data_dict input
     """
-    #schema = context.get('schema') or logic.schema.default_user_schema()
-    schema = context.get('schema') or logic.schema.user_new_form_schema()
+    schema = context.get('schema') or logic.schema.default_user_schema()
+    #schema = context.get('schema') or logic.schema.user_new_form_schema()
     session = context['session']
 
     check_access('user_create', context, data_dict)
