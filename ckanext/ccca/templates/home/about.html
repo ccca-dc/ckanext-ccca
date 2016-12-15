@@ -1,7 +1,8 @@
 {% ckan_extends %}
+{% resource 'ccca/about.css' %}
 
 {% block primary %}
-    <div class="primary span9">
+    <div class="primarycontent">
       <article class="module">
         <div class="module-content">
           {% block about_content %}
@@ -16,7 +17,7 @@
 
 {% block secondary %}
 
-  <aside class="secondary span3">
+  <aside class="secondarycontent">
     {% block secondary_content %}
         {% snippet 'about/snippets/menu.html' %}
     {% endblock %}

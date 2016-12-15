@@ -30,6 +30,18 @@ div.nav-collapse.collapse {
   max-width:55%;
 }
 
+.primarycontent{
+    float: right;
+    margin-left: 0;
+    max-width: 700px;
+}
+.secondarycontent{
+    float: left;
+    margin-left: 0;
+    width: 220px;
+}
+
+
 /* Anja : removed: 28.11.16 */
 /* Responsive images (ensure images don't scale beyond their parents) */
 /*
