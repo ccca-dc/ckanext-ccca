@@ -116,7 +116,7 @@ class UserController(p.toolkit.BaseController):
         except NotAuthorized:
             error_msg = _(u'Username already exists, use another one.')
             h.flash_error(error_msg)
-            return self.mail_request(data_dict)
+            return self.new_mail_request(data_dict)
         except NotFound, e:
             abort(404, _('User not found'))
         except DataError:
@@ -124,7 +124,7 @@ class UserController(p.toolkit.BaseController):
         except captcha.CaptchaError:
             error_msg = _(u'Bad Captcha. Please try again.')
             h.flash_error(error_msg)
-            return self.mail_request(data_dict)
+            return self.new_mail_request(data_dict)
         except ValidationError, e:
             errors = e.error_dict
             error_summary = e.error_summary
