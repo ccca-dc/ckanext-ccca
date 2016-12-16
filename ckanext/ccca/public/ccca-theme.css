@@ -1,6 +1,7 @@
 
 /****************** Layout ******************/
 /* Pages */
+
 .wrapper {
   border: none;
   -webkit-border-radius: 0;
@@ -19,7 +20,7 @@ background: url("/images/Background_DataServer_gas2.png") repeat;
 }
 
 /* Anja 28.11.16 */
-
+@media (min-width: 980px) {
 div.nav-collapse.collapse {
   position: absolute;
   bottom: 0;
@@ -31,15 +32,16 @@ div.nav-collapse.collapse {
 }
 
 .primarycontent{
-    float: right;
-    margin-left: 0;
-    max-width: 700px;
-}
-.secondarycontent{
     float: left;
     margin-left: 0;
-    width: 220px;
+    max-width: 220px;
 }
+.secondarycontent{
+    float: right;
+    margin-left: 0;
+    width: 700px;
+}
+
 
 
 /* Anja : removed: 28.11.16 */
