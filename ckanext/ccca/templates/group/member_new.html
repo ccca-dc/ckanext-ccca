@@ -30,11 +30,17 @@
           {% endif %}
         </div>
       </div>
-      <div class="add-member-or">
-      </div>
+      {% if user %}
+    </div>
+      {% else %}
+        <div class="add-member-or">
+        </div>
+      {% endif %}
       {% set format_attrs = {'data-module': 'autocomplete'} %}
       {{ form.select('role', label=_('Role'), options=c.roles, selected=c.user_role, error='', attrs=format_attrs) }}
+      {% if not user %}
     </div>
+      {% endif %}
 
 
     <div class="form-actions">
