@@ -17,6 +17,7 @@ import ckan.lib.captcha as captcha
 from ckan.common import _, request
 import ckan.lib.navl.dictization_functions as dictization_functions
 from ckan.common import _, c, g, request, response
+from pylons import config
 
 log = logging.getLogger(__name__)
 
@@ -101,18 +102,32 @@ class UserController(p.toolkit.BaseController):
             context['message'] = data_dict.get('log_message', '')
             captcha.check_recaptcha(request)
 
+            path = config.get('ckanext.ccca.path_for_ldifs')
+
             send_from = 'test@sandboxdc.ccca.ac.at'
             send_to = ['datenzentrum@ccca.ac.at']
             subject = 'New user request CKAN: ' + data_dict['name']
+
+            if path is None:
+                error_msg = _(u'path_for_ldifs not defined.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
+
+            if os.path.exists(path + '/' + data_dict['name'] + '.ldif'):
+                error_msg = _('Username alreay exists, use another one.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
+
             text = '''
-            Attached you will find the ldif import file. \n
-            Create user on your LDAP Server with the following command:
-            adduser_ldap.sh HOST FILE
-            '''
-            files = []
-            files.append(_make_ldif(context, data_dict, '/tmp/'+data_dict['name']+'.ldif'))
-            _send_mail(send_from, send_to, subject, text, files)
-            [os.remove(f) for f in files or []]
+             A new user registered.
+             You can find the file here: ''' + path + '''
+             and it is called: ''' + data_dict['name']+'.ldif' + '''
+             Create user on your LDAP Server with the following command:
+             adduser_ldap.sh HOST FILE'''
+
+            _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
+            _send_mail(send_from, send_to, subject, text)
+
         except NotAuthorized:
             error_msg = _(u'Username already exists, use another one.')
             h.flash_error(error_msg)
@@ -129,13 +144,17 @@ class UserController(p.toolkit.BaseController):
             errors = e.error_dict
             error_summary = e.error_summary
             return self.new_mail_request(data_dict, errors, error_summary)
+        except IOError:
+            error_msg = _(u'path_for_ldifs not correctly defined.')
+            h.flash_error(error_msg)
+            return self.new_mail_request(data_dict)
 
         h.flash_success('''Your request was delivered to the CCCA Datacentre.
         It will be processed within the upcoming working days.''')
         return render('user/login.html')
 
 
-def _send_mail(send_from, send_to, subject, text, files, server='localhost'):
+def _send_mail(send_from, send_to, subject, text):
     import smtplib
     from email.mime.application import MIMEApplication
     from email.mime.multipart import MIMEMultipart
@@ -153,17 +172,7 @@ def _send_mail(send_from, send_to, subject, text, files, server='localhost'):
 
     msg.attach(MIMEText(text))
 
-    for f in files or []:
-        with open(f, "rb") as fil:
-            print f
-            part = MIMEApplication(
-                fil.read(),
-                Name=basename(f)
-            )
-            part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
-            msg.attach(part)
-
-    smtp = smtplib.SMTP(server)
+    smtp = smtplib.SMTP(config.get('smtp.server'))
     smtp.sendmail(send_from, send_to, msg.as_string())
     smtp.quit()
 
