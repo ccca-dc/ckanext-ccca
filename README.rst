@@ -9,18 +9,21 @@ This is a plugin for the CKAN data portal software http://ckan.org/ to extend it
 Requirements
 ------------
 
-This plugin is tested with CKAN version 2.6.0a. 
+This plugin is tested with CKAN version 2.6.0a.
 Change your INI-File (development.ini / production.ini) in the following way::
-    ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca 
-    [...]  
-    ckan.views.default_views = image_view text_view recline_view geojson_view geo_view  
-    [...]  
-    ## Front-End Settings  
-    ckan.site_title = CCCA  
-    ckan.site_logo = /images/ccca-logo.png
-    ckan.site_description =  
-    ckan.favicon = /images/icons/ckan.ico  
- 
+    ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca
+    [...]
+    ckan.views.default_views = image_view text_view recline_view geojson_view geo_view
+    [...]
+    ## Front-End Settings
+    ckan.site_title = CCCA
+    ckan.site_logo = /images/CCCA_DC_10.png
+    ckan.site_description =
+    ckan.favicon = /images/icons/ckan.ico
+
+    ckan.featured_orgs = ....
+    ckan.featured_groups = ....
+
 
 ------------
 Installation
