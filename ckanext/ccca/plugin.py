@@ -25,7 +25,6 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
 
-
     # IConfigurer
     def update_config(self, config_):
         toolkit.add_template_directory(config_, 'templates')
@@ -43,7 +42,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_random_group': helpers.ccca_get_random_group
             }
 
-
+    # IRoutes
     def before_map(self, map):
         # About pages
         map.connect('about_citation', '/about/citation',
@@ -67,6 +66,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.disclaimer:DisclaimerController',
                     action='disclaimer')
 
+        # Sort Organizations
+        map.connect('organization', '/organization',
+                    controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
+                    action='index')
         return map
 
     def after_map(self, map):
