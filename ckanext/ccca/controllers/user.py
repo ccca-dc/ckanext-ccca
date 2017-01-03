@@ -186,6 +186,7 @@ def _make_ldif(context, data_dict, filepath):
 
     hash_password = _make_secret(data_dict['password1'])
 
+    data_dict = dict((k, v.encode('utf-8')) for (k, v) in data_dict.items())
     # Add user
     entry_user = {'objectClass': ['top', 'person', 'organizationalPerson',
                                   'inetOrgPerson', 'posixAccount', 'shadowAccount',
