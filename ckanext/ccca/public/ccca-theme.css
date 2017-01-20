@@ -41,7 +41,11 @@ div.nav-collapse.collapse {
     margin-left: 0;
     width: 700px;
 }
-
+@media (min-width: 768px) {
+  .footerdiv {
+    float: left;
+    width: 33.33333333%; }
+}
 
 
 /* Anja : removed: 28.11.16 */

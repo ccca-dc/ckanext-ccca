@@ -1,8 +1,9 @@
+<link rel="stylesheet" href="/ccca-theme.css" />
 <footer class="site-footer">
   <div class="container">
     {% block footer_content %}
-    <div class="row">
-      <div class="span8 footer-links">
+    <div>
+      <div class="footer-links footerdiv">
         {% block footer_nav %}
           <ul class="unstyled">
             {% block footer_links %}
@@ -18,7 +19,10 @@
           </ul>
         {% endblock %}
       </div>
-      <div class="span4 attribution">
+      <div class="footerdiv">
+          <a href="http://www.re3data.org/repository/r3d100012288"><img src="/images/re3data_badge.png" height="100" style="margin-bottom:20px"></a>
+      </div>
+      <div class="attribution footerdiv">
         {% block footer_attribution %}
           <p>{% trans %}<strong>Based on</strong> <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
         {% endblock %}
@@ -28,7 +32,7 @@
         <p>
             <a href="https://www.ccca.ac.at/"><img src="/images/CCCA_Logo_RGB_transparent-2.png" height="30" width="100"></a>
             &nbsp;
-            <a href="https://www.zamg.ac.at/"><img src="/images/zamg_black_WBM_normal_kurz.png" height="30" width="100"></a>
+            <a href="https://www.zamg.ac.at/"><img src="/images/zamg_white_WBM_normal_kurz.png" height="30" width="100"></a>
         </p>
       </div>
     </div>
