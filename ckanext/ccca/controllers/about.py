@@ -23,3 +23,6 @@ class AboutController(p.toolkit.BaseController):
 
     def terms(self):
         return p.toolkit.render('about/terms.html', {'title': 'Open Source Data Platform'})
+
+    def data_policy(self):
+        return p.toolkit.render('about/data_policy.html', {'title': 'Data Policy'})

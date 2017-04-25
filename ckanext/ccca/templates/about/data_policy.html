@@ -1,0 +1,51 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='citation' %}</li>
+{% endblock %}
+
+{% block about_content %}
+
+    <h1 class="page-heading">Data Policy CCCA Centre (de)</h1>
+
+      <p><a href="/CCCA Data Policy_de.pdf" download="CCCA Data Policy_de">Download CCCA Data Policy</a></p>
+
+      <p><b>CCCA Datenzentrum hält eine Datenrichtlinie vor, zur:</b></p>
+      <ul>
+          <li>Sicherstellung der kontinuierlichen Verfügbarkeit von Daten von langfristigem Wert für Forschung, Lehre sowie für die breitere Nutzung im Sinne des öffentlichen Wohl, für Einzelpersonen, Politik, Unternehmen und anderen Organisationen;</li>
+          <li>Unterstützung der Transparenz und Offenheit der Forschung;</li>
+          <li>Unterstützung zur Publikation von Datensätzen, sowie die Ermöglichung des Monitoring ihrer Nutzung durch Zitierbarkeit und nachvollziehbare Datenlizenzen;</li>
+          <li>Konform zu relevanten legislativen Regelungen für den Vertrieb von Forschungsinformationen, sowie zum politischen Auftrag für die Verwaltung und Forschenden.</li>
+      </ul>
+
+      <p>Das CCCA Datenzentrum definiert dessen Dateninhalt als einzelne, digitale Objekte oder Aufzeichnungen, die gewöhnlich durch Messung, Beobachtung oder Modellierung der natürlichen Welt entstehen und für die Forschung zur Verfügung stehen. Dazu gehören Daten, die durch komplexe Systeme erzeugt werden, wie z. B. Algorithmen, Datenassimilationstechniken und die Anwendung von Modellen.</p>
+      <p>Diese Richtlinie umfasst Daten, die durch Forschungs-, Erhebungs- und Überwachungsaktivitäten der CCCA-Gemeinschaft erworben, zusammengestellt oder geschaffen wurden. Diese gilt für alle Daten, die von CCCA Datenzentrum verwaltet werden, dessen Urheber nicht zwangsläufig der in der die CCCA-Community im Sinne der CCCA Stauten angehören. Diese Richtlinie deckt keine CCCA extrahierte Information Produkte, Services ab.</p>
+      <p>Diese Richtlinie wird in regelmäßigen Abständen überprüft, um sicherzustellen, dass es mit den legislativen, wissenschaftlichen Anforderungen und dem best practise des Datenmanagement Schritt halten kann.</p>
+
+      <h2>Prinzipien</h2>
+      <p>Die Daten, die durch das CCCA Datenzentrum vorgehalten werden, gelten als öffentliches Gut und sie werden offen für andere zur Verfügung gestellt. CCCA engagiert sich für die Unterstützung des langfristigen Datenmanagements, um einen kontinuierlichen Zugang zu diesen Daten zu ermöglichen.</p>
+      <p>Das CCCA Datenzentrum liefert Daten mit kostenlosem Zugang, abgesehen von möglichen Sonderfällen, die dann mit bilateralen Lizenzvereinbarungen verbunden sind.</p>
+
+      <h2>Datenzugang</h2>
+      <ul>
+          <li>Alle Daten, die vom CCCA Datenzentrum gehalten werden, sind in der Regel für jede Person oder jede Organisation, die sie anfordert, offen zugänglich zu machen;</li>
+          <li>Beschränkungen für den Zugang, die anwendbar sind, müssen begründet werden;</li>
+          <li>Alle Daten, die CCCA Datenzentrum gehalten werden, werden kostenlos zur Verfügung gestellt, Ausnahmen, z.B. für große oder komplexe Anfragen, für die Bereitstellung von Rechenressourcen, extra Speicher oder wenn die Lizenzbedingungen von Drittanbietern diese Freizügigkeit verhindern, können Gebühren erhoben werden;</li>
+          <li>Alle Daten, die vom CCCA Datenzentrum zur Verfügung gestellt werden, müssen durch eine Datenlizenz begleitet werden. Daten, die ursprünglich von einem Drittanbieter zur Verfügung gestellt wurden, können über eigene Zugriffs- und Lizenzbedingungen verfügen, die den Zugang einschränken können. In diesem Fall werden unsere Datenlizenzbedingungen diese widerspiegeln.</li>
+          <li>Alle die, die vom CCCA Datenzentrum bereitgestellten Daten verwenden, müssen die Quelle der Daten, die Urheber deutlich erkennbar aufzeigen.</li>
+      </ul>
+
+      <h2>Datenkatalog</h2>
+      <p>Das CCCA Datenzentrum erwartet, dass alle Individuen bzw. im Namen von Organisationen agierende Personen für die Inhalte der Daten verantwortlich ist, die Verwaltung der Dateneigenständig übernehmen, und eine effektive Art und Weise für die Lebensdauer von Daten zur Verfügung gestellt wird, so dass für andere mit so wenig Einschränkungen wie möglich, in einer fristgerechten Weise zu nutzen.</p>
+      <p>Das CCCA behält sich bei Nichteinhaltung vor, den Zugang und Sichtbarkeit der Datensätze ein zu schränken.</p>
+
+      <h2>Open Access von Daten - Wirksamkeit und offene Gestaltung von Forschung.</h2>
+      <p>Das CCCA Datenzentrum ist der Auffassung, dass der langfristige, offene Zugang zu den Daten, die Forschung zu unterstützen und dazu beitragen wird, die Integrität, Transparenz und Robustheit des Forschungsprozesses zu gewährleisten. </p>
+      <p>Open Access unterstützt die grundlegende wissenschaftliche Anforderung, anderen zu erlauben, Forschungsergebnisse zu bestätigen aber auch kompetitiv zu agieren.</p>
+
+      <p>Chris Schubert, Leiter des CCCA Datenzentrum &emsp; &emsp; Wien, 25.02.2017</p>
+
+{% endblock %}
