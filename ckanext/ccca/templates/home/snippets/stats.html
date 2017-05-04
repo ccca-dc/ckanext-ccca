@@ -9,6 +9,12 @@
       {% block stats_group %}
       <li>
         <a href="{{ h.url_for(controller='package', action='search') }}">
+         <b>{{ h.ccca_count_resources() }}</b>
+          {{ _('resources in') }}
+        </a>
+        </li>
+      <li>
+          <a href="{{ h.url_for(controller='package', action='search') }}">
           <b>{{ h.SI_number_span(stats.dataset_count) }}</b>
           {{ _('datapackage') if stats.dataset_count == 1 else _('datapackages') }}
         </a>
@@ -25,12 +31,7 @@
           {{ _('group') if stats.group_count == 1 else _('groups') }}
         </a>
       </li>
-      <li>
-        <a href="{{ h.url_for(controller='package', action='search') }}">
-         <b>{{ h.ccca_count_resources() }}</b>
-          {{ _('resources') }}
-        </a>
-        </li>
+
       {% endblock %}
     </ul>
   </div>
