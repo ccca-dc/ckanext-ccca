@@ -39,7 +39,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_number_organizations': helpers.ccca_get_number_organizations,
             'ccca_get_random_organization': helpers.ccca_get_random_organization,
             'ccca_get_number_groups': helpers.ccca_get_number_groups,
-            'ccca_get_random_group': helpers.ccca_get_random_group
+            'ccca_get_random_group': helpers.ccca_get_random_group,
+            'ccca_check_member': helpers.ccca_check_member,
+            'ccca_get_user_dataset':helpers.ccca_get_user_dataset
             }
 
     # IRoutes
@@ -73,6 +75,11 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('organization', '/organization',
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='index')
+
+        # List Members of own organization
+        map.connect('organization_list_members', '/organization/members_list/{id}',
+                    controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
+                    action='members_list', ckan_icon='group')
         return map
 
     def after_map(self, map):

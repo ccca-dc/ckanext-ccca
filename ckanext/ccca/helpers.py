@@ -20,8 +20,34 @@ log = logging.getLogger(__name__)
 """ Anja 29.9.2016 """
 """ Anja 23.11.2016 """
 import random
-""" Anja 23.11.2016 """
+""" Anja 9.6.2017 """
+import ckan.lib.helpers as h
 
+
+""" Anja 9.6.2017"""
+def ccca_get_user_dataset(user_id):
+    all_sets = tk.get_action('user_show')({}, {"id": user_id, "include_datasets": True})
+    try:
+        #for x in all_sets['datasets']:
+            #print x['id']
+        one_set = all_sets['datasets'][0]
+        #print one_set['id']
+        return one_set
+    except:
+        return None
+
+def ccca_check_member (context, org_id):
+    user_groups = h.organizations_available(permission="read")
+    #print org_id
+    #print user_groups
+    for g in user_groups:
+        if org_id == g['id']:
+            return True
+
+    return False
+""" Anja 9.6.2017 End """
+
+""" Anja 23.11.2016 """
 def ccca_count_resources():
     """ Anja 21.11.2016
     log.debug("ccca_count_resources ******************")
