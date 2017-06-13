@@ -15,15 +15,83 @@ ValidationError = logic.ValidationError
 from pylons import g, c, config, response, request
 """ Anja 28.11.2016 """
 from ckanext.ccca import helpers
+import ckan.plugins.toolkit as tk
 
 import logging
 
 log = logging.getLogger(__name__)
 
+#Anja 13.6.2017
+#global last_session
+#global last_access
+#last_session = ""
+#last_access = False
+
+def package_update(context, data_dict=None):
+    #print "Hello"
+    #print context
+
+    s = context['session'] # always exists
+
+    try:
+        my_package = context['package'] # not on resources or page reload
+        owner_org =  my_package.owner_org
+        #print owner_org
+    except: # per resource: session; and on page reload: only session
+        try:
+            if s == last_session:
+                if last_access:
+                    return {'success': True}
+                else:
+                    return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
+            else:
+                #print "internal problem"
+                return {'success': False, 'msg': 'Access denied'} # We should not run into this path :-)
+        except:
+            #print "some internal problem"
+            return {'success': False, 'msg': 'Sorry, access denied'} # We should not run into this path :-)
+
+    # SAVE  follwing resources that pass through this function and for page relaods
+    global last_session
+    last_session = context['session']
+    #print last_session
+
+    #check if ADMIN
+    user_mail = context['auth_user_obj']
+    org_list = tk.get_action('organization_list_for_user')({}, {"id": user_mail.id, "permission": "member_create"})
+    #print "Hello2"
+    #print org_list
+    for x in org_list:
+        #print x.values()
+        if owner_org in x.values():
+                #print "success"
+                #print last_session
+                global last_access
+                last_access = True
+                return {'success': True}
+
+    # Editors only allowed to edit own packages
+    if user_mail.email == my_package.maintainer_email or user_mail.email == my_package.author_email:
+        global last_access
+        last_access = True
+        return {'success': True}
+    else:
+        global last_access
+        last_access = False
+        return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
+
+
+# Geht nicht - ist schon in resourceversions ...
+#def package_delete(context, data_dict=None):
+#    return {'success': False, 'msg': 'Not allwoed to delete}
+
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
+    plugins.implements(plugins.IAuthFunctions)
+    #plugins.implements(plugins.IMapper)
+
 
     # IConfigurer
     def update_config(self, config_):
@@ -85,3 +153,19 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     def after_map(self, map):
         #log.fatal("==================================> %s" % map)
         return map
+
+    #IAuthFunctions
+    def get_auth_functions(self):
+        return {'package_update': package_update}
+
+    """
+    #IMapper
+    def after_update(mapper, connection, instance):
+        print ("After update")
+
+    def before_update(mapper, connection, instance):
+        print ("Before update")
+
+    def before_insert(mapper, connection, instance):
+        print ("Before insert")
+    """
