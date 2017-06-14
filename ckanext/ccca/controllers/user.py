@@ -102,6 +102,32 @@ class UserController(p.toolkit.BaseController):
             context['message'] = data_dict.get('log_message', '')
             captcha.check_recaptcha(request)
 
+            # check for unique email addresses within our system
+            # i.e. every email only once
+            new_mail = u''
+
+            for k,v in data_dict.iteritems():
+                if (k == 'email'):
+                    new_mail = v
+            #print new_mail
+            if new_mail == u'':
+                error_msg = _(u'Please insert a valid mail address.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
+
+            u_list = get_action('user_list')({},{"order_by": "email"})
+
+            # need to access the ckan email_hash
+            otto = model.User(email=new_mail)
+            #print otto.email_hash
+            for x in u_list:
+                if x['email_hash'] == otto.email_hash:
+                    error_msg = _(u'Error: Email Address already registered: ' + new_mail + '.  If you are insecure about this message please contact us: datanzentrum@ccca.ac.at')
+                    h.flash_error(error_msg)
+                    return self.new_mail_request(data_dict)
+
+            # end check email unique
+
             path = config.get('ckanext.ccca.path_for_ldifs')
 
             send_from = 'test@sandboxdc.ccca.ac.at'

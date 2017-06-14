@@ -1,7 +1,5 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-#import ckan.lib.base as base
-
 
 import ckan.model as model
 import ckan.logic as logic
@@ -9,11 +7,7 @@ get_action = logic.get_action
 NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
-#import ckanext.ccca.logic.action.metadata as action
-#import helpers as h
-#import ckanext.ccca.helpers as helpers # Anja 28.11.16
 from pylons import g, c, config, response, request
-""" Anja 28.11.2016 """
 from ckanext.ccca import helpers
 import ckan.plugins.toolkit as tk
 
@@ -22,14 +16,14 @@ import logging
 log = logging.getLogger(__name__)
 
 #Anja 13.6.2017
-#global last_session
-#global last_access
-#last_session = ""
-#last_access = False
+last_session = ""
+last_access = False
 
 def package_update(context, data_dict=None):
     #print "Hello"
     #print context
+    global last_session
+    global last_access
 
     s = context['session'] # always exists
 
@@ -38,27 +32,23 @@ def package_update(context, data_dict=None):
         owner_org =  my_package.owner_org
         #print owner_org
     except: # per resource: session; and on page reload: only session
-        try:
-            if s == last_session:
-                if last_access:
-                    return {'success': True}
-                else:
-                    return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
+        if s == last_session:
+            if last_access:
+                return {'success': True}
             else:
-                #print "internal problem"
-                return {'success': False, 'msg': 'Access denied'} # We should not run into this path :-)
-        except:
-            #print "some internal problem"
-            return {'success': False, 'msg': 'Sorry, access denied'} # We should not run into this path :-)
+                return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
+        else:
+            #print "internal problem"
+            return {'success': False, 'msg': 'Access denied'} # We should not run into this path :-)
 
-    # SAVE  follwing resources that pass through this function and for page relaods
-    global last_session
+
+    # SAVE session - for the follwing resources that pass through this function and for page relaods
     last_session = context['session']
     #print last_session
 
     #check if ADMIN
-    user_mail = context['auth_user_obj']
-    org_list = tk.get_action('organization_list_for_user')({}, {"id": user_mail.id, "permission": "member_create"})
+    user_info = context['auth_user_obj']
+    org_list = tk.get_action('organization_list_for_user')({}, {"id": user_info.id, "permission": "member_create"})
     #print "Hello2"
     #print org_list
     for x in org_list:
@@ -66,20 +56,16 @@ def package_update(context, data_dict=None):
         if owner_org in x.values():
                 #print "success"
                 #print last_session
-                global last_access
                 last_access = True
                 return {'success': True}
 
     # Editors only allowed to edit own packages
-    if user_mail.email == my_package.maintainer_email or user_mail.email == my_package.author_email:
-        global last_access
+    if user_info.id == my_package.creator_user_id or user_info.email == my_package.maintainer_email or user_info.email == my_package.author_email:
         last_access = True
         return {'success': True}
     else:
-        global last_access
         last_access = False
         return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
-
 
 # Geht nicht - ist schon in resourceversions ...
 #def package_delete(context, data_dict=None):
