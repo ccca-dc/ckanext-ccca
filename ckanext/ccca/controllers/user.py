@@ -105,10 +105,17 @@ class UserController(p.toolkit.BaseController):
             # check for unique email addresses within our system
             # i.e. every email only once
             new_mail = u''
-
+            full_name = u''
             for k,v in data_dict.iteritems():
                 if (k == 'email'):
                     new_mail = v
+                if (k == 'fullname'):
+                    full_name = v
+
+            if full_name == u'':
+                error_msg = _(u'Please insert full name.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
             #print new_mail
             if new_mail == u'':
                 error_msg = _(u'Please insert a valid mail address.')
@@ -152,7 +159,7 @@ class UserController(p.toolkit.BaseController):
              adduser_ldap.sh HOST FILE'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
-            _send_mail(send_from, send_to, subject, text)
+             #_send_mail(send_from, send_to, subject, text)
 
         except NotAuthorized:
             error_msg = _(u'Username already exists, use another one.')
