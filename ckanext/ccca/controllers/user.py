@@ -146,10 +146,13 @@ class UserController(p.toolkit.BaseController):
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
 
+            #print "HEre we are"
             if os.path.exists(path + '/' + data_dict['name'] + '.ldif'):
                 error_msg = _('Username alreay exists, use another one.')
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
+
+            #print "HEre we are 2"
 
             text = '''
              A new user registered.
@@ -159,6 +162,7 @@ class UserController(p.toolkit.BaseController):
              adduser_ldap_ckan.sh HOST FILE'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
+            #print "Here we are 3"
             _send_mail(send_from, send_to, subject, text)
 
         except NotAuthorized:
@@ -196,7 +200,7 @@ def _send_mail(send_from, send_to, subject, text):
     from os.path import basename
 
     assert isinstance(send_to, list)
-
+    #print "mail_sending_part"
     msg = MIMEMultipart()
     msg['From'] = send_from
     msg['To'] = COMMASPACE.join(send_to)
@@ -258,7 +262,6 @@ def _make_ldif(context, data_dict, filepath):
     with open(filepath, 'a') as file:
         ldif_writer = ldif.LDIFWriter(file, filepath)
         ldif_writer.unparse(dn_group, entry_group)
-
 
     # Add user to general user group
     dn_group_users = 'cn=users,ou=groups,dc=ldap,dc=ccca,dc=ac,dc=at'
