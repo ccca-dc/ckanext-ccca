@@ -156,10 +156,10 @@ class UserController(p.toolkit.BaseController):
              You can find the file here: ''' + path + '''
              and it is called: ''' + data_dict['name']+'.ldif' + '''
              Create user on your LDAP Server with the following command:
-             adduser_ldap.sh HOST FILE'''
+             adduser_ldap_ckan.sh HOST FILE'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
-             #_send_mail(send_from, send_to, subject, text)
+            _send_mail(send_from, send_to, subject, text)
 
         except NotAuthorized:
             error_msg = _(u'Username already exists, use another one.')
