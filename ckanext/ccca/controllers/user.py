@@ -177,6 +177,10 @@ class UserController(p.toolkit.BaseController):
             error_msg = _(u'Bad Captcha. Please try again.')
             h.flash_error(error_msg)
             return self.new_mail_request(data_dict)
+        except EnvironmentError, e:
+            errors={}
+            errors['Message'] = 'Internal Problem; please try again in a few minutes'
+            return self.new_mail_request(data_dict, errors, errors)
         except ValidationError, e:
             errors = e.error_dict
             error_summary = e.error_summary
