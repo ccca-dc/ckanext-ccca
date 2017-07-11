@@ -106,6 +106,7 @@ class UserController(p.toolkit.BaseController):
 
             send_from = 'test@sandboxdc.ccca.ac.at'
             send_to = ['datenzentrum@ccca.ac.at']
+
             subject = 'New user request CKAN: ' + data_dict['name']
 
             if path is None:
@@ -123,7 +124,7 @@ class UserController(p.toolkit.BaseController):
              You can find the file here: ''' + path + '''
              and it is called: ''' + data_dict['name']+'.ldif' + '''
              Create user on your LDAP Server with the following command:
-             adduser_ldap.sh HOST FILE'''
+             adduser_ldap_ckan.sh HOST FILE APIKey'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
             _send_mail(send_from, send_to, subject, text)
@@ -140,6 +141,10 @@ class UserController(p.toolkit.BaseController):
             error_msg = _(u'Bad Captcha. Please try again.')
             h.flash_error(error_msg)
             return self.new_mail_request(data_dict)
+        except EnvironmentError, e:
+            errors={}
+            errors['Message'] = 'Internal Problem; please try again in a few minutes'
+            return self.new_mail_request(data_dict, errors, errors)
         except ValidationError, e:
             errors = e.error_dict
             error_summary = e.error_summary
@@ -202,7 +207,7 @@ def _make_ldif(context, data_dict, filepath):
                                   'ldapPublicKey'],
                   'uid': [data_dict['name']],
                   'cn': [data_dict['fullname']],
-                  'sn': [data_dict['fullname'].split()[-1]],
+                  'sn': [data_dict['fullname'].split()[-1]] if data_dict['fullname'] else [''],
                   'givenName': [' '.join(data_dict['fullname'].split()[:-1])],
                   'mail': [data_dict['email']],
                   'userPassword': [hash_password],
