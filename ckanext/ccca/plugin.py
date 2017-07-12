@@ -67,15 +67,12 @@ def package_update(context, data_dict=None):
         last_access = False
         return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
 
-# Geht nicht - ist schon in resourceversions ...
-#def package_delete(context, data_dict=None):
-#    return {'success': False, 'msg': 'Not allwoed to delete}
-
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
-    plugins.implements(plugins.IAuthFunctions)
+    # Functions moved to iauth
+    #plugins.implements(plugins.IAuthFunctions)
     #plugins.implements(plugins.IMapper)
 
 
@@ -141,8 +138,8 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         return map
 
     #IAuthFunctions
-    def get_auth_functions(self):
-        return {'package_update': package_update}
+    #def get_auth_functions(self):
+        #return {'package_update': package_update}
 
     """
     #IMapper
