@@ -15,64 +15,11 @@ import logging
 
 log = logging.getLogger(__name__)
 
-#Anja 13.6.2017
-last_session = ""
-last_access = False
-
-def package_update(context, data_dict=None):
-    #print "Hello"
-    #print context
-    global last_session
-    global last_access
-
-    s = context['session'] # always exists
-
-    try:
-        my_package = context['package'] # not on resources or page reload
-        owner_org =  my_package.owner_org
-        #print owner_org
-    except: # per resource: session; and on page reload: only session
-        if s == last_session:
-            if last_access:
-                return {'success': True}
-            else:
-                return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
-        else:
-            #print "internal problem"
-            return {'success': False, 'msg': 'Access denied'} # We should not run into this path :-)
-
-
-    # SAVE session - for the follwing resources that pass through this function and for page relaods
-    last_session = context['session']
-    #print last_session
-
-    #check if ADMIN
-    user_info = context['auth_user_obj']
-    org_list = tk.get_action('organization_list_for_user')({}, {"id": user_info.id, "permission": "member_create"})
-    #print "Hello2"
-    #print org_list
-    for x in org_list:
-        #print x.values()
-        if owner_org in x.values():
-                #print "success"
-                #print last_session
-                last_access = True
-                return {'success': True}
-
-    # Editors only allowed to edit own packages
-    if user_info.id == my_package.creator_user_id or user_info.email == my_package.maintainer_email or user_info.email == my_package.author_email:
-        last_access = True
-        return {'success': True}
-    else:
-        last_access = False
-        return {'success': False, 'msg': 'You are only allowed to edit your own datasets'}
-
 class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
-    # Functions moved to iauth
-    #plugins.implements(plugins.IAuthFunctions)
+    #plugins.implements(plugins.IAuthFunctions) # Functions moved to iauth
     #plugins.implements(plugins.IMapper)
 
 

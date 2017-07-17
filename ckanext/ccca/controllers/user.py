@@ -137,7 +137,7 @@ class UserController(p.toolkit.BaseController):
 
             path = config.get('ckanext.ccca.path_for_ldifs')
 
-            send_from = 'test@sandboxdc.ccca.ac.at'
+            send_from = 'new_user@data.ccca.ac.at'
             send_to = ['datenzentrum@ccca.ac.at']
             subject = 'New user request CKAN: ' + data_dict['name']
 
@@ -159,7 +159,7 @@ class UserController(p.toolkit.BaseController):
              You can find the file here: ''' + path + '''
              and it is called: ''' + data_dict['name']+'.ldif' + '''
              Create user on your LDAP Server with the following command:
-             adduser_ldap_ckan.sh HOST FILE'''
+             adduser_ldap_ckan.sh HOST FILE APIKey'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
             #print "Here we are 3"
