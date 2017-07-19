@@ -1,0 +1,66 @@
+{% extends "page.html" %}
+
+{% block subtitle %}{{ _('All Users') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li class="active">{{ h.nav_link(_('Users'), controller='user', action='index') }}</li>
+{% endblock %}
+
+{%- set org_list = h.ccca_get_orgs () -%}
+
+
+{% block primary_content %}
+
+  <article class="module">
+    <div class="module-content">
+      <h1 class="page-heading">
+        {% block page_heading %}{{ _('Users') }}
+
+        {% endblock %}
+
+      </h1>
+
+      {% block users_list %}
+
+          <table class="user-list  table ">
+            <thead>
+            <tr>
+              <th> Name </th>
+              <th> Organization(s) </th>
+            </tr>
+            </thead>
+          {% block users_list_inner %}
+            {% for user in c.page.items %}
+                  {% set user_name = user['name']%}
+                  {% if user_name in org_list %}
+                    {% set orgs = org_list[user_name] %}
+                  {% else %}
+                    {% set orgs = None %}
+                  {% endif %}
+                  <tr>
+                  <td>{{ h.linked_user(user_name, maxlength=20) }} </td>
+                    <td>
+                    {% if orgs != None %}
+                        {% for o in orgs %}
+                           <a href="{{o.url}}">{{o.display_name}}</a>
+                        {% endfor %}
+                    {% else %}
+                      None
+                    {% endif %}
+                    </td>
+                  </tr>
+            {% endfor %}
+          {% endblock %}
+        </table>
+
+      {% endblock %}
+    </div>
+    {% block page_pagination %}
+      {{ c.page.pager(q=c.q, order_by=c.order_by) }}
+    {% endblock %}
+  </article>
+{% endblock %}
+
+{% block secondary_content %}
+  {% snippet 'user/snippets/user_search.html' %}
+{% endblock %}

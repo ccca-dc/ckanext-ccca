@@ -1,7 +1,5 @@
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-#import ckan.lib.base as base
-
 
 import ckan.model as model
 import ckan.logic as logic
@@ -9,12 +7,9 @@ get_action = logic.get_action
 NotFound = logic.NotFound
 NotAuthorized = logic.NotAuthorized
 ValidationError = logic.ValidationError
-#import ckanext.ccca.logic.action.metadata as action
-#import helpers as h
-#import ckanext.ccca.helpers as helpers # Anja 28.11.16
 from pylons import g, c, config, response, request
-""" Anja 28.11.2016 """
 from ckanext.ccca import helpers
+import ckan.plugins.toolkit as tk
 
 import logging
 
@@ -24,6 +19,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
+    #plugins.implements(plugins.IAuthFunctions) # Functions moved to iauth
+    #plugins.implements(plugins.IMapper)
+
 
     # IConfigurer
     def update_config(self, config_):
@@ -39,7 +37,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_number_organizations': helpers.ccca_get_number_organizations,
             'ccca_get_random_organization': helpers.ccca_get_random_organization,
             'ccca_get_number_groups': helpers.ccca_get_number_groups,
-            'ccca_get_random_group': helpers.ccca_get_random_group
+            'ccca_get_random_group': helpers.ccca_get_random_group,
+            'ccca_check_member': helpers.ccca_check_member,
+            'ccca_get_user_dataset':helpers.ccca_get_user_dataset,
+            'ccca_get_orgs': helpers.ccca_get_orgs
             }
 
     # IRoutes
@@ -73,8 +74,29 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('organization', '/organization',
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='index')
+
+        # List Members of own organization
+        map.connect('organization_list_members', '/organization/members_list/{id}',
+                    controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
+                    action='members_list', ckan_icon='group')
         return map
 
     def after_map(self, map):
         #log.fatal("==================================> %s" % map)
         return map
+
+    #IAuthFunctions
+    #def get_auth_functions(self):
+        #return {'package_update': package_update}
+
+    """
+    #IMapper
+    def after_update(mapper, connection, instance):
+        print ("After update")
+
+    def before_update(mapper, connection, instance):
+        print ("Before update")
+
+    def before_insert(mapper, connection, instance):
+        print ("Before insert")
+    """

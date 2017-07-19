@@ -84,3 +84,23 @@ class CCCAOrganizationController(organization.OrganizationController):
         c.page.items = page_results
         return render(self._index_template(group_type),
                       extra_vars={'group_type': group_type})
+
+    def members_list(self, id):
+        #print "*************** Anja Group members"
+        group_type = self._ensure_controller_matches_group_type(id)
+
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author}
+
+        try:
+            c.members = self._action('member_list')(
+                context, {'id': id, 'object_type': 'user'}
+            )
+            data_dict = {'id': id}
+            data_dict['include_datasets'] = False
+            c.group_dict = self._action('group_show')(context, data_dict)
+        except NotAuthorized:
+            abort(401, _('Unauthorized to delete group %s') % '')
+        except NotFound:
+            abort(404, _('Group not found'))
+        return self._render_template('group/members_list.html', group_type)

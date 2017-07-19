@@ -20,8 +20,80 @@ log = logging.getLogger(__name__)
 """ Anja 29.9.2016 """
 """ Anja 23.11.2016 """
 import random
-""" Anja 23.11.2016 """
+""" Anja 9.6.2017 """
+import ckan.lib.helpers as h
 
+""" Anja 17.7.17 """
+
+
+def ccca_get_orgs ():
+    """ Delivers an user-dependent lsit of organizations """
+
+    all_orgs = tk.get_action('organization_list')({},{'all_fields':True, 'include_users':True})
+    all_users = tk.get_action('user_list')({},{})
+
+    # make a simple list of users in every org
+    user_org_list = {}
+    for org in all_orgs:
+        u_list = []
+        users = org['users']
+        for us in users:
+            u_list.append(us['name'])
+        user_org_list[org['name']] = u_list
+
+
+    # make the return dict
+    user_orgs = {}
+    for u in all_users:
+
+        orgs_for_user = []
+        for org in all_orgs:
+            # check of current user (u) in list
+            if u['name'] in user_org_list[org['name']] and user_org_list[org['name']] != None:
+
+                org_sum = {}
+                org_sum['name'] = org['name']
+                org_sum['display_name'] = org['display_name']
+                org_sum['url'] = h.url_for(controller='organization', action='read', id=org['name'])
+                orgs_for_user.append(org_sum)
+
+                #just one
+                #user_orgs[u['name']] = org_sum
+                # one org is enough
+                #break
+
+        user_orgs[u['name']] =  orgs_for_user
+        #print user_orgs[u['name']]       
+    #print "USer_org_list"
+    #print user_orgs
+    return user_orgs
+
+
+
+""" Anja 9.6.2017"""
+def ccca_get_user_dataset(user_id):
+    all_sets = tk.get_action('user_show')({}, {"id": user_id, "include_datasets": True})
+    try:
+        #for x in all_sets['datasets']:
+            #print x['id']
+        one_set = all_sets['datasets'][0]
+        #print one_set['id']
+        return one_set
+    except:
+        return None
+
+def ccca_check_member (context, org_id):
+    user_groups = h.organizations_available(permission="read")
+    #print org_id
+    #print user_groups
+    for g in user_groups:
+        if org_id == g['id']:
+            return True
+
+    return False
+""" Anja 9.6.2017 End """
+
+""" Anja 23.11.2016 """
 def ccca_count_resources():
     """ Anja 21.11.2016
     log.debug("ccca_count_resources ******************")

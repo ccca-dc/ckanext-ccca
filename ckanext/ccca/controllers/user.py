@@ -102,9 +102,42 @@ class UserController(p.toolkit.BaseController):
             context['message'] = data_dict.get('log_message', '')
             captcha.check_recaptcha(request)
 
+            # check for unique email addresses within our system
+            # i.e. every email only once
+            new_mail = u''
+            full_name = u''
+            for k,v in data_dict.iteritems():
+                if (k == 'email'):
+                    new_mail = v
+                if (k == 'fullname'):
+                    full_name = v
+
+            if full_name == u'':
+                error_msg = _(u'Please insert full name.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
+            #print new_mail
+            if new_mail == u'':
+                error_msg = _(u'Please insert a valid mail address.')
+                h.flash_error(error_msg)
+                return self.new_mail_request(data_dict)
+
+            u_list = get_action('user_list')({},{"order_by": "email"})
+
+            # need to access the ckan email_hash
+            otto = model.User(email=new_mail)
+            #print otto.email_hash
+            for x in u_list:
+                if x['email_hash'] == otto.email_hash:
+                    error_msg = _(u'Error: Email Address already registered: ' + new_mail + '.  If you are insecure about this message please contact us: datanzentrum@ccca.ac.at')
+                    h.flash_error(error_msg)
+                    return self.new_mail_request(data_dict)
+
+            # end check email unique
+
             path = config.get('ckanext.ccca.path_for_ldifs')
 
-            send_from = 'test@sandboxdc.ccca.ac.at'
+            send_from = 'new_user@data.ccca.ac.at'
             send_to = ['datenzentrum@ccca.ac.at']
 
             subject = 'New user request CKAN: ' + data_dict['name']
@@ -114,10 +147,13 @@ class UserController(p.toolkit.BaseController):
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
 
+            #print "HEre we are"
             if os.path.exists(path + '/' + data_dict['name'] + '.ldif'):
                 error_msg = _('Username alreay exists, use another one.')
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
+
+            #print "HEre we are 2"
 
             text = '''
              A new user registered.
@@ -127,6 +163,7 @@ class UserController(p.toolkit.BaseController):
              adduser_ldap_ckan.sh HOST FILE APIKey'''
 
             _make_ldif(context, data_dict, config.get('ckanext.ccca.path_for_ldifs') + '/' + data_dict['name']+'.ldif')
+            #print "Here we are 3"
             _send_mail(send_from, send_to, subject, text)
 
         except NotAuthorized:
@@ -168,7 +205,7 @@ def _send_mail(send_from, send_to, subject, text):
     from os.path import basename
 
     assert isinstance(send_to, list)
-
+    #print "mail_sending_part"
     msg = MIMEMultipart()
     msg['From'] = send_from
     msg['To'] = COMMASPACE.join(send_to)
@@ -230,7 +267,6 @@ def _make_ldif(context, data_dict, filepath):
     with open(filepath, 'a') as file:
         ldif_writer = ldif.LDIFWriter(file, filepath)
         ldif_writer.unparse(dn_group, entry_group)
-
 
     # Add user to general user group
     dn_group_users = 'cn=users,ou=groups,dc=ldap,dc=ccca,dc=ac,dc=at'

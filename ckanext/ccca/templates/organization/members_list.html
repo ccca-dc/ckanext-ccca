@@ -1,0 +1,40 @@
+{% extends "organization/read_base.html" %}
+
+{% block subtitle %}{{ _('Members') }} - {{ super() }}{% endblock %}
+
+
+
+{% block primary_content_inner %}
+  <h3 class="page-heading">{{ _('{0} members'.format(c.members|length)) }}</h3>
+  <table class="table table-header table-hover table-bordered">
+    <col width="40" />
+    <col width="20" />
+    <col width="60" />
+    <thead>
+      <tr>
+        <th scope="col">{{ _('User') }}</th>
+        <th scope="col">{{ _('Role') }}</th>
+        <th scope="col">{{ _('Example Dataset') }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for user_id, user, role in c.members %}
+        <tr>
+          <td class="media">
+            {{ h.linked_user(user_id, maxlength=20) }}
+          </td>
+          <td>{{ role }}</td>
+          <td>
+            {% set oneset = h.ccca_get_user_dataset(user_id) %}
+            {% if oneset != None %}
+              {% set d_url = h.url_for(controller='package', action='read', id=oneset.id) %}
+                <a href="{{ d_url }}">{{oneset.title}}</a>
+            {% endif %}
+
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
