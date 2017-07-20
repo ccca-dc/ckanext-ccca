@@ -6,8 +6,6 @@
   <li class="active">{{ h.nav_link(_('Users'), controller='user', action='index') }}</li>
 {% endblock %}
 
-{%- set org_list = h.ccca_get_orgs () -%}
-
 
 {% block primary_content %}
 
@@ -30,6 +28,7 @@
             </tr>
             </thead>
           {% block users_list_inner %}
+            {%- set org_list = h.ccca_get_orgs () -%}
             {% for user in c.page.items %}
                   {% set user_name = user['name']%}
                   {% if user_name in org_list %}
