@@ -1,4 +1,5 @@
 import re
+import ckan.logic as logic
 
 import ckan.controllers.group as group
 import ckan.controllers.organization as organization
@@ -7,7 +8,9 @@ import ckan.model as model
 import ckan.lib.helpers as h
 import ckan.lib.base as base
 
+abort = base.abort
 render = base.render
+NotAuthorized = logic.NotAuthorized
 
 
 import ckan.plugins as plugins
@@ -46,7 +49,7 @@ class CCCAOrganizationController(organization.OrganizationController):
             self._check_access('site_read', context)
 
         except NotAuthorized:
-            abort(401, _('Not authorized to see this page'))
+            abort(401, _('Not authorized to see this group'))
 
         # pass user info to context as needed to view private datasets of
         # orgs correctly
@@ -86,7 +89,7 @@ class CCCAOrganizationController(organization.OrganizationController):
                       extra_vars={'group_type': group_type})
 
     def members_list(self, id):
-        #print "*************** Anja Group members"
+
         group_type = self._ensure_controller_matches_group_type(id)
 
         context = {'model': model, 'session': model.Session,
@@ -99,8 +102,9 @@ class CCCAOrganizationController(organization.OrganizationController):
             data_dict = {'id': id}
             data_dict['include_datasets'] = False
             c.group_dict = self._action('group_show')(context, data_dict)
+
         except NotAuthorized:
-            abort(401, _('Unauthorized to delete group %s') % '')
+            abort(401, _('Unauthorized to see group %s') % '')
         except NotFound:
             abort(404, _('Group not found'))
         return self._render_template('group/members_list.html', group_type)

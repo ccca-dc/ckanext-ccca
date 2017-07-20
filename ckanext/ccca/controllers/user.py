@@ -122,7 +122,11 @@ class UserController(p.toolkit.BaseController):
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
 
+            #print "HEre we are"
+            # ATTENTION: This action requires that userlist is available for anon users!
             u_list = get_action('user_list')({},{"order_by": "email"})
+
+            #print "HEre we are 2"
 
             # need to access the ckan email_hash
             otto = model.User(email=new_mail)
@@ -147,8 +151,8 @@ class UserController(p.toolkit.BaseController):
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
 
-            #print "HEre we are"
             if os.path.exists(path + '/' + data_dict['name'] + '.ldif'):
+
                 error_msg = _('Username alreay exists, use another one.')
                 h.flash_error(error_msg)
                 return self.new_mail_request(data_dict)
@@ -166,7 +170,8 @@ class UserController(p.toolkit.BaseController):
             #print "Here we are 3"
             _send_mail(send_from, send_to, subject, text)
 
-        except NotAuthorized:
+        except NotAuthorized, e:
+            print (e)
             error_msg = _(u'Username already exists, use another one.')
             h.flash_error(error_msg)
             return self.new_mail_request(data_dict)

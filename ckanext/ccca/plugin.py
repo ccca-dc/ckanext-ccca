@@ -40,7 +40,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_random_group': helpers.ccca_get_random_group,
             'ccca_check_member': helpers.ccca_check_member,
             'ccca_get_user_dataset':helpers.ccca_get_user_dataset,
-            'ccca_get_orgs': helpers.ccca_get_orgs
+            'ccca_get_orgs': helpers.ccca_get_orgs,
+            'ccca_get_org_and_role': helpers.ccca_get_org_and_role,
+            'ccca_get_orgs_for_user': helpers.ccca_get_orgs_for_user
             }
 
     # IRoutes

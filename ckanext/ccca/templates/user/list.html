@@ -6,8 +6,6 @@
   <li class="active">{{ h.nav_link(_('Users'), controller='user', action='index') }}</li>
 {% endblock %}
 
-{%- set org_list = h.ccca_get_orgs () -%}
-
 
 {% block primary_content %}
 
@@ -21,7 +19,11 @@
       </h1>
 
       {% block users_list %}
+      {#} Only for logged in users {#}
+      {#} Not possible via user_list authorization {#}
+      {#} because user_list public by ckan default and used elsewehre, Anja 20.7.17 {#}
 
+      {% if c.userobj != None %}
           <table class="user-list  table ">
             <thead>
             <tr>
@@ -30,6 +32,7 @@
             </tr>
             </thead>
           {% block users_list_inner %}
+            {%- set org_list = h.ccca_get_orgs () -%}
             {% for user in c.page.items %}
                   {% set user_name = user['name']%}
                   {% if user_name in org_list %}
@@ -52,7 +55,11 @@
             {% endfor %}
           {% endblock %}
         </table>
-
+      {% else %}
+          <br>
+            Sorry, user list only available for logged in users.
+          <br><br>
+      {% endif %}
       {% endblock %}
     </div>
     {% block page_pagination %}
