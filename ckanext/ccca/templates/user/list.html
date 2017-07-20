@@ -19,7 +19,11 @@
       </h1>
 
       {% block users_list %}
+      {#} Only for logged in users {#}
+      {#} Not possible via user_list authorization {#}
+      {#} because user_list public by ckan default and used elsewehre, Anja 20.7.17 {#}
 
+      {% if c.userobj != None %}
           <table class="user-list  table ">
             <thead>
             <tr>
@@ -51,7 +55,11 @@
             {% endfor %}
           {% endblock %}
         </table>
-
+      {% else %}
+          <br>
+            Sorry, user list only available for logged in users.
+          <br><br>
+      {% endif %}
       {% endblock %}
     </div>
     {% block page_pagination %}

@@ -20,7 +20,10 @@
   {{ h.build_nav_icon('user_activity_stream', _('Activity Stream'), id=user.name) }}
 {% endblock %}
 
+
 {% block secondary_content %}
+{% if c.userobj != None %}
+
 <div class="module context-info">
   <section class="module-content">
     {% block secondary_content_inner %}
@@ -92,7 +95,7 @@
           <dd>{{ _(user.state) }}</dd>
         </dl>
 
-        {#} CCCA Extentsion: organization and role, Anja 20.7.17 {#}
+        {#} CCCA Extension: organization and role, Anja 20.7.17 {#}
         {% set user_orgs_and_roles = h.ccca_get_org_and_role(user)%}
         {% if user_orgs_and_roles != None %}
         <dl>
@@ -106,7 +109,7 @@
               {% endif %}
         </dl>
         {% endif %}
-        {#} CCCA Extentsion: organization and role, Anja 20.7.17  END {#}
+       {#} CCCA Extension: organization and role, Anja 20.7.17  END {#}
 
         {% if c.is_myself %}
           <dl>
@@ -119,4 +122,5 @@
     {% endblock %}
   </section>
 </div>
+{% endif %}
 {% endblock %}
