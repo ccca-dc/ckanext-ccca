@@ -23,7 +23,25 @@ import random
 """ Anja 9.6.2017 """
 import ckan.lib.helpers as h
 
-""" Anja 17.7.17 """
+
+def ccca_organizations_available_with_private():
+    '''Return a list of organizations including (private) package_count
+    '''
+
+    context = {'user': c.user}
+    data_dict = {'permission': 'read'}
+    # delivers only public packages (count)
+    org_list = logic.get_action('organization_list_for_user')(context, data_dict)
+
+    for org in org_list:
+        if 'name' in org:
+            data_dict['id'] = org['name']
+            corr_org = logic.get_action('organization_show')(context, data_dict)
+            if 'package_count' in corr_org:
+                org['package_count'] = corr_org['package_count']
+
+    return org_list
+
 
 def ccca_get_org_and_role(user):
 

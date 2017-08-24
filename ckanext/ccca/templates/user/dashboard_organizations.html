@@ -3,7 +3,8 @@
 
 {% block primary_content_inner %}
   <h2 class="hide-heading">{{ _('My Organizations') }}</h2>
-  {% set organizations = h.organizations_available(permission='read') %}
+  {% set organizations = h.ccca_organizations_available_with_private() %}
+
   {% if organizations %}
     <div class="wide">
       {% snippet "organization/snippets/organization_list.html", organizations=organizations %}
