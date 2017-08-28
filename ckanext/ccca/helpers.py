@@ -51,7 +51,8 @@ def ccca_get_org_and_role(user):
         return None
 
     user_orgs = ccca_get_orgs_for_user(user_name)
-
+    #print "****************** ccca_get_org_and_role"
+    #print user_orgs
     if  user_orgs != None:
         for org in user_orgs:
             #print org
