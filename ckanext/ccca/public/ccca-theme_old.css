@@ -1,0 +1,80 @@
+
+/* Pages */
+
+.wrapper {
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: White;
+}
+
+/* Anja, 28.11.16 */
+.ccca-heading{
+  background: none;
+}
+.hero{
+background: white;
+background: url("/images/Background_DataServer_gas2.png") repeat;
+}
+
+/* Anja 28.11.16 */
+@media (min-width: 980px) {
+div.nav-collapse.collapse {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.header-image.pull-left {
+  max-width:55%;
+}
+
+.primarycontent{
+    float: left;
+    margin-left: 0;
+    max-width: 220px;
+    max-width: 420px;
+}
+.secondarycontent{
+    float: right;
+    margin-left: 0;
+    width: 700px;
+}
+@media (min-width: 768px) {
+  .footerdiv {
+    float: left;
+    width: 33.33333333%; }
+}
+
+
+/* Anja : removed: 28.11.16 */
+/* Responsive images (ensure images don't scale beyond their parents) */
+/*
+img {
+
+  max-width: 80%;
+}
+*/
+
+/* .alert { */
+/* 	margin-bottom:0px; */
+/* } */
+
+/* About page */
+/* .nav-aside li a i { */
+/*   display: none; */
+/* } */
+/* #datacite { */
+/*   margin: 50px 20px 0 0; */
+/* } */
+/* ol#credits { */
+/*   list-style: none; */
+/*   margin-left: 20px; */
+/* } */
+/* ol#credits li { */
+/*   margin: 5px 0; */
+/* } */
+/* .record-content table#determinations tbody tr th.name { */
+/*   width: 50%; */
+/* } */
