@@ -17,8 +17,8 @@ Example:
 <li class="media-item">
   {% block item_inner %}
     {% block image %}
-      {#}<img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ group.name }}" class="media-image">{#}
-       <img src="{{h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ cat.name }}" class="media-image">
+      <img src="{{ cat.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ cat.name }}" class="media-image">
+       {#}<img src="{{h.url_for_static('/images/agri.png') }}" alt="{{ cat.name }}" class="media-image">{#}
     {% endblock %}
     {% block title %}
       <h4 class="media-heading" style="font-size:14px;text-align=center">{{ cat.name }}</h4>

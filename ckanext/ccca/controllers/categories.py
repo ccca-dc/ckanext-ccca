@@ -50,6 +50,27 @@ class CCCACategoriesController(base.BaseController):
         for val in values:
             categories = {}
             match = next((t for t in topic_facets if t['name'] == val), None)
+            if val == "012":
+                categories['image_display_url'] = h.url_for_static('/images/water.png')
+            elif val == "001":
+                categories['image_display_url'] = h.url_for_static('/images/agriculture.png')
+            elif val == "005":
+                categories['image_display_url'] = h.url_for_static('/images/tourism.png')
+            elif val == "002":
+                categories['image_display_url'] = h.url_for_static('/images/pheno.png')
+            elif val == "004":
+                categories['image_display_url'] = h.url_for_static('/images/climate.png')
+            elif val == "009":
+                categories['image_display_url'] = h.url_for_static('/images/health.png')
+            elif val == "017":
+                categories['image_display_url'] = h.url_for_static('/images/infrastructure.png')
+            elif val == "018":
+                categories['image_display_url'] = h.url_for_static('/images/transport.png')
+            elif val == "019":
+                categories['image_display_url'] = h.url_for_static('/images/energy.png')
+            elif val == "020":
+                categories['image_display_url'] = h.url_for_static('/images/disaster.png')
+
             categories['count'] = match['count'] if match else 0
             categories['value'] = val
             categories['name'] =  hf.filtersearch_get_topic(topic_field,val)
