@@ -61,7 +61,7 @@ class CCCACategoriesController(base.BaseController):
             elif val == "004":
                 categories['image_display_url'] = h.url_for_static('/images/climate.png')
             elif val == "009":
-                categories['image_display_url'] = h.url_for_static('/images/health2.png')
+                categories['image_display_url'] = h.url_for_static('/images/health.png')
             elif val == "017":
                 categories['image_display_url'] = h.url_for_static('/images/infrastructure.png')
             elif val == "018":
@@ -69,7 +69,7 @@ class CCCACategoriesController(base.BaseController):
             elif val == "019":
                 categories['image_display_url'] = h.url_for_static('/images/energy.png')
             elif val == "020":
-                categories['image_display_url'] = h.url_for_static('/images/disaster2.png')
+                categories['image_display_url'] = h.url_for_static('/images/disaster.png')
 
             categories['count'] = match['count'] if match else 0
             categories['value'] = val
