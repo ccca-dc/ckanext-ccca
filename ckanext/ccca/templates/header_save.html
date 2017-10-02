@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+<!-- Remove search bar -->
+{% block header_wrapper %}
+  {{ super() }}
+  {% block header_site_search %}
+  {% endblock %}
+{% endblock %}

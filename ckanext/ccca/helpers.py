@@ -22,7 +22,8 @@ log = logging.getLogger(__name__)
 import random
 """ Anja 9.6.2017 """
 import ckan.lib.helpers as h
-
+# Anja 27.9.17
+from ckanext.filtersearch import helpers as hf
 
 def ccca_organizations_available_with_private():
     '''Return a list of organizations including (private) package_count

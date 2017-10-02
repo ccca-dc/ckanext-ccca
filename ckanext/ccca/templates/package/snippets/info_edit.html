@@ -1,0 +1,58 @@
+{#
+Displays a sidebard module with information for given package
+
+pkg    - The package dict that owns the resources.
+
+Example:
+
+  {% snippet "package/snippets/info_edit.html", pkg=pkg %}
+
+#}
+{% block package_info %}
+  {% if pkg %}
+    <section class="module module-narrow">
+      <div class="module context-info">
+        <div class="module-content">
+          {% block package_info_inner %}
+            {% block heading %}
+              <h1 class="heading">{{ pkg.title or pkg.name }}</h1>
+              <hr>
+            {% endblock %}
+            {% block package_notes %}
+              {% if pkg.notes %}
+                <div class="notes embedded-content">
+                  {{ h.render_markdown(pkg.notes) }}
+                </div>
+              {% endif %}
+            {% endblock %}
+            {#}
+            {% block nums %}
+              <div class="nums">
+                  <dl>
+                  <dt>{{ _('Followers') }}</dt>
+                  <dd>{{ h.SI_number_span(h.follow_count('dataset', pkg.id)) }}</dd>
+                  </dl>
+
+                  {% if pkg.tracking_summary %}
+                  <dl>
+                  <dt>{{ _('Views') }}</dt>
+                  <dd>{{ h.SI_number_span(pkg.tracking_summary.total) }}</dd>
+                  </dl>
+                 {% endif %}
+              <div>
+            {% endblock %}
+
+            {% block follow_button %}
+              {% set current_url = h.full_current_url() %}
+             <a href="https://www.facebook.com/sharer.php?u={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Facebook"><i style="color:#3c5a99" class="icon-facebook-sign"></i> </a>
+             <a href="https://twitter.com/share?url={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Twitter"><i style="color:#57c1df" class="icon-twitter-sign"></i> </a>
+             <a href="https://plus.google.com/share?url={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Google+" class="nav-item"><i style="color:#ea4335" class="icon-google-plus-sign"></i> </a>
+            {% endblock %}
+            {#}
+
+          {% endblock %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

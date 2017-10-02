@@ -11,7 +11,6 @@ from pylons import g, c, config, response, request
 from ckanext.ccca import helpers
 import ckan.plugins.toolkit as tk
 
-
 import logging
 
 log = logging.getLogger(__name__)
@@ -83,12 +82,6 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('organization_list_members', '/organization/members_list/{id}',
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
-
-        # Categories
-        map.connect('categories', '/categories',
-                    controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
-                    action='index') #, ckan_icon='star'
-
         return map
 
     def after_map(self, map):
