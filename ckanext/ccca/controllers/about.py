@@ -9,6 +9,12 @@ class AboutController(p.toolkit.BaseController):
     """
     Controller for displaying about pages
     """
+    def news(self):
+        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive'})
+
+    def usage(self):
+        return p.toolkit.render('about/usage.html', {'title': 'Usage Information'})
+
     def citation(self):
         return p.toolkit.render('about/citation.html', {'title': 'Citation and Identification'})
 

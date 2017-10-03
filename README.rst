@@ -2,7 +2,7 @@
 ckanext-ccca
 ============
 
-This is a plugin for the CKAN data portal software http://ckan.org/ to extend its functionality for the CCCA (http://ccca.ac.at) open data portal
+This is a plugin for the CKAN data server software http://ckan.org/ to extend its functionality for the CCCA (http://data.ccca.ac.at) open data server
 
 
 ------------

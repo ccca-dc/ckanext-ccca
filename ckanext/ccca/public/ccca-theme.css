@@ -1,12 +1,56 @@
-/* Class copied from media-view) */
+/* Adaptions for  smartphones  */
+
+.adapt_for_smartphone_margin {
+}
+@media only screen and (max-width : 420px) {
+  .adapt_for_smartphone_margin {
+    margin-top: 20px
+  }
+}
+
+.adapt_for_smartphone_width {
+}
+.adapt_for_smartphone_text {
+}
+@media only screen and (max-width : 768px) {
+.adapt_for_smartphone_width {
+  width: 100%;
+}
+}
+@media only screen and (max-width : 768px) {
+.adapt_for_smartphone_text {
+  text-align:center;
+}
+}
+@media only screen and (max-width : 420px) {
+.hide_for_smartphone {
+  display:none;
+}
+}
+.hide_for_other {
+}
+@media only screen and (min-width : 421px) {
+.hide_for_other {
+  display:none;
+}
+}
+
+
 
 /***************** Layout new ******************/
 /*    include main.css from ckan               */
 /* Anja, 19.9.2017 ... roughly ....            */
+/* span12 +100                                */
+/* span9 +100                                 */
+/* span6 +50                                  */
 /* some items needed to be removed:            */
 /* .pill  some other ... -> resource_facet_hint */
 /* padding-top auf 0 -> page-header (redesign)  */
 /* media- XX von 189 auf 222, wg span9 Änderung */
+/* modifications: homepage stats ul li wg phones */
+/*           Zeile 8263                         */
+/* info blocks: 6413 6419                       */
+/* changes marked by 'Anja' line no roughly    */
 
 article,
 aside,
@@ -279,7 +323,7 @@ a:focus {
   width: 640px;
 }
 .span6 {
-  width: 460px;
+  width: 510px;
 }
 .span5 {
   width: 380px;
@@ -1161,7 +1205,7 @@ textarea.span7,
 input.span6,
 textarea.span6,
 .uneditable-input.span6 {
-  width: 446px;
+  width: 496px;
 }
 input.span5,
 textarea.span5,
@@ -1867,7 +1911,7 @@ table th[class*="span"],
 .table td.span6,
 .table th.span6 {
   float: none;
-  width: 444px;
+  width: 494px;
   margin-left: 0;
 }
 .table td.span7,
@@ -4860,7 +4904,7 @@ a.badge:focus {
     width: 514px;
   }
   .span6 {
-    width: 352px;
+    width: 392px;
   }
   .span5 {
     width: 290px;
@@ -5128,7 +5172,7 @@ a.badge:focus {
   input.span6,
   textarea.span6,
   .uneditable-input.span6 {
-    width: 338px;
+    width: 388px;
   }
   input.span5,
   textarea.span5,
@@ -6368,13 +6412,13 @@ textarea {
   }
   .form-horizontal .info-inline {
     float: right;
-    width: 265px;
+    width: 365px; /* Anja changed +100 */
     margin-top: 0;
     padding-bottom: 0;
   }
 }
 .form-horizontal .control-medium .info-block.info-inline {
-  width: 165px;
+  width: 265px; /* Anja changed +100 */
 }
 .form-horizontal .info-block:before {
   font-size: 2.2em;
@@ -8229,6 +8273,12 @@ h4 small {
   float: left;
   width: 25%;
   font-weight: 300;
+}
+/* Anja, 3.10 .... */
+@media only screen and (max-width : 768px) {
+  .homepage .stats ul li {
+    width: 100%;
+  }
 }
 .homepage .stats ul li a {
   display: block;

@@ -50,6 +50,12 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # IRoutes
     def before_map(self, map):
         # About pages
+        map.connect('about_news', '/about/news',
+                    controller='ckanext.ccca.controllers.about:AboutController',
+                    action='news')
+        map.connect('about_usage', '/about/usage',
+                    controller='ckanext.ccca.controllers.about:AboutController',
+                    action='usage')
         map.connect('about_citation', '/about/citation',
                     controller='ckanext.ccca.controllers.about:AboutController',
                     action='citation')
@@ -88,6 +94,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('categories', '/categories',
                     controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
                     action='index') #, ckan_icon='star'
+
+        #Admin News form
+        map.connect('ckanadmin_news', '/ckan-admin/news', controller='ckanext.ccca.controllers.admin:CCCAAdminController',
+                action='news', ckan_icon='star')
 
         return map
 
