@@ -50,9 +50,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     # IRoutes
     def before_map(self, map):
         # About pages
-        map.connect('about_news', '/about/news',
+        map.connect('about_news', '/about/news_archive',
                     controller='ckanext.ccca.controllers.about:AboutController',
-                    action='news')
+                    action='news_archive')
         map.connect('about_usage', '/about/usage',
                     controller='ckanext.ccca.controllers.about:AboutController',
                     action='usage')

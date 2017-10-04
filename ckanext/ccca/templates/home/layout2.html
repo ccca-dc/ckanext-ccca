@@ -28,7 +28,12 @@
       </div>
       <div class="span6 col2">
         {% block featured_group %}
+        {% if g.site_about %}
         {% snippet 'home/snippets/news.html' %}
+        {% else %}
+        {% snippet 'home/snippets/featured_group.html' %}
+        {% endif %}
+
         {% endblock %}
         </div>
     </div>

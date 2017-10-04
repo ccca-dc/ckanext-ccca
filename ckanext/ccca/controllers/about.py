@@ -4,13 +4,42 @@ from ckan.common import _, g, c
 import ckan.lib.helpers as h
 from ckanext.stats import stats as stats_lib
 
+from pylons import config
 
 class AboutController(p.toolkit.BaseController):
     """
     Controller for displaying about pages
     """
-    def news(self):
-        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive'})
+    def news_archive(self):
+
+        if 'ckanext.ccca.news_archive' in config:
+            news_file =  config.get ('ckanext.ccca.news_archive')
+    
+        news_list = []
+        dict_item = {}
+        try:
+            news_f = open (news_file, 'r')
+            if news_f:
+                 for line in news_f:
+                      if line.startswith('Date#:'):
+                          splitLine = line.split('Date#:')
+                          if len(splitLine) > 1:
+                             news_list.append(dict_item)
+                             dict_item = {}
+                             dict_item['date'] = splitLine[1]
+                             dict_item['news'] = ''
+                      else:
+                          dict_item['news']+= line
+
+                 # add last element
+                 news_list.append(dict_item)
+                 # remove first element
+                 news_list.pop(0)
+
+                 news_f.close()
+        except: pass
+
+        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news_list': news_list})
 
     def usage(self):
         return p.toolkit.render('about/usage.html', {'title': 'Usage Information'})

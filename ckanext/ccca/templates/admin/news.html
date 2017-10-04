@@ -13,7 +13,9 @@
     {% block admin_form %}
       {{ autoform.generate(form_items, data, errors) }}
     {% endblock %}
-    {#}<input type="radio" name="news_arcive"> "Save to News Archive"{#}
+    {% if store_news %}
+     <input type="radio" name="news_archive" value="Save to News Archive"> Save to News Archive
+     {% endif %}
     <div class="form-actions">
       <button type="submit" class="btn btn-primary" name="save">{{ _('Update News') }}</button>
     </div>
@@ -28,7 +30,17 @@
     </h2>
     <div class="module-content">
       {% block admin_form_help %}
-      Enter date and text for the news of the day ...
+      <p>
+      Enter date and text for the news of the day :-)
+    </p>
+    <p>
+      <strong>Date:</strong> Enter a date of the news.
+      IMPORTANT: If your leave this field empty, the Startpage will show "featured groups" and
+      <strong>NO</strong> News section
+    </p>
+    <p><strong>News:</strong> Enter any text you would like to have displayed in the news section of the startpage.
+       IMPORTANT: add a date in the <strong>Date</strong> field above.
+     </p>
       {% endblock %}
     </div>
   </div>

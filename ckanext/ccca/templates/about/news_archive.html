@@ -4,23 +4,20 @@
 
 {% block breadcrumb_content %}
   <li>{% link_for _('About'), controller='home', action='about' %}</li>
-  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='news' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='news_archive' %}</li>
 {% endblock %}
 
 {% block about_content %}
 
     <h1 class="page-heading">{{ title }}</h1>
 
-      <h2>3. 10. 2017 </h2>
-      <p>We are happy to introduce a range of improvements for the CCCA Data Server (CADS).</p>
-      <p>Resource packages and data stored within this data server in general are the
-      result of hard work and dedication of the authors, collaborators and the CCCA
-      Data Centre staff. Some of these resources are individual long-term work of
-      researchers, while some belong to important institutions. With citation of used
-      data, we are able to keep track of the significance of this research and work,
-      to estimate the importance of our role in the process. Furthermore, you
-      encourage other community members to share their data without fear of later harm
-      on their intellectual property rights.</p>
+    {% for item in news_list %}
+      {% if item['news'] != '\n' %}
+      <h1 class="module-heading">{{item['date']}}</h1>
+      <p>{{h.render_markdown(item['news'])}}</p>
+      <br>
+      {% endif %}
+    {% endfor %}
 
 
 
