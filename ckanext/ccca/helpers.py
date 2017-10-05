@@ -25,6 +25,25 @@ import ckan.lib.helpers as h
 # Anja 27.9.17
 from ckanext.filtersearch import helpers as hf
 
+from pylons import config
+
+def ccca_check_news_archive():
+    if 'ckanext.ccca.news_archive' in config:
+        news_file =  config.get ('ckanext.ccca.news_archive')
+    else:
+        return False
+    try:
+        news_f = open (news_file, 'a')
+
+    except:
+        return False
+
+    if not news_f:
+        return False
+
+    return True
+
+
 def ccca_organizations_available_with_private():
     '''Return a list of organizations including (private) package_count
     '''

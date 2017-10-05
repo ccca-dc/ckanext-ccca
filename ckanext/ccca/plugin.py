@@ -44,12 +44,19 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_orgs': helpers.ccca_get_orgs,
             'ccca_get_org_and_role': helpers.ccca_get_org_and_role,
             'ccca_get_orgs_for_user': helpers.ccca_get_orgs_for_user,
-            'ccca_organizations_available_with_private': helpers.ccca_organizations_available_with_private
+            'ccca_organizations_available_with_private': helpers.ccca_organizations_available_with_private,
+            'ccca_check_news_archive': helpers.ccca_check_news_archive
             }
 
     # IRoutes
     def before_map(self, map):
         # About pages
+        map.connect('about_news', '/about/news_archive',
+                    controller='ckanext.ccca.controllers.about:AboutController',
+                    action='news_archive')
+        map.connect('about_usage', '/about/usage',
+                    controller='ckanext.ccca.controllers.about:AboutController',
+                    action='usage')
         map.connect('about_citation', '/about/citation',
                     controller='ckanext.ccca.controllers.about:AboutController',
                     action='citation')
@@ -88,6 +95,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('categories', '/categories',
                     controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
                     action='index') #, ckan_icon='star'
+
+        #Admin News form
+        map.connect('ckanadmin_news', '/ckan-admin/news', controller='ckanext.ccca.controllers.admin:CCCAAdminController',
+                action='news', ckan_icon='star')
 
         return map
 

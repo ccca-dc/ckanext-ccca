@@ -1,0 +1,94 @@
+{% import 'macros/autoform.html' as autoform %}
+
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+{% block primary_content_inner %}
+
+  {{ form.errors(error_summary) }}
+
+{#} Anja, 4.10.17: Remove part of the items we do not want to show in the config dialog, because we adapted them {#}
+{#} Anja: certainly not clean this way ... but works ... and is just for admins .. :-) {#}
+{#} Note: new list did not work with autoform - why ever - and one loop did not work witj Jinja {#}
+
+{% for x in form_items %}
+    {% if x['name'] == 'ckan.site_about'%}
+    {% set hidden_item = form_items.pop(form_items.index(x)) %}
+    {% endif %}
+{% endfor %}
+
+{% for x in form_items %}
+    {% if x['name'] == 'ckan.main_css'%}
+    {% set hidden_item = form_items.pop(form_items.index(x)) %}
+    {% endif %}
+{% endfor %}
+
+{% for x in form_items %}
+    {% if x['name'] == 'ckan.site_intro_text'%}
+    {% set hidden_item = form_items.pop(form_items.index(x))%}
+    {% endif %}
+{% endfor %}
+
+{% for x in form_items %}
+    {% if x['name'] == 'ckan.site_custom_css'%}
+    {% set hidden_item = form_items.pop(form_items.index(x))%}
+    {% endif %}
+{% endfor %}
+
+{% for x in form_items %}
+    {% if x['name'] == 'ckan.homepage_style'%}
+    {% set hidden_item = form_items.pop(form_items.index(x)) %}
+    {% endif %}
+{% endfor %}
+
+  <form method='post' action="" class="form-horizontal" id="admin-config-form">
+    {% block admin_form %}
+        {{ autoform.generate(form_items, data, errors) }}
+    {% endblock %}
+    <div class="form-actions">
+      {% set locale = h.dump_json({'content': _('Are you sure you want to reset the config?')}) %}
+      {#} Anja, 4.10.17: We dont want to allow "reset"
+      <a href="{% url_for controller='admin', action='reset_config' %}" class="btn btn-danger pull-left" data-module="confirm-action" data-module-i18n="{{ locale }}">{{ _('Reset') }}</a>
+      {#}
+      <button type="submit" class="btn btn-primary" name="save">{{ _('Update Config') }}</button>
+    </div>
+  </form>
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="icon-info-sign"></i>
+      {{ _('CKAN config options') }}
+    </h2>
+    <div class="module-content">
+      {% block admin_form_help %}
+      {% set about_url = h.url_for(controller='home', action='about') %}
+      {% set home_url = h.url_for(controller='home', action='index') %}
+      {% set docs_url = "http://docs.ckan.org/en/{0}/theming".format(g.ckan_doc_version) %}
+      {% trans %}
+        <p><strong>Site Title:</strong> This is the title of this CKAN instance
+          It appears in various places throughout CKAN.</p>
+        <p><strong>Site Tag Line:</strong> Either Site-Tag Logo or Title plus Tag Line are
+          shown as header on all pages.</p>
+         <p><strong>Site Tag Logo:</strong> This is the logo that appears in the
+          header of all the CKAN instance templates.</p>
+         <p><strong>The following items are hidden because of programmed modifications/use:</strong> <p>
+        <p><strong>Style:</strong> Choose from a list of simple variations of
+           the main colour scheme to get a very quick custom theme working.</p>
+        <p><strong>About:</strong> This text will appear on this CKAN instances
+          <a href="{{ about_url }}">about page</a>.</p>
+        <p><strong>Intro Text:</strong> This text will appear on this CKAN instances
+          <a href="{{ home_url }}">home page</a> as a welcome to visitors.</p>
+        <p><strong>Custom CSS:</strong> This is a block of CSS that appears in
+          <code>&lt;head&gt;</code> tag of every page. If you wish to customize
+          the templates more fully we recommend
+          <a href="{{ docs_url }}" target="_blank">reading the documentation</a>.</p>
+        <p><strong>Homepage:</strong> This is for choosing a predefined layout for
+           the modules that appear on your homepage.</p>
+      {% endtrans %}
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

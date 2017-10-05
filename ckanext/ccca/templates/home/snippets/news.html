@@ -1,0 +1,17 @@
+{% block news %}
+<div class="box adapt_for_smartphone_margin">
+<section>
+<img  src="{{ h.url_for_static('/images/news.png') }}" alt="News"/>
+  <strong>{{g.site_about}}</strong>
+<div class="module-content">
+  {% set news = g.site_intro_text %}
+  {% if news %}
+    {{ h.render_markdown(news) }}
+  {% else %}
+  We are happy to introduce a range of improvements for the <strong>CCCA Data Server (CADS)</strong>.
+  Find out more about the usage and features of <strong>CADS</strong> in the {% link_for _('Usage Information'), controller='ckanext.ccca.controllers.about:AboutController', action='usage' %}
+  {% endif %}
+</div>
+</section>
+</div>
+{% endblock %}

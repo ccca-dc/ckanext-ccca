@@ -1,22 +1,24 @@
 {# Anja 10.11  Copied from CKAN with modifications #}
-
+{#}
 {% set intro = g.site_intro_text %}
-
+{#}
 <div class="module-content box">
   <header>
     {% if intro %}
       {{ h.render_markdown(intro) }}
     {% else %}
-      <h3 class="page-heading">{{ _("Welcome to the CCCA Data Centre") }}</h3>
+      <h3 class="page-heading adapt_for_smartphone_text">{{ _("Welcome to the CCCA Data Server") }}</h3>
       {% trans %}
-      The CCCA Data Centre provides the central national archive for climate data and information.
+      <p class="adapt_for_smartphone_text">
+      The CCCA Data Server provides the central national archive for climate data and information.
       <br>
       The data made accessible includes observation and measurement data, scenario data, quantitative and qualitative data, as well as the measurement data and findings of research projects.
       Our infrastructure is hosted by the
       <a href="http://zamg.ac.at" target="_blank">ZAMG</a>.
       <br><br>
+    </p>
       {% endtrans %}
-      {% trans %} <b>Explore our possibilities:<b>  {% endtrans %}
+      {% trans %} <strong>Explore our possibilities:</strong>  {% endtrans %}
     {% endif %}
   </header>
 

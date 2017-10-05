@@ -1,0 +1,47 @@
+{% import 'macros/autoform.html' as autoform %}
+
+{% extends "admin/base.html" %}
+
+{% import 'macros/form.html' as form %}
+
+
+{% block primary_content_inner %}
+
+  {{ form.errors(error_summary) }}
+
+  <form method='post' action="" class="form-horizontal" id="admin-news-form">
+    {% block admin_form %}
+      {{ autoform.generate(form_items, data, errors) }}
+    {% endblock %}
+    {% if store_news %}
+     <input type="radio" name="news_archive" value="Save to News Archive"> Save to News Archive
+     {% endif %}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" name="save">{{ _('Update News') }}</button>
+    </div>
+  </form>
+{% endblock %}
+
+{% block secondary_content %}
+  <div class="module module-narrow module-shallow">
+    <h2 class="module-heading">
+      <i class="icon-info-sign"></i>
+      {{ _('News') }}
+    </h2>
+    <div class="module-content">
+      {% block admin_form_help %}
+      <p>
+      Enter date and text for the news of the day :-)
+    </p>
+    <p>
+      <strong>Date:</strong> Enter a date of the news.
+      IMPORTANT: If you leave this field empty, the Startpage will show "featured groups" and
+      <strong>NO</strong> News section
+    </p>
+    <p><strong>News:</strong> Enter any text you would like to have displayed in the news section of the startpage.
+       IMPORTANT: add a date in the <strong>Date</strong> field above.
+     </p>
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}

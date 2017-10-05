@@ -1,0 +1,25 @@
+{% extends "home/about.html" %}
+
+{% block subtitle %}{{ title }}{% endblock %}
+
+{% block breadcrumb_content %}
+  <li>{% link_for _('About'), controller='home', action='about' %}</li>
+  <li class="active">{% link_for _(title), controller='ckanext.ccca.controllers.about:AboutController', action='news_archive' %}</li>
+{% endblock %}
+
+{% block about_content %}
+
+    <h1 class="page-heading">{{ title }}</h1>
+
+    {% for item in news_list %}
+      {% if item['news'] != '\n' %}
+      <h1 class="module-heading">{{item['date']}}</h1>
+      <p>{{h.render_markdown(item['news'])}}</p>
+      <br>
+      {% endif %}
+    {% endfor %}
+
+
+
+
+{% endblock %}
