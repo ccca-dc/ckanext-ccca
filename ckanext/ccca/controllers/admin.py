@@ -20,8 +20,10 @@ def save_news (data_dict):
         news_file =  config.get ('ckanext.ccca.news_archive')
     else:
         return
+    try:
+        news_f = open (news_file, 'a')
 
-    news_f = open (news_file, 'a')
+    except: pass
 
     if not news_f:
         return
