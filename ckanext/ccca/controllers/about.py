@@ -14,7 +14,7 @@ class AboutController(p.toolkit.BaseController):
 
         if 'ckanext.ccca.news_archive' in config:
             news_file =  config.get ('ckanext.ccca.news_archive')
-    
+
         news_list = []
         dict_item = {}
         try:
