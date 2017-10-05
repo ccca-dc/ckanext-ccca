@@ -10,11 +10,19 @@ Requirements
 ------------
 
 This plugin is tested with CKAN version 2.5.2 and 2.5.3.
-It depends on ckanext-mdedit (categories) and ckanext-fitlersearch (categories - iso_tpCat)
+It depends on ckanext-mdedit (categories) and ckanext-filtersearch (categories - iso_tpCat)
 Overrides major settings from main.css - span9 width etc
+
 Load as first plugin!
+
+Implements as well top level nav-item "Categories" (together with ckanext-mdedit and ckanext-filtersearch)
+Implements a News Box on front page; Configure as sysadmin "News-Tab"
+Leave "Date" empty: Display featured_group - no news
+Leave Text Empty: Default Text is displayed (sorry, so far hard coded)
+If news_archive configured (see below) news will be stored in the news_archive
+
 Change your INI-File (development.ini / production.ini) in the following way::
-    ckan.plugins =  resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca
+    ckan.plugins =  ccca resource_proxy text_view image_view recline_view geo_view geojson_view spatial_metadata harvest ckan_harvester csw_harvester doc_harvester ccca
     [...]
     ckan.views.default_views = image_view text_view recline_view geojson_view geo_view
     [...]
@@ -22,7 +30,7 @@ Change your INI-File (development.ini / production.ini) in the following way::
     ckan.site_title = CCCA
     ckan.site_logo = /images/CCCA_DS_Header.png
     ckan.site_description =
-    ckan.favicon = /images/icons/ckan.ico
+    ckan.favicon = /images/favicon.ico
 
     ckan.featured_orgs = ....
     ckan.featured_groups = ....
@@ -61,9 +69,14 @@ Config Settings
 
 Document any optional config settings here. For example::
 
-    # The minimum number of hours to wait before re-checking a resource
-    # (optional, default: 24).
-    ckanext.ccca.some_setting = some_default_value
+    # Create a news archive (ensure access rights for the file):
+    ckanext.ccca.news_archive = /etc/ckan/default/news_archive.txt
+    # Enable tracking
+    ckan.tracking_enabled = true
+    # Path where new user requests are stored
+    ckanext.ccca.path_for_ldifs = /etc/ckan/default/ldif
+
+
 
 
 ------------------------
