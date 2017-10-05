@@ -35,7 +35,9 @@ class AboutController(p.toolkit.BaseController):
                  news_list.append(dict_item)
                  # remove first element
                  news_list.pop(0)
-
+                 # Newest first
+                 news_list = list(reversed(news_list))
+                 
                  news_f.close()
         except: pass
 
