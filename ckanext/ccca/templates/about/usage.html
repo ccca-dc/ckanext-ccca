@@ -12,6 +12,13 @@
     <h1 class="page-heading">{{ title }}</h1>
 
 
+<h2>Receive email notifications on changes:</h2>
+By clicking on the "Follow" Button next to a User, Organization, Group or Datapackage a user is able to follow changes with respect
+to the selected person or item. The changes are displayed in the "Newsfeed" section of the individual <a href="{{ h.url_for(controller='user', action='dashboard') }}">dashboard</a> of the logged in user.
+Further more, the user is able to configure whether she or he would like to get notified whenever changes on followed items occur.
+For this purpose configure the respective feature in the <a href="{{ h.url_for(controller='user', action='edit') }}">user details</a> (for logged in users only).
+
+
 <h2>User Management:</h2>
 <p>
 Every user of our server who registered using a valid Emailaddress of a {% link_for  _('CCCA Member Organization'), controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController', action='index', q='', sort='name' %}
@@ -137,7 +144,6 @@ Currently we are working on the following features:
 <li> Ongoing optimization of all existing features to improve the performance of our system and the user comfort when using CADS.</il>
 <li> An innovative and easy to use and update frontpage for CADS which will provide the user with at-a-glance information on new features and datapackages</il>
 <li> A CADS monitoring system which enables the user to see how often and by whom his resources was downloaded or viewed.</il>
-<li> An email notification feature which allows the user to receive emails on dataset she/he follows.
 </ul>
 <p>
 If you have any questions please do not hesitate to contact {{ h.mail_to(email_address='datenzentrum@ccca.ac.at', name='us') }}.
