@@ -12,11 +12,22 @@
     <h1 class="page-heading">{{ title }}</h1>
 
 
-<h2>Receive email notifications on changes:</h2>
-By clicking on the "Follow" Button next to a User, Organization, Group or Datapackage a user is able to follow changes with respect
-to the selected person or item. The changes are displayed in the "Newsfeed" section of the individual <a href="{{ h.url_for(controller='user', action='dashboard') }}">dashboard</a> of the logged in user.
-Further more, the user is able to configure whether she or he would like to get notified whenever changes on followed items occur.
-For this purpose configure the respective feature in the <a href="{{ h.url_for(controller='user', action='edit') }}">user details</a> (for logged in users only).
+<h2>Following updates:</h2>
+When selecting a <a href="{{ h.url_for(controller='user', action='read', id='demo')}}">User</a>,
+<a href="{{ h.url_for(controller='organization', action='read', id='ccca') }}">Organization</a>,
+<a href="{{ h.url_for(controller='group', action='read', id='oks15') }}">Group</a> or
+<a href="{{ h.url_for(controller='package', action='show', id='upper-austria-air-quality-and-meteorological-measurements') }}">Datapackage</a>
+the <i class="pill icon-plus-sign green_back" style="margin-right:0px;"></i> button enables you to follow updates
+made by the selected user, group or organization or to the selected datapackage.
+The updates can be found in the "News feed" section of the individual
+<a href="{{ h.url_for(controller='user', action='dashboard') }}">dashboard</a>
+(<a href="{{ h.url_for(controller='user', action='dashboard') }}"><i class="icon-dashboard"></i></a>) of the logged in user.
+<br>
+Further more, if you like to get an email notification whenever updates on the items you follow occur
+you might  "Subscribe to notification emails"
+in the <a href="{{ h.url_for(controller='user', action='edit') }}">user details section</a>
+(<a href="{{ h.url_for(controller='user', action='edit') }}"<i class="icon-cog"></i></a>).
+Notification emails are sent to subscribed users once a day.
 
 
 <h2>User Management:</h2>
