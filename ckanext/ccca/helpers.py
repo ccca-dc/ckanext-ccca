@@ -43,6 +43,19 @@ def ccca_check_news_archive():
 
     return True
 
+def ccca_get_user_name(user_id):
+
+
+    try:
+        uname = tk.get_action('user_show')({}, {'id': user_id })
+
+    except:
+        return " "
+
+    if 'display_name' in uname:
+        return uname['display_name']
+    else:
+        return " "
 
 def ccca_organizations_available_with_private():
     '''Return a list of organizations including (private) package_count

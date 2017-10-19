@@ -1,10 +1,36 @@
-/* Adaptions for  smartphones  */
+/* News Star */
+
+.news-date{
+  margin-left: 20px;
+}
+
+.news-heading {
+  *zoom: 1;
+  margin-bottom: 30px;
+  height: 87px;
+  padding: 0 0 0 0;
+  font-size: 14px;
+  line-height: 1.3;
+  background-color: #f6f6f6;
+  border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+}
+@media only screen and (max-width : 400px) {
+  .news-date{
+    margin-left: 0px;
+  }
+
+}
+
+
+/* General Adaptions for  smartphones  */
 
 .adapt_for_one_column_margin {
+    margin-top: 0px;
 }
 @media only screen and (max-width : 980px) {
   .adapt_for_one_column_margin {
-    margin-top: 20px
+    margin-top: 20px;
   }
 }
 

@@ -15,9 +15,15 @@
 
     {% if c.show_email_notifications %}
       {% call form.checkbox('activity_streams_email_notifications', label=_('Subscribe to notification emails'), id='field-activity-streams-email-notifications', value=True, checked=c.userobj.activity_streams_email_notifications) %}
-      {% set helper_text = _("You will receive notification emails from {site_title}, e.g. when you have new activities on your dashboard."|string) %}
-      {{ form.info(helper_text.format(site_title=g.site_title), classes=['info-help-tight']) }}
+
+      {#}
+      {% set helper_text = _("You will receive notification emails once a months from {site_title}, when you have new activities on your dashboard."|string) %}
+      {{ form.info(helper_text.format(site_title=g.site_title), classes=['']) }}
+      {#}
+      (Upon subscription you will receive notification emails as monthly report from CCCA Data Server)
+
       {% endcall %}
+
     {% endif %}
 
     {{ form.hidden('name', value=data.name) }}
@@ -40,7 +46,7 @@
           _('User ')+c.user_name|string+_('  needs to change details'), _('Please describe your requirments:'), class='mdedit_dz_mail_to')}}
       </p>
 
-      
+
   <div class="form-actions">
     {% block delete_button %}
       {% if h.check_access('user_delete', {'id': data.id})  %}

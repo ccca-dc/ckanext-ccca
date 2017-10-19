@@ -45,7 +45,8 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_org_and_role': helpers.ccca_get_org_and_role,
             'ccca_get_orgs_for_user': helpers.ccca_get_orgs_for_user,
             'ccca_organizations_available_with_private': helpers.ccca_organizations_available_with_private,
-            'ccca_check_news_archive': helpers.ccca_check_news_archive
+            'ccca_check_news_archive': helpers.ccca_check_news_archive,
+            'ccca_get_user_name': helpers.ccca_get_user_name
             }
 
     # IRoutes

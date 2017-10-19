@@ -1,8 +1,21 @@
 {% block news %}
-<div class="box adapt_for_smartphone_margin">
-<section>
-<img  src="{{ h.url_for_static('/images/news.png') }}" alt="News"/>
-  <strong>{{g.site_about}}</strong>
+
+<div class="box adapt_for_one_column_margin">
+<section class="group-list module module-narrow module-shallow">
+
+<header class="news-heading">
+{% if h.ccca_check_news_archive() %}
+<a href="{{ h.url_for(controller='ckanext.ccca.controllers.about:AboutController', action='news_archive')}}"  style="border:0;text-decoration:none;">
+<img  src="{{ h.url_for_static('/images/news.png')}}" alt="News"/>
+</a>
+{% else %}
+<img  src="{{ h.url_for_static('/images/news.png')}}" alt="News"/>
+{% endif %}
+<strong class="news-date">{{g.site_about}}</strong>
+</header>
+
+
+
 <div class="module-content">
   {% set news = g.site_intro_text %}
   {% if news %}
@@ -12,6 +25,7 @@
   Find out more about the usage and features of <strong>CADS</strong> in the {% link_for _('Usage Information'), controller='ckanext.ccca.controllers.about:AboutController', action='usage' %}
   {% endif %}
 </div>
+
 </section>
 </div>
 {% endblock %}

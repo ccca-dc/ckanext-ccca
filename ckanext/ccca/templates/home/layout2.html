@@ -6,7 +6,7 @@
           {% snippet 'home/snippets/promoted.html' %}
         {% endblock %}
       </div>
-      <div class="span6 col1">
+      <div class="span6 col1 adapt_for_one_column_margin">
         {% block search %}
           {% snippet 'home/snippets/search.html' %}
         {% endblock %}
@@ -14,7 +14,6 @@
           {% snippet 'home/snippets/stats.html' %}
         {% endblock %}
       </div>
-
     </div>
   </div>
 </div>
@@ -29,7 +28,7 @@
       <div class="span6 col2">
         {% block featured_group %}
         {% if g.site_about %}
-        {% snippet 'home/snippets/news.html' %}
+        {% snippet 'home/snippets/news_star.html' %}
         {% else %}
         {% snippet 'home/snippets/featured_group.html' %}
         {% endif %}
