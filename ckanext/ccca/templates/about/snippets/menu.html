@@ -9,7 +9,7 @@ Displays the about menu
       {% block about_menu %}
         <nav class="section navigation">
           <ul class="nav nav-aside" id="about-menu">
-            {% if h.ccca_check_news_archive() %}
+            {% if h.ccca_check_news() %}
 
               {{ h.build_nav_main(
                 ('about', _('About')),

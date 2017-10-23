@@ -27,24 +27,36 @@ from ckanext.filtersearch import helpers as hf
 
 from pylons import config
 
-def ccca_check_news_archive():
-    if 'ckanext.ccca.news_archive' in config:
-        news_file =  config.get ('ckanext.ccca.news_archive')
-    else:
-        return False
+import json
+
+def ccca_get_news ():
+    news_id = ccca_check_news();
+
+    if not news_id:
+        return ""
+
     try:
-        news_f = open (news_file, 'a')
+        news_pkg = tk.get_action('package_show')({}, {'id': news_id, 'include_datasets':True})
 
+        news_res_list = news_pkg['resources']
+
+        for res in news_res_list:
+            if 'newer_version' in res and res['newer_version'] == "":
+                news_res = res
     except:
-        return False
+        return ""
 
-    if not news_f:
-        return False
+    #print json.dumps(news_res, indent=4)
+    return news_res
 
-    return True
+def ccca_check_news():
+    if 'ckanext.ccca.news_id' in config:
+        news_id =  config.get ('ckanext.ccca.news_id')
+        return news_id
+    else:
+        return ""
 
 def ccca_get_user_name(user_id):
-
 
     try:
         uname = tk.get_action('user_show')({}, {'id': user_id })
