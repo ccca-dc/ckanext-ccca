@@ -41,11 +41,22 @@ class AboutController(p.toolkit.BaseController):
         # Reverse order
         news_res_list = list(reversed(news_res_list))
 
-        n_file = news_res_list[0]['url']
+        # Remove versions and save urls and titles of older archives
+        files = []
+        for x in news_res_list:
+            if 'newer_version' in x and x['newer_version'] == "":
+                f_entry = {}
+                f_entry['url'] = x['url']
+                f_entry['name'] = x['name']
+                files.append(f_entry)
+                #print x['name']
+
+        #print files
         #print json.dumps(news_res_list, indent=3)
         #print json.dumps (list(reversed(news_res_list)),indent=3)
+        #print json.dumps(files, indent=3)
 
-        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_res_list, 'file': n_file })
+        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_res_list, 'files': files })
 
     def usage(self):
         return p.toolkit.render('about/usage.html', {'title': 'Usage Information'})

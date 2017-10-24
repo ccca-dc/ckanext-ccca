@@ -14,7 +14,13 @@
     <h1 class="page-heading">{{ title }}</h1>
 
     <p>
-    Click <a href={{file}}>here</a> to view/download the entire archive.
+    Entire Archives:
+    {% for item in files %}
+
+    <a href={{ item['url'] }}>{{ item['name'] }}</a>&nbsp;&nbsp;
+
+    {% endfor %}
+
     </p>
     <br>
 
