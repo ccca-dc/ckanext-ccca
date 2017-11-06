@@ -45,8 +45,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_org_and_role': helpers.ccca_get_org_and_role,
             'ccca_get_orgs_for_user': helpers.ccca_get_orgs_for_user,
             'ccca_organizations_available_with_private': helpers.ccca_organizations_available_with_private,
-            'ccca_check_news_archive': helpers.ccca_check_news_archive,
-            'ccca_get_user_name': helpers.ccca_get_user_name
+            'ccca_check_news': helpers.ccca_check_news,
+            'ccca_get_user_name': helpers.ccca_get_user_name,
+            'ccca_get_news': helpers.ccca_get_news
             }
 
     # IRoutes
@@ -96,11 +97,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('categories', '/categories',
                     controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
                     action='index') #, ckan_icon='star'
-
-        #Admin News form
-        map.connect('ckanadmin_news', '/ckan-admin/news', controller='ckanext.ccca.controllers.admin:CCCAAdminController',
-                action='news', ckan_icon='star')
-
+    
         return map
 
     def after_map(self, map):

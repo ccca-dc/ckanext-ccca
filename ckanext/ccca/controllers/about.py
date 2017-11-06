@@ -2,9 +2,23 @@
 import ckan.plugins as p
 from ckan.common import _, g, c
 import ckan.lib.helpers as h
-from ckanext.stats import stats as stats_lib
 
 from pylons import config
+
+import ckan.model as model
+import ckan.plugins.toolkit as tk
+import ckan.logic as logic
+import ckan.lib.base as base
+
+get_action = logic.get_action
+context = tk.c
+Base_c = base.c
+NotFound = logic.NotFound
+NotAuthorized = logic.NotAuthorized
+ValidationError = logic.ValidationError
+
+from ckanext.ccca import helpers as hc
+import json
 
 class AboutController(p.toolkit.BaseController):
     """
@@ -12,36 +26,37 @@ class AboutController(p.toolkit.BaseController):
     """
     def news_archive(self):
 
-        if 'ckanext.ccca.news_archive' in config:
-            news_file =  config.get ('ckanext.ccca.news_archive')
+        news_id  = hc.ccca_check_news()
 
-        news_list = []
-        dict_item = {}
+        if not news_id:
+            return
         try:
-            news_f = open (news_file, 'r')
-            if news_f:
-                 for line in news_f:
-                      if line.startswith('Date#:'):
-                          splitLine = line.split('Date#:')
-                          if len(splitLine) > 1:
-                             news_list.append(dict_item)
-                             dict_item = {}
-                             dict_item['date'] = splitLine[1]
-                             dict_item['news'] = ''
-                      else:
-                          dict_item['news']+= line
+            news_pkg = tk.get_action('package_show')({}, {'id': news_id, 'include_datasets':True})
 
-                 # add last element
-                 news_list.append(dict_item)
-                 # remove first element
-                 news_list.pop(0)
-                 # Newest first
-                 news_list = list(reversed(news_list))
-                 
-                 news_f.close()
-        except: pass
+            news_res_list = news_pkg['resources']
 
-        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news_list': news_list})
+        except:
+            return
+
+        # Reverse order
+        news_res_list = list(reversed(news_res_list))
+
+        # Remove versions and save urls and titles of older archives
+        files = []
+        for x in news_res_list:
+            if 'newer_version' in x and x['newer_version'] == "":
+                f_entry = {}
+                f_entry['url'] = x['url']
+                f_entry['name'] = x['name']
+                files.append(f_entry)
+                #print x['name']
+
+        #print files
+        #print json.dumps(news_res_list, indent=3)
+        #print json.dumps (list(reversed(news_res_list)),indent=3)
+        #print json.dumps(files, indent=3)
+
+        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_res_list, 'files': files })
 
     def usage(self):
         return p.toolkit.render('about/usage.html', {'title': 'Usage Information'})
