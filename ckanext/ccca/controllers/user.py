@@ -17,7 +17,9 @@ import ckan.lib.captcha as captcha
 from ckan.common import _, request
 import ckan.lib.navl.dictization_functions as dictization_functions
 from ckan.common import _, c, g, request, response
+
 from pylons import config
+import paste.deploy.converters
 
 log = logging.getLogger(__name__)
 
@@ -210,7 +212,6 @@ def _send_mail(send_from, send_to, subject, text):
     from os.path import basename
 
     assert isinstance(send_to, list)
-    #print "mail_sending_part"
     msg = MIMEMultipart()
     msg['From'] = send_from
     msg['To'] = COMMASPACE.join(send_to)
@@ -219,9 +220,47 @@ def _send_mail(send_from, send_to, subject, text):
 
     msg.attach(MIMEText(text))
 
-    smtp = smtplib.SMTP(config.get('smtp.server'))
-    smtp.sendmail(send_from, send_to, msg.as_string())
-    smtp.quit()
+
+    smtp_connection = smtplib.SMTP()
+    smtp_server = config.get('smtp.server')
+    smtp_starttls = paste.deploy.converters.asbool(
+                config.get('smtp.starttls'))
+    smtp_user = config.get('smtp.user')
+    smtp_password = config.get('smtp.password')
+
+   # smtp = smtplib.SMTP(config.get('smtp.server'))
+    smtp_connection.connect(smtp_server)
+    try:
+        #smtp_connection.set_debuglevel(True)
+
+        # Identify ourselves and prompt the server for supported features.
+        smtp_connection.ehlo()
+
+        # If 'smtp.starttls' is on in CKAN config, try to put the SMTP
+        # connection into TLS mode.
+        if smtp_starttls:
+            if smtp_connection.has_extn('STARTTLS'):
+                smtp_connection.starttls()
+                # Re-identify ourselves over TLS connection.
+                smtp_connection.ehlo()
+            else:
+                raise MailerException("SMTP server does not support STARTTLS")
+
+        # If 'smtp.user' is in CKAN config, try to login to SMTP server.
+        if smtp_user:
+            assert smtp_password, ("If smtp.user is configured then "
+                    "smtp.password must be configured as well.")
+            smtp_connection.login(smtp_user, smtp_password)
+
+        smtp_connection.sendmail(send_from, send_to, msg.as_string())
+        log.info("Sent email to {0}".format(send_to))
+
+    except smtplib.SMTPException, e:
+        msg = '%r' % e
+        log.exception(msg)
+        raise MailerException(msg)
+    finally:
+        smtp_connection.quit()
 
 
 def _make_ldif(context, data_dict, filepath):
