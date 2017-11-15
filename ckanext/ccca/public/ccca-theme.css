@@ -1,9 +1,4 @@
 /* News Star */
-
-.news-date{
-  margin-left: 20px;
-}
-
 .news-heading {
   *zoom: 1;
   margin-bottom: 30px;
@@ -15,9 +10,22 @@
   border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
 }
-@media only screen and (max-width : 400px) {
-  .news-date{
-    margin-left: 0px;
+
+@media only screen and (max-width : 500px) {
+  .news-date-smart{
+    margin-left: 10px;
+  }
+  .news-date-long{
+    display:none;
+  }
+
+}
+@media only screen and (min-width : 501px) {
+  .news-date-smart{
+    display: none;
+  }
+  .news-date-long{
+    margin-left: 20px;
   }
 
 }
@@ -53,13 +61,7 @@
   display:none;
 }
 }
-.hide_for_other {
-}
-@media only screen and (min-width : 421px) {
-.hide_for_other {
-  display:none;
-}
-}
+
 
 
 
@@ -4930,7 +4932,7 @@ a.badge:focus {
     width: 514px;
   }
   .span6 {
-    width: 392px;
+    width: 492px;
   }
   .span5 {
     width: 290px;

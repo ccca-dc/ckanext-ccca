@@ -52,6 +52,10 @@ def ccca_get_news ():
 def ccca_check_news():
     if 'ckanext.ccca.news_id' in config:
         news_id =  config.get ('ckanext.ccca.news_id')
+        try:
+            news_pkg = tk.get_action('package_show')({}, {'id': news_id})
+        except:
+            return ""
         return news_id
     else:
         return ""

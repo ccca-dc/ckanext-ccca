@@ -1,5 +1,4 @@
 {% block news %}
-{% if h.ccca_check_news() %}
 
 <div class="box adapt_for_one_column_margin">
 <section class="group-list module module-narrow module-shallow">
@@ -10,7 +9,8 @@
 </a>
 {% set news = h.ccca_get_news() %}
 {% if news %}
-   <strong class="news-date">{{h.render_datetime(news['created'], with_hours=False, date_format='%A, %d. %B %Y')}}</strong>
+<strong class="news-date-long">{{h.render_datetime(news['created'], with_hours=False, date_format='%A, %d. %B %Y')}}</strong>
+<strong class="news-date-smart">{{h.render_datetime(news['created'], with_hours=False, date_format='%d. %m %Y')}}</strong>
 {% endif %}
 </header>
 
@@ -23,5 +23,5 @@
 
 </section>
 </div>
-{% endif %}
+
 {% endblock %}

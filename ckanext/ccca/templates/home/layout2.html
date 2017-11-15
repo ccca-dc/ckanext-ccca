@@ -27,12 +27,11 @@
       </div>
       <div class="span6 col2">
         {% block featured_group %}
-        {% if g.site_about %}
+        {% if h.ccca_check_news() %}
         {% snippet 'home/snippets/news_star.html' %}
         {% else %}
         {% snippet 'home/snippets/featured_group.html' %}
         {% endif %}
-
         {% endblock %}
         </div>
     </div>
