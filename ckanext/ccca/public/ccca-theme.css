@@ -14,6 +14,7 @@
 @media only screen and (max-width : 500px) {
   .news-date-smart{
     margin-left: 10px;
+    display:inline;
   }
   .news-date-long{
     display:none;
@@ -26,6 +27,7 @@
   }
   .news-date-long{
     margin-left: 20px;
+    display:inline;
   }
 
 }
@@ -46,21 +48,27 @@
 }
 .adapt_for_smartphone_text {
 }
+
+@media only screen and (max-width : 420px) {
+.hide_for_smartphone {
+  display:none; /* Important: display none - not last; 22.11.17 Anja */
+}
+}
 @media only screen and (max-width : 768px) {
 .adapt_for_smartphone_width {
   width: 100%;
+  display:inline; /* Important: display none - not last; 22.11.17 Anja */
+
 }
 }
 @media only screen and (max-width : 768px) {
 .adapt_for_smartphone_text {
   text-align:center;
+  display:inline; /* Important: display none - not last; 22.11.17 Anja */
+
 }
 }
-@media only screen and (max-width : 420px) {
-.hide_for_smartphone {
-  display:none;
-}
-}
+
 
 
 
