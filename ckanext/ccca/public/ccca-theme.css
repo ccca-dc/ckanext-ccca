@@ -4931,7 +4931,8 @@ a.badge:focus {
     width: 600px;
   }
   .span9 {
-    width: 638px;
+    /*width: 638px;*/
+    width: 715px; /* new Anja, 24.11.17 */
   }
   .span8 {
     width: 476px;
@@ -4949,7 +4950,8 @@ a.badge:focus {
     width: 228px;
   }
   .span3 {
-    width: 166px;
+/*    width: 166px; */
+    width: 715 px; /* new Anja, 24.11.17 */
   }
   .span2 {
     width: 104px;
