@@ -4932,7 +4932,7 @@ a.badge:focus {
   }
   .span9 {
     /*width: 638px;*/
-    width: 715px; /* new Anja, 24.11.17 */
+    width: 505px; /* new Anja, 24.11.17 */
   }
   .span8 {
     width: 476px;
@@ -4950,8 +4950,7 @@ a.badge:focus {
     width: 228px;
   }
   .span3 {
-/*    width: 166px; */
-    width: 715 px; /* new Anja, 24.11.17 */
+    width: 210px;
   }
   .span2 {
     width: 104px;
@@ -5278,7 +5277,7 @@ a.badge:focus {
   [class*="span"],
   .uneditable-input[class*="span"],
   .row-fluid [class*="span"] {
-    float: none;
+  /*  float: none; */   /* Anja, 24.11.17 - remove grey */
     display: block;
     width: 100%;
     margin-left: 0;
