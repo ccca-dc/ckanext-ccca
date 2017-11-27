@@ -30,7 +30,7 @@ class CCCACategoriesController(base.BaseController):
                    'user': c.user or c.author, 'for_view': True,
                    'with_private': False}
 
-         # FIXME: How to get them from scheming JSON???
+         # FIXME: How to get them from scheming JSON??? - > Not necessary, need comparison anyway
         values =["001","002", "004", "005", "009", "012", "017", "018", "019", "020"]
 
         topic_field = hf.filtersearch_get_topic_field()
