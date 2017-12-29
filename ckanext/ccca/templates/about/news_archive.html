@@ -15,9 +15,14 @@
 
     <p>
     Entire Archives:
-    {% for item in files %}
+    {% for type in files %}
 
-    <a href={{ item['url'] }}>{{ item['name'] }}</a>&nbsp;&nbsp;
+        {% for f in type %}
+
+
+    <a href={{ f['url'] }}>{{ f['name']}}.{{f['format'] }}</a>&nbsp;&nbsp;
+
+        {% endfor %}
 
     {% endfor %}
 

@@ -33,27 +33,34 @@ def ccca_get_news ():
     news_id = ccca_check_news();
 
     if not news_id:
-        return ""
+        return None
 
     try:
         news_pkg = tk.get_action('package_show')({}, {'id': news_id, 'include_datasets':True})
 
         news_res_list = news_pkg['resources']
 
-        for res in news_res_list:
-            if 'newer_version' in res and res['newer_version'] == "":
-                news_res = res
+        newest_res = {}
+        for x in news_res_list:
+            nd = x['created']
+            newest_res = x
+            if x['created'] > nd:
+                nd = x['created']
+                newest_res = x
+
     except:
-        return ""
+        return None
 
     #print json.dumps(news_res, indent=4)
-    return news_res
+    return newest_res
 
 def ccca_check_news():
     if 'ckanext.ccca.news_id' in config:
         news_id =  config.get ('ckanext.ccca.news_id')
         try:
             news_pkg = tk.get_action('package_show')({}, {'id': news_id})
+            if news_pkg['private']:
+                return ""
         except:
             return ""
         return news_id
