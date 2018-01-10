@@ -14,16 +14,15 @@
     <h1 class="page-heading">{{ title }}</h1>
 
     <p>
-    Entire Archives:
     {% for type in files %}
-
+    Entire Archives:
+<em>{{type[0]['format']}} - </em>
         {% for f in type %}
 
-
-    <a href={{ f['url'] }}>{{ f['name']}}.{{f['format'] }}</a>&nbsp;&nbsp;
+    <a href={{ f['url'] }}>{{ f['name']}}</a>&nbsp;&nbsp;
 
         {% endfor %}
-
+        <br>
     {% endfor %}
 
     </p>

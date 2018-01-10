@@ -47,8 +47,8 @@ class AboutController(p.toolkit.BaseController):
             #FIXME: Wenn neueste Version nur eine Distribuion hat, werden die alten nicht angezeigt...
             for x in news_pkg['resources']:
                 #latest change
-                if x['created'] > nd:
-                    nd = x['created']
+                if x['last_modified'] > nd:
+                    nd = x['last_modified']
                     newest_res = x
                     newest_title = x['name']
                 #consider distributions
@@ -76,9 +76,10 @@ class AboutController(p.toolkit.BaseController):
                     if x['relation'] == 'is_version_of':
                         older_version= x['id']
                         news_pkg = tk.get_action('package_show')({}, {'id':older_version, 'include_datasets':True})
-                        #FIXME: First resource might not be the best choice
+
                         # implicates that all distributions have the same description!
                         news_list.append(news_pkg['resources'][0])
+
                         #Consider distributions and titles#
                         #FIXME: Might lead to a durcheinander if distributions are not always in the same order....
                         # and different numbers of distributions.... and latest change not first in list ....
@@ -104,11 +105,11 @@ class AboutController(p.toolkit.BaseController):
                             has_older_versions = True
                         else:
                             has_older_versions = False
-                    elif x['relation'] == 'has_version':
+                    elif x['relation'] == 'has_version' and len(relations) == 1 :
                         has_older_versions = False
                         break
                     else:
-                        break
+                        continue
 
         except:
             print "des war nix ..."

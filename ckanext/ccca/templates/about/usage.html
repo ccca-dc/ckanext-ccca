@@ -33,14 +33,14 @@ in the <a href="{{ h.url_for(controller='user', action='edit') }}">user details 
 <p>
 Every user of our server who registered using a valid Emailaddress of a {% link_for  _('CCCA Member Organization'), controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController', action='index', q='', sort='name' %}
 is now associated  with the respective Organization as an "Editor".
- Users with the role "Editor" are able to create datapackages and upload their own resources.
+ Users with the role "Editor" are able to create datasets and upload their own resources.
 </p>
 <p>
 Users of organizations external to the CCCA is associated with the Organization "CCCA Extern".
-Users of this organization have the possibility to create subsets of existing resources and create datapackages comprising links. However, these users are not authorized to upload own resources. We kindly encourage these users to consider a CCCA membership for their organizations in order to experience the full functionality of CADS.
+Users of this organization have the possibility to create subsets of existing resources and create datasets comprising links. However, these users are not authorized to upload own resources. We kindly encourage these users to consider a CCCA membership for their organizations in order to experience the full functionality of CADS.
 </p>
 <p>
-If you create a datapackage you are able to decide whether you want to make it publically  available or keep it private for testing purposes. Private datasets are not viewable  by other Editors of the same organization. Only Admins of an organization are able to view foreign private datasets.
+If you create a dataset you are able to decide whether you want to make it publically  available or keep it private for testing purposes. Private datasets are not viewable  by other Editors of the same organization. Only Admins of an organization are able to view foreign private datasets.
 </p>
 <p>
 Logged in users are able to see an overview of existing CADS users   {% link_for  _('here'), controller='user', action='index' %}
@@ -48,7 +48,7 @@ Logged in users are able to see an overview of existing CADS users   {% link_for
 
 
 <h2>Shared private  Respositories:</h2>
-If you intend to create a private datapackage which you would like to share with other users please contact
+If you intend to create a private dataset which you would like to share with other users please contact
 {{ h.mail_to(email_address='datenzentrum@ccca.ac.at', name='us') }}:
 we are happy to provide  as well the possibility to manage shared private respositories.
 
@@ -62,23 +62,23 @@ usage only for logged in CADS users.
 
 
 <h2>Group Datasets:</h2>
-Registered users are able to group their datapackages  according to their own preferences.
- Thus every user is able to create {% link_for  _('groups'), controller='group', action='index' %} groups and add datapackages for easy access and usage.
+Registered users are able to group their datasets  according to their own preferences.
+ Thus every user is able to create {% link_for  _('groups'), controller='group', action='index' %} groups and add datasets for easy access and usage.
 
 
 <h2>Metadata Editor:</h2>
 
-CADS provides a very comfortable and self explaining possibility to enter the metadata regarding your datasets. Only a minimum amount of fields are required and many fields are filled with default values (eg contact information) which can be changed easily if required. Although only a minimum amount of information is required to create a datapackage we kindly encourage our users to enter as many information as possible to make the datapackage internationally retrievable. A process bar helps to estimate the amount of remaining fields.
+CADS provides a very comfortable and self explaining possibility to enter the metadata regarding your datasets. Only a minimum amount of fields are required and many fields are filled with default values (eg contact information) which can be changed easily if required. Although only a minimum amount of information is required to create a dataset we kindly encourage our users to enter as many information as possible to make the dataset internationally retrievable. A process bar helps to estimate the amount of remaining fields.
 
 
 <h2>Metadata Export:</h2>
-Once entered CADS is able to export the metadata in various, standardized formats thus enabling the user to register her/his datapackage easily with other Data Servers worldwide.
+Once entered CADS is able to export the metadata in various, standardized formats thus enabling the user to register her/his dataset easily with other Data Servers worldwide.
 
 
 
 <h2>Keyword Tag Vocabulary:</h2>
 An important point with respect to the international retrievability of a
-datapackage is to associate fitting keywords. To support our users CADS comprises so
+dataset is to associate fitting keywords. To support our users CADS comprises so
  called "tag vocabularies" i.e. standardized keywords. CADS currently supports
  <a href="http://www.eionet.europa.eu/gemet" target="_blank">  GEMET vocabularies</a>
  and <a href="http://cfconventions.org/standard-names.html" target="_blank">CF conventions</a>
@@ -88,9 +88,9 @@ datapackage is to associate fitting keywords. To support our users CADS comprise
 
 <h2>Data Citation:</h2>
 
-If a user decides to make her/his datapackage publically
- accessible the CCCA Datacenter provides automatically a <a href="http://hdl.ccca.ac.at" target="_blank">unique identifier</a> for this datapackage.
- Thus this datapackage is citable with a permanent link in the internet.
+If a user decides to make her/his dataset publically
+ accessible the CCCA Datacenter provides automatically a <a href="http://hdl.ccca.ac.at" target="_blank">unique identifier</a> for this dataset.
+ Thus this dataset is citable with a permanent link in the internet.
  The identifier is comparable to the ISBN number for books.
  (for more information compare also  "DOI" - Digital Object Identifier)
 
@@ -152,7 +152,7 @@ For experienced users CADS provides the possibility to upload and retrieve our d
 Currently we are working on the following features:
 <ul>
 <li> Ongoing optimization of all existing features to improve the performance of our system and the user comfort when using CADS.</il>
-<li> An innovative and easy to use and update frontpage for CADS which will provide the user with at-a-glance information on new features and datapackages</il>
+<li> An innovative and easy to use and update frontpage for CADS which will provide the user with at-a-glance information on new features and datasets</il>
 <li> A CADS monitoring system which enables the user to see how often and by whom his resources was downloaded or viewed.</il>
 </ul>
 <p>
