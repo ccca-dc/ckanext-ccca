@@ -326,3 +326,7 @@ def ccca_get_random_group():
     # log.debug(rand_group)
 
     return rand_group
+
+
+def ccca_group_show(group_id):
+    return tk.get_action('group_show')({}, {"id": group_id})
