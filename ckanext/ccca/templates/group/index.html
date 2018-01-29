@@ -1,3 +1,5 @@
+{% resource 'ccca/ccca-media-grid.js' %}
+
 {% ckan_extends %}
 
 {% block primary_content_inner %}
@@ -25,7 +27,11 @@
     <h3>ALL</h3>
     {% if c.page.items or request.params %}
       {% if c.page.items %}
-        {% snippet "group/snippets/group_list.html", groups=c.page.items %}
+      <ul class="media-grid" data-module="ccca-media-grid">
+        {% for group in c.page.items %}
+          {% snippet "group/snippets/group_item.html", group=group, position=loop.index %}
+        {% endfor %}
+      </ul>
       {% endif %}
     {% else %}
       <p class="empty">
@@ -39,7 +45,6 @@
    {% for group_type in type_of_groups %}
       <div id="{{group_type['value']}}" class="pill-pane fade">
         <h3>{{ group_type['label'] }}</h3>
-        {% if c.page.items or request.params %}
         {% set groups_of_correct_type = [] %}
           {% for item in c.page.items %}
             {% set group = h.ccca_group_show(item.id) %}
@@ -47,12 +52,18 @@
                 {% do groups_of_correct_type.append(item) %}
             {% endif %}
           {% endfor %}
-          {% if c.page.items %}
-            {% snippet "group/snippets/group_list.html", groups=groups_of_correct_type %}
+
+        {% if groups_of_correct_type|length > 0 or request.params %}
+          {% if groups_of_correct_type|length > 0 %}
+          <ul class="media-grid" data-module="ccca-media-grid">
+            {% for group in groups_of_correct_type %}
+              {% snippet "group/snippets/group_item.html", group=group, position=loop.index %}
+            {% endfor %}
+          </ul>
           {% endif %}
         {% else %}
           <p class="empty">
-            {{ _('There are currently no groups for this site') }}.
+            {{ _('There are currently no groups of type "' + group_type['label'] + '"') }}.
             {% if h.check_access('group_create') %}
               {% link_for _('How about creating one?'), controller='group', action='new' %}</a>.
             {% endif %}
