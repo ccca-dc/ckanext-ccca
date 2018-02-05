@@ -29,6 +29,8 @@ from pylons import config
 
 import json
 
+import ckan.model as model
+
 def ccca_get_news ():
     news_id = ccca_check_news();
 
@@ -330,3 +332,15 @@ def ccca_get_random_group():
 
 def ccca_group_show(group_id):
     return tk.get_action('group_show')({}, {"id": group_id})
+
+
+def ccca_group_list(type_of_group=None):
+    context = {'model': model,
+               'user': c.user}
+
+    groups = tk.get_action('group_list')(context, {'all_fields': True, 'include_dataset_count': True, 'include_extras': True})
+
+    if type_of_group is None:
+        return groups
+
+    return [group for group in groups if group.get('type_of_group', None) == type_of_group]
