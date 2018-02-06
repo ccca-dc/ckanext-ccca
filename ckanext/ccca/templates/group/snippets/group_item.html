@@ -1,11 +1,47 @@
-{% ckan_extends %}
-
 {#} Fix group.packages from ckan default Anja 18.5.2017 {#}
 
-  {% block datasets %}
-      {% if group.package_count %}
-      <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', group.package_count).format(num=group.package_count) }}</strong>
-      {% elif group.package_count == 0 %}
-      <span class="count">{{ _('0 Datasets') }}</span>
-      {% endif %}
+{% set type = group.type or 'group' %}
+{% set url = h.url_for(type ~ '_read', action='read', id=group.name) %}
+{% block item %}
+<li class="media">
+  {% block item_inner %}
+  {% block image %}
+    <div class="media-left">
+      <a href="{{ url }}" title="{{ _('View {name}').format(name=group.display_name) }}" class="media-view">
+        <img src="{{ group.image_display_url or h.url_for_static('/base/images/placeholder-group.png') }}" alt="{{ group.name }}" class="media-object" width="120px">
+      </a>
+    </div>
   {% endblock %}
+  <div class="media-body">
+  {% block title %}
+    <a href="{{ url }}" title="{{ _('View {name}').format(name=group.display_name) }}" class="media-view">
+      <h4 class="media-heading">{{ group.display_name }}
+        <small>
+          {% if group.package_count %}
+            <strong class="count">{{ ungettext('{num} Dataset', '{num} Datasets', group.package_count).format(num=group.package_count) }}</strong>
+          {% elif group.package_count == 0 %}
+            <span class="count">{{ _('0 Datasets') }}</span>
+          {% endif %}
+        </small>
+      </h4>
+    </a>
+  {% endblock %}
+  {% block description %}
+    {% if group.description %}
+      <p>{{ h.markdown_extract(group.description) }}</p>
+    {% endif %}
+  {% endblock %}
+  {% block datasets %}
+  {% endblock %}
+  </div>
+  {% if group.user_member %}
+    <input name="group_remove.{{ group.id }}" value="{{ _('Remove') }}" type="submit" class="btn btn-danger btn-small media-edit" title="{{ _('Remove dataset from this group') }}"/>
+  {% endif %}
+  {% endblock %}
+</li>
+<hr>
+{% endblock %}
+
+<!-- {% if position is divisibleby 3 %}
+     <li class="clearfix js-hide"></li>
+     {% endif %} -->
