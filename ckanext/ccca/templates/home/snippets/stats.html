@@ -17,7 +17,7 @@
       <li class="adapt_for_smartphone_width adapt_for_smartphone_text">
           <a href="{{ h.url_for(controller='package', action='search') }}">
           <b>{{ h.SI_number_span(stats.dataset_count) }}</b>
-          {{ _('datapackage') if stats.dataset_count == 1 else _('datapackages') }}
+          {{ _('dataset') if stats.dataset_count == 1 else _('datasets') }}
         </a>
       </li>
       <li class="adapt_for_smartphone_width adapt_for_smartphone_text">

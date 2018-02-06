@@ -13,7 +13,7 @@ Example:
 #}
 {% set url = h.url_for(organization.type ~ '_read', action='read', id=organization.name) %}
 {% block item %}
-<li class="media">
+    <li class="media">
   <a href="{{ url }}" title="{{ _('View {organization_name}').format(organization_name=organization.display_name) }}" class="media-view">
   {% block item_inner %}
   {% block image %}

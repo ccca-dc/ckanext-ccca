@@ -1,5 +1,5 @@
 {% ckan_extends %}
-
+{% resource 'ccca/ccca-media-grid.js' %}
 
 {% block primary %}
   <div class="primary col-md-12">
@@ -9,9 +9,9 @@
         {% if self.page_primary_action() | trim %}
           <div class="page_primary_action">
             {% block page_primary_action %}
-  {% if h.check_access('group_create') %}
-    {% link_for _('Add Group'), controller='group', action='new', class_='btn btn-success pull-right', icon='plus-sign-alt' %}
-  {% endif %}
+              {% if h.check_access('group_create') %}
+                {% link_for _('Add Group'), controller='group', action='new', class_='btn btn-success pull-right', icon='plus-sign-alt' %}
+              {% endif %}
             {% endblock %}
           </div>
         {% endif %}
@@ -26,33 +26,75 @@
     {% snippet 'snippets/search_form.html', form_id='group-search-form', type='group', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search groups...'), show_empty=request.params, no_bottom_border=true if c.page.items, sorting = 'False', no_title='small' %}
   {% endblock %}
   {% block groups_list %}
-    {% if c.page.items or request.params %}
-      {% if c.page.items %}
-        {% snippet "group/snippets/group_list.html", groups=c.page.items %}
-      {% endif %}
-    {% else %}
-      <p class="empty">
-        {{ _('There are currently no groups for this site') }}.
-        {% if h.check_access('group_create') %}
-          {% link_for _('How about creating one?'), controller='group', action='new' %}</a>.
+    {% set type_of_groups = [] %}
+    {%- set schema = h.scheming_get_group_schema('group') -%}
+    {% set field = h.scheming_field_by_name(schema['fields'], 'type_of_group') %}
+    {% for choice in field['choices'] %}
+      {% do type_of_groups.append(choice) %}
+    {% endfor %}
+    
+    <ul class="nav nav-pills">
+      <li class="active"><a data-toggle="pill" href="#home">All</a></li>
+      {% for group in type_of_groups %}
+        <li><a data-toggle="pill" href="#{{group['value']}}">{{ group['label'] }}</a></li>
+      {% endfor %}
+    </ul>
+    
+    <div class="pill-content">
+      <div id="home" class="pill-pane fade in active">
+        <h3>ALL</h3>
+        {% if c.page.items or request.params %}
+          {% if c.page.items %}
+          <ul class="media-grid" data-module="ccca-media-grid">
+            {% for group in c.page.items %}
+              {% snippet "group/snippets/group_item.html", group=group, position=loop.index %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+        {% else %}
+          <p class="empty">
+            {{ _('There are currently no groups for this site') }}.
+            {% if h.check_access('group_create') %}
+              {% link_for _('How about creating one?'), controller='group', action='new' %}</a>.
+            {% endif %}
+          </p>
         {% endif %}
-      </p>
-    {% endif %}
-  {% endblock %}
-  {% block page_pagination %}
-    {{ c.page.pager() }}
+      </div>
+       {% for group_type in type_of_groups %}
+          <div id="{{group_type['value']}}" class="pill-pane fade">
+            <h3>{{ group_type['label'] }}</h3>
+            {% set groups_of_correct_type = [] %}
+              {% for item in c.page.items %}
+                {% set group = h.ccca_group_show(item.id) %}
+                {% if group['type_of_group'] == group_type['value'] %}
+                    {% do groups_of_correct_type.append(item) %}
+                {% endif %}
+              {% endfor %}
+    
+            {% if groups_of_correct_type|length > 0 or request.params %}
+              {% if groups_of_correct_type|length > 0 %}
+              <ul class="media-grid" data-module="ccca-media-grid">
+                {% for group in groups_of_correct_type %}
+                  {% snippet "group/snippets/group_item.html", group=group, position=loop.index %}
+                {% endfor %}
+              </ul>
+              {% endif %}
+            {% else %}
+              <p class="empty">
+                {{ _('There are currently no groups of type "' + group_type['label'] + '"') }}.
+                {% if h.check_access('group_create') %}
+                  {% link_for _('How about creating one?'), controller='group', action='new' %}</a>.
+                {% endif %}
+              </p>
+            {% endif %}
+          </div>
+       {% endfor %}
+    </div>
   {% endblock %}
 {% endblock %}
-
 
       </div>
     </article>
   {% endblock %}
   </div>
-{% endblock %}
-
-{% block secondary %}
-  {#
-  {% snippet "organization/snippets/helper.html" %}
-  #}
 {% endblock %}

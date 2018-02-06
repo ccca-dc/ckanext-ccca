@@ -10,7 +10,7 @@ Requirements
 ------------
 
 This plugin is tested with CKAN version 2.5.2 and 2.5.3.
-It depends on ckanext-mdedit (categories) and ckanext-filtersearch (categories - iso_tpCat)
+It depends on ckanext-mdedit (categories) and ckanext-filtersearch (categories - topic_category)
 Overrides major settings from main.css - span9 width etc
 
 Load as first plugin!
