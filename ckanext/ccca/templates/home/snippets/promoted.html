@@ -2,34 +2,57 @@
 {#}
 {% set intro = g.site_intro_text %}
 {#}
-<div class="module-content box">
-  <header>
+  <header class="page-header front-header">
     {% if intro %}
-      {{ h.render_markdown(intro) }}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="lead">{{ h.render_markdown(intro) }}</p>
+	  <a class="btn btn-default-inverted" href="/en/about" role="button">Learn more about opendata.swiss</a>
+        </div>
+	<div class="col-md-offset-1 col-md-5 text-md-right text-xs-center">
+	  <div class="headline">
+	    <div id="opendata-count">TODO</div>
+	    <div class="title">Datasets</div>
+	  </div>
+	  <form action="/en/dataset" role="search">
+	    <div class="form-group has-feedback">
+	      <input type="search" class="form-control input-lg" id="q" name="q" placeholder="Search datasets...">
+	      <i class="icon-search form-control-feedback" aria-hidden="true"></i>
+	    </div>
+	  </form>
+	</div>
+      </div>
+    </div>
     {% else %}
-      <h3 class="page-heading adapt_for_smartphone_text">{{ _("Welcome to the CCCA Data Server") }}</h3>
-      {% trans %}
-      <p class="adapt_for_smartphone_text">
-      The CCCA Data Server provides the central national archive for climate data and information.
-      <br>
-      The data made accessible includes observation and measurement data, scenario data, quantitative and qualitative data, as well as the measurement data and findings of research projects.
-      Our infrastructure is hosted by the
-      <a href="http://zamg.ac.at" target="_blank">ZAMG</a>.
-      <br><br>
-    </p>
-      {% endtrans %}
-      {% trans %} <strong>Explore our possibilities:</strong>  {% endtrans %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 class="headline">{{ _("Welcome to the CCCA Data Server") }}</h3>
+          <p class="lead">{{ h.render_markdown(intro) }}</p>
+            The CCCA Data Server provides the central national archive for climate data and information.
+            <br>
+            The data made accessible includes observation and measurement data, scenario data, quantitative and qualitative data, as well as the measurement data and findings of research projects.
+            Our infrastructure is hosted by the <a href="http://zamg.ac.at" target="_blank"><font color="grey">ZAMG</font></a>.
+          </p>
+	  <a class="btn btn-default-inverted" href="/en/about" role="button">More about us</a>
+        </div>
+	<div class="col-md-offset-1 col-md-5 text-md-right text-xs-center">
+	  <div class="headline">
+	    <div id="opendata-count">TODO</div>
+	    <div class="title">News</div>
+	  </div>
+	  <form action="/en/dataset" role="search">
+	    <div class="form-group has-feedback">
+	      <input type="search" class="form-control input-lg" id="q" name="q" placeholder="Search datasets...">
+	      <i class="icon-search form-control-feedback" aria-hidden="true"></i>
+	    </div>
+	  </form>
+	</div>
+      </div>
+    </div>
     {% endif %}
   </header>
 
   {% block home_image %}
-    <section class="featured">
-      <h2 class="media-heading ccca-heading"></h2>
-      {% block home_image_content %}
-        <a class="media-image" href="/dataset">
-          <img src="/images/Temperature.gif" alt="Featured image"  width="1022" height="688" />
-        </a>
-      {% endblock %}
-    </section>
   {% endblock %}
-</div>

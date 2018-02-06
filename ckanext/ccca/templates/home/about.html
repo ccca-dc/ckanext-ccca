@@ -1,24 +1,22 @@
 {% ckan_extends %}
-{% resource 'ccca/about.css' %}
-
+<div class="container">
+      <div class="row">
 {% block primary %}
-<aside class="primarycontent">
+      <div class="col-md-3">
   {% block primary_content %}
     {% snippet 'about/snippets/menu.html' %}
   {% endblock %}
-</aside>
+</div>
 {% endblock %}
 
 
 {% block secondary %}
-<div class="secondarycontent">
-  <article class="module">
-    <div class="module-content">
+      <div class="col-md-9">
       {% block about_content %}
           <h1 class="page-heading">{{ _('About') }}</h1>
           {% snippet 'about/snippets/about_text.html' %}
       {% endblock %}
-    </div>
   </article>
-</div>
 {% endblock %}
+      </div>
+</div>

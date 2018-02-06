@@ -1,23 +1,25 @@
 {# Anja 21.11.2016: Copied from ckan with modifications to include sorting by packages #}
 
-{% extends "page.html" %}
+{% ckan_extends %}
 
-{% block subtitle %}{{ _('Organizations') }}{% endblock %}
-
-{% block breadcrumb_content %}
-  <li class="active">{% link_for _('Organizations'), controller='organization', action='index' %}</li>
-{% endblock %}
-
-{% block page_header %}{% endblock %}
-
-{% block page_primary_action %}
-  {% if h.check_access('organization_create') %}
-    {% link_for _('Add Organization'), controller='organization', action='new', class_='btn btn-primary', icon='plus-sign-alt' %}
-  {% endif %}
-{% endblock %}
+{% block primary %}
+  <div class="primary col-md-12">
+  {% block primary_content %}
+    <article class="module">
+      <div class="module-content">
+        {% if self.page_primary_action() | trim %}
+          <div class="page_primary_action">
+            {% block page_primary_action %}
+              {% if h.check_access('organization_create') %}
+                {% link_for _('Add Organization'), controller='organization', action='new', class_='btn btn-success pull-right', icon='plus-sign-alt' %}
+              {% endif %}
+            {% endblock %}
+          </div>
+        {% endif %}
 
 {% block primary_content_inner %}
   <h1 class="hide-heading">{% block page_heading %}{{ _('Organizations') }}{% endblock %}</h1>
+  {% snippet "organization/snippets/helper.html" %}
   {% block organizations_search_form %}
 
     {% set sorting = [
@@ -32,7 +34,10 @@
       {% set selected_criteria = c.sort_by_selected %}
     {% endif %}
 
+  {#
    {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting=sorting, sorting_selected=selected_criteria, count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
+  #}
+   {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting='False', count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items, no_title='small' %}
   {% endblock %}
   {% block organizations_list %}
     {% if c.page.items or request.params %}
@@ -53,6 +58,15 @@
   {% endblock %}
 {% endblock %}
 
-{% block secondary_content %}
+
+      </div>
+    </article>
+  {% endblock %}
+  </div>
+{% endblock %}
+
+{% block secondary %}
+  {#
   {% snippet "organization/snippets/helper.html" %}
+  #}
 {% endblock %}
