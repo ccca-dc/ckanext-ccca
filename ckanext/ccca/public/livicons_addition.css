@@ -1,0 +1,33 @@
+.icon-box-02, .icon-box-02 a {
+  -webkit-transition: all .2s linear;
+  -ms-transition: all .2s linear;
+  transition: all .2s linear;
+}
+.icon-box-02 {
+  background: #fff;
+  border-width: 1px 0 1px 1px;
+  border-color: #eee;
+  border-style: solid;
+  padding: 40px 30px 30px;
+}
+@media (min-width: 768px) {
+  .icon-box-02 {
+    float: none;
+    display: table-cell;
+  }
+}
+.icon-box-02:hover {
+  background: #eee;
+}
+.icon-box-02.last {
+  border-right-width: 1px;
+}
+.icon-box-02 .livicon-evo {
+  margin: 0 auto 30px;
+}
+.icon-box-02 h4 {
+  margin-bottom: 20px;
+}
+.icon-box-02 p {
+  color: #777;
+}
