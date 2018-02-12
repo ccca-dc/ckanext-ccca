@@ -1,3 +1,30 @@
+/* GAS Tooltip container */
+.helptip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+/* Helptip text */
+.helptip .helptiptext {
+    visibility: hidden;
+    width: 400px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 10px 10px;
+    border-radius: 6px;
+    /* Position the helptip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    right: 105%;
+}
+/* Show the helptip text when you mouse over the helptip container */
+.helptip:hover .helptiptext {
+    visibility: visible;
+}
+/* GAS Tooltip container END */
+
 .info-text {
     margin-top:5px;
     margin-bottom:0px;
@@ -263,7 +290,7 @@
   *zoom: 1;
   color: #aeaeae;
   counter-reset: stage;
-  margin: -20px -25px 20px;
+  margin: 0px -40px 10px;
   overflow: hidden;
 }
 .stages:before,

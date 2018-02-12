@@ -35,11 +35,26 @@
     {% for group_type in type_of_groups %}
   <div class="card">
     <div class="card-header" role="tab" id="headingOne">
+      <div class="row">
       <h3 class="mb-0">
+       <div class="col-sm-2 col-xs-2">
         <a data-toggle="collapse" href="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
           {{ group_type['label'] }}
         </a>
+       </div>
+       <div class="col-sm-1 col-xs-2">
+        <a data-toggle="collapse" href="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+          <div class="livicon-evo" data-options="
+                      name: angle-wide-bottom.svg;
+                      size: 50px;
+                      style: lines;
+                      strokeColor: #003647;
+                      tryToSharpen: true">
+          </div>
+        </a>
+       </div>
       </h3>
+      </div>
     </div>
 
     <div id="collapse{{ loop.index }}" class="collapse" role="tabpanel" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">

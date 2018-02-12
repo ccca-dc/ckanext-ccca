@@ -4,6 +4,7 @@
   transition: all .2s linear;
 }
 .icon-box-02 {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
   background: #fff;
   border-width: 1px 0 1px 1px;
   border-color: #eee;
