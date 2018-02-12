@@ -34,6 +34,9 @@
 }
 
 /************ Icon box 03 ************/
+.icon-box-03 {
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
 .icon-box-03 .sub-wrapper {
   -webkit-transition: all .2s linear;
   -ms-transition: all .2s linear;
@@ -41,10 +44,13 @@
 }
 .icon-box-03 .icon-wrapper {
   float: none;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
   position: relative;
   width: 120px;
   height: 120px;
-  margin: 40px auto 20px;
+  margin: 20px auto 10px;
 }
 .icon-box-03 .sub-wrapper {
   position: absolute;
@@ -66,6 +72,9 @@
 .icon-box-03 .text-wrapper {
   text-align: center;
 }
+.icon-box-03 .text-wrapper.left {
+  float: left;
+}
 .icon-box-03 h4 {
   color: #2C3F50;
   font-size: 17px;
@@ -86,25 +95,23 @@
   background-color: #3d97b3;
   border-color: #fff;
 }
+.over {
+    float: none;
+    margin: auto;
+    display: flex;
+}
 
 @media (min-width: 768px) {
-  .icon-box-03 {
-    margin: 20px 0 20px;
-  }
-  .icon-box-03 .icon-wrapper.right {
-    float: right;
-    margin-top: 2px;
-    margin-left: 20px;
-  }
-  .icon-box-03 .text-wrapper.right {
-    text-align: right;
-  }
   .icon-box-03 .icon-wrapper.left {
     float: left;
     margin-top: 2px;
     margin-right: 20px;
   }
   .icon-box-03 .text-wrapper.left {
+    float: none;
     text-align: left;
+  }
+  .over {
+    float: left;
   }
 }

@@ -1,24 +1,11 @@
 <link rel="stylesheet" href="livicons_addition.css" />
 
 <div role="main" class="hero">
-  <div class="container">
-    <div class="row row1">
-      <div class="span6 col2">
+      <div>
         {% block promoted %}
           {% snippet 'home/snippets/promoted.html' %}
         {% endblock %}
       </div>
-      <div class="span6 col1 adapt_for_one_column_margin">
-      {#
-      <div class="span6 col2">
-        {% block search %}
-          {% snippet 'home/snippets/search.html' %}
-        {% endblock %}
-        {% block stats %}
-          {% snippet 'home/snippets/stats.html' %}
-        {% endblock %}
-      </div>
-      #}
 </div>
 <div role="main">
   <div class="container">
@@ -34,69 +21,15 @@
         {# End template block example. #}
       </div>
       <div class="span6 col2">
-          <!-- Icon box 02 -->
-        <div class="container">
-            <div class="row table-cell-row">
-                <div class="icon-box-02 col-sm-4 col-xs-12">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: share.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center"><a href="{{ h.url('about') }}">Connect</a></h4>
-                        <p class="text-center">We promote interoperability and collaboration between different science and research communities.
-                        <br><br>
-                        <b>Our Goal</b>: to raise awareness on climate change and serve as a central point for sharing knowledge and resources</p>
-                    </div>
-                </div>
-                <div class="icon-box-02 col-sm-4 col-xs-12">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: servers.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center"><a href="{{ h.url('about') }}">Services</a></h4>
-                        <p class="text-center">Possibility of publishing and retrieving resources, centralized access to relevant meta-information, on the fly preview of NetCDF files and the possibility to create subsets of large NetCDF files. </p>
-                    </div>
-                </div>
-                <div class="icon-box-02 col-sm-4 col-xs-12 last">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: bulb.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center">{{ h.mail_to(_('datenzentrum@ccca.ac.at'), _('Quick Help'), None, None, _('Help '), _('Please describe your requirements:'), class='mdedit_dz_mail_to')}}</h4>
-                        <p class="text-center">For any questions regarding the Data Centre or access and use of the Data Server, please contact us. We are looking forward to hearing from you!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+          {% block offerings %}
+            {% snippet 'home/snippets/offerings.html' %}
+          {% endblock %}
+          <br>
       </div>
-      <br><br>
-      <!-- Icon box 03 -->
-      <div class="container">
-          <div class="row icon-box-03">
-              <div class="col-md-12 col-xs-12">
-                  <div class="icon-wrapper bg1 left">
-                    <div class="sub-wrapper">
-                        <div class="livicon-evo" data-options="
-                            name: envelope-pull.svg;
-                            style: lines;
-                            strokeColor: #fff;
-                            eventOn: grandparent;
-                            drawOnViewport: true">
-                        </div>
-                   </div>
-                 </div>
-                <div class="text-wrapper left">
-                    <h4 class="text-uppercase"><a href="javascript:">News</a></h4>
-                    <p>Lorem ipsum is a pseudo-Latin text used in web design, typography, layout, and printing in place of English to emphasis design elements over content. It's also called placeholder (or filler) text. It's a convenient tool for examples.</p>
-                </div>
-            </div>
-         </div>
-    </div>
+      <div class="span6 col3">
+          {% block news %}
+            {% snippet 'home/snippets/news.html' %}
+          {% endblock %}
+      </div>
     </div>
 </div>
