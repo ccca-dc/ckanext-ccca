@@ -1,3 +1,53 @@
+    .resource-item {
+    position: relative;
+    padding: 10px 10px 10px 60px;
+    margin-bottom: 0px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    }
+    .resource-item:hover {
+    background-color: #eeeeee;
+    }
+    .resource-item .heading {
+    color: #000000;
+    font-size: 14px;
+    font-weight: bold;
+    }
+    .resource-item .format-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    }
+    .resource-item .description {
+    font-size: 12px;
+    margin-bottom: 0;
+    min-height: 12px;
+    }
+    .resource-item .btn-group {
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    }
+    .format-label {
+    *margin-right: .3em;
+    display: inline-block;
+    vertical-align: text-bottom;
+    position: relative;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    background-image: url("../../../base/images/sprite-ckan-icons.png");
+    background-repeat: no-repeat;
+    background-position: 16px 16px;
+    text-indent: -900em;
+    background: url("../../../base/images/sprite-resource-icons.png") no-repeat 0 0;
+    }
+    .format-label {
+    width: 32px;
+    height: 35px;
+    background-position: 0px -62px;
+    }
 /* Filters modal */
 .no-text .text {
   display: none;

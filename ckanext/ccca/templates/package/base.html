@@ -1,0 +1,67 @@
+{% extends "page.html" %}
+
+{% set pkg = c.pkg_dict or pkg_dict %}
+{% block breadcrumb_content_selected %} class="active"{% endblock %}
+{% block subtitle %}{{ _('Datasets') }}{% endblock %}
+
+{% block breadcrumb_content %}
+  {% if pkg %}
+    {% set dataset = pkg.title or pkg.name %}
+    {% if pkg.organization %}
+      {% set organization = pkg.organization.title or pkg.organization.name %}
+      <li>{% link_for _('Organizations'), controller='organization', action='index' %}</li>
+      <li>{% link_for organization|truncate(30), controller='organization', action='read', id=pkg.organization.name %}</li>
+    {% else %}
+      <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
+    {% endif %}
+    <li{{ self.breadcrumb_content_selected() }}>{% link_for dataset|truncate(30), controller='package', action='read', id=pkg.name %}</li>
+  {% else %}
+    <li>{% link_for _('Datasets'), controller='package', action='search' %}</li>
+    <li class="active"><a href="">{{ _('Create Dataset') }}</a></li>
+  {% endif %}
+{% endblock %}
+
+
+{% block primary %}
+  <div class="primary col-md-12">
+    {#
+    The primary_content block can be used to add content to the page.
+    This is the main block that is likely to be used within a template.
+
+    Example:
+
+      {% block primary_content %}
+        <h1>My page content</h1>
+        <p>Some content for the page</p>
+      {% endblock %}
+    #}
+    {% block primary_content %}
+      <article class="module">
+        {% block page_header %}
+          <header class="module-content">
+            {% if self.content_action() | trim %}
+              <div class="content_action">
+                {% block content_action %}{% endblock %}
+              </div>
+            {% endif %}
+            <ul class="nav nav-tabs">
+              {% block content_primary_nav %}{% endblock %}
+            </ul>
+          </header>
+        {% endblock %}
+        <div class="module-content">
+          {% if self.page_primary_action() | trim %}
+            <div class="page_primary_action">
+              {% block page_primary_action %}{% endblock %}
+            </div>
+          {% endif %}
+          {% block primary_content_inner %}
+          {% endblock %}
+        </div>
+      </article>
+    {% endblock %}
+  </div>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}
