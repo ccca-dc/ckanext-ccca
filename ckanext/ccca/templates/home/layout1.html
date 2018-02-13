@@ -1,3 +1,4 @@
+{% resource 'ccca/livicons' %}
 <link rel="stylesheet" href="livicons_addition.css" />
 
 <div role="main" class="hero">
@@ -9,41 +10,27 @@
 </div>
 <div role="main">
   <div class="container">
-            <div class="row">
-                <div class="icon-box-02 col-sm-4 col-xs-12">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: share.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center"><a href="{{ h.url('about') }}">Connect</a></h4>
-                        <p class="text-center">We promote interoperability and collaboration between different science and research communities.
-                        <br><br>
-                        <b>Our Goal</b>: to raise awareness on climate change and serve as a central point for sharing knowledge and resources</p>
-                    </div>
-                </div>
-                <div class="icon-box-02 col-sm-4 col-xs-12">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: servers.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center"><a href="{{ h.url('about') }}">Services</a></h4>
-                        <p class="text-center">Possibility of publishing and retrieving resources, centralized access to relevant meta-information, on the fly preview of NetCDF files and the possibility to create subsets of large NetCDF files. </p>
-                    </div>
-                </div>
-                <div class="icon-box-02 col-sm-4 col-xs-12 last">
-                    <div>
-                        <div class="livicon-evo" data-options="
-                            name: bulb.svg;
-                            eventOn: grandparent;
-                            drawOnViewport: true
-                        "></div>
-                        <h4 class="text-center">{{ h.mail_to(_('datenzentrum@ccca.ac.at'), _('Quick Help'), None, None, _('Help '), _('Please describe your requirements:'), class='mdedit_dz_mail_to')}}</h4>
-                        <p class="text-center">For any questions regarding the Data Centre or access and use of the Data Server, please contact us. We are looking forward to hearing from you!</p>
-                    </div>
-                </div>
-            </div>
+    <div class="row">
+      <div class="span6 col1">
+        {# Note: this featured_group block is used as an example in the theming
+           tutorial in the docs! If you change this code, be sure to check
+           whether you need to update the docs. #}
+        {# Start template block example. #}
+        {# {% block featured_group %}
+          {% snippet 'home/snippets/featured_group.html' %}
+        {% endblock %} #}
+        {# End template block example. #}
+      </div>
+      <div class="span6 col2">
+          {% block offerings %}
+            {% snippet 'home/snippets/offerings.html' %}
+          {% endblock %}
+          <br>
+      </div>
+      <div class="span6 col3">
+          {% block news %}
+            {% snippet 'home/snippets/news.html' %}
+          {% endblock %}
+      </div>
+    </div>
 </div>
