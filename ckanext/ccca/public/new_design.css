@@ -1499,6 +1499,11 @@ ol ol {
     margin-bottom: 0
 }
 
+.unstyled {
+  margin: 0;
+  list-style: none;
+}
+
 .list-unstyled {
     padding-left: 0;
     list-style: none
@@ -5662,6 +5667,10 @@ a.label:focus {
 .label-danger[href]:hover,
 .label-danger[href]:focus {
     background-color: #c9302c
+}
+
+.dataset-heading .label {
+  float: right;
 }
 
 .badge {
