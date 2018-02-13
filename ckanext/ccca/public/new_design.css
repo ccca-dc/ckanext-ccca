@@ -8340,8 +8340,11 @@ li.dataset-item h3 {
     height: 60px
 }
 
+.resource-list {
+  list-style: none;
+}
+
 .resource-list li {
-    overflow: hidden;
     border-bottom: solid #eee 1px;
     padding: 10px 0
 }
