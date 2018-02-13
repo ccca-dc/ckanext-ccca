@@ -11,22 +11,24 @@
     }
     .resource-item .heading {
     color: #000000;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
+    padding-left: 50px;
     }
     .resource-item .format-label {
     position: absolute;
-    top: 10px;
+    top: 15px;
     left: 10px;
     }
     .resource-item .description {
-    font-size: 12px;
+    font-size: 14px;
     margin-bottom: 0;
     min-height: 12px;
+    padding-left: 60px;
     }
     .resource-item .btn-group {
     position: absolute;
-    top: 14px;
+    top: 12px;
     right: 10px;
     }
     .format-label {
@@ -3618,8 +3620,10 @@ fieldset[disabled] .btn-default.focus {
 .open>.btn-primary.dropdown-toggle:focus,
 .open>.btn-primary.dropdown-toggle.focus {
     color: #fff;
-    background-color: #003f39;
-    border-color: #003f39
+    /* background-color: #003f39; */
+    /* border-color: #003f39 */
+    background-color: #0089b3;
+    border-color: #0089b3;
 }
 
 .btn-primary:active,
