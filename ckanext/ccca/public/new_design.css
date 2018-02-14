@@ -1293,32 +1293,44 @@ h6 .small,
 
 h1,
 .h1 {
-    font-size: 50px
+    /* GAS 2018-02-13 */
+    /* font-size: 50px */
+    font-size: 40px
 }
 
 h2,
 .h2 {
-    font-size: 40px
+    /* GAS 2018-02-13 */
+    /* font-size: 40px */
+    font-size: 32px
 }
 
 h3,
 .h3 {
-    font-size: 30px
+    /* GAS 2018-02-13 */
+    /* font-size: 30px */
+    font-size: 22px
 }
 
 h4,
 .h4 {
-    font-size: 20px
+    /* GAS 2018-02-13 */
+    /* font-size: 20px */
+    font-size: 18px
 }
 
 h5,
 .h5 {
-    font-size: 18px
+    /* GAS 2018-02-13 */
+    /* font-size: 18px */
+    font-size: 16px
 }
 
 h6,
 .h6 {
-    font-size: 16px
+    /* GAS 2018-02-13 */
+    /* font-size: 16px */
+    font-size: 14px
 }
 
 p {

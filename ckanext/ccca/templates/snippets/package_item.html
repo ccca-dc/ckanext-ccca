@@ -16,7 +16,7 @@ Example:
 {% set truncate = truncate or 180 %}
 {% set truncate_title = truncate_title or 80 %}
 {% set title = package.title or package.name %}
-{% set description = h.truncate(package.description, truncate) %}
+{% set notes = h.markdown_extract(package.notes, extract_length=truncate) %}
 
 {% block package_item %}
   <li class="{{ item_class or 'dataset-item' }}">
@@ -54,11 +54,11 @@ Example:
             </p>
           {% endif %}
         {% endblock %}
-        {% block description %}
-          {% if description %}
-            <p>{{ description }}</p>
+        {% block notes %}
+          {% if notes %}
+            <div>{{ notes|urlize }}</div>
           {% else %}
-            <p class="empty">{{ _('This dataset has no description') }}</p>
+            <p class="empty">{{ _("This dataset has no description") }}</p>
           {% endif %}
         {% endblock %}
       </div>
