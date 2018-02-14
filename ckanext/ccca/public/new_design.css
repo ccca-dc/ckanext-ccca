@@ -8491,3 +8491,10 @@ a.tag:hover {
   -moz-box-shadow: inset 0 1px 0 #006280;
   box-shadow: inset 0 1px 0 #006280;
 }
+
+@media (max-width: 980px){
+    #content h1 {
+      -ms-word-break: break-all;
+      word-break: break-all;
+    }
+}
