@@ -589,7 +589,7 @@
 }
 .account-masthead .account ul li a span.username,
 .account-masthead .account ul li a span.text {
-  margin: 0 2px 0 4px;
+  margin: 0 0px 0 4px;
 }
 .account-masthead .account ul li a span.text {
   position: absolute;
@@ -751,9 +751,9 @@
 }
 @media (max-width: 767px) {
   .account-masthead {
-    margin-left: -20px;
-    margin-right: -20px;
-    padding-left: 20px;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
     padding-right: 20px;
   }
   .masthead .section {
@@ -8262,7 +8262,7 @@ a.label-primary-gray:hover {
     border-radius: 18px;
     width: 18px;
     height: 18px;
-    line-height: 18px;
+    line-height: 12px;
     margin-top: 5px;
     text-align: center
 }
