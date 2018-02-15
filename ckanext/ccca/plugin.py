@@ -91,6 +91,11 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='index')
 
+        # Groups
+        map.connect('group', '/group',
+                    controller='ckanext.ccca.controllers.group:CCCAGroupController',
+                    action='index')
+
         # List Members of own organization
         map.connect('organization_list_members', '/organization/members_list/{id}',
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
