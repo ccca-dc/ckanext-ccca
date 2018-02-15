@@ -80,9 +80,7 @@ class CCCAGroupController(group.GroupController):
             'include_extras': True,
             'q': q,
             'sort': sort_by,
-            'type': group_type or 'group',
-            'limit': items_per_page,
-            'offset': items_per_page * (page - 1),
+            'type': group_type or 'group'
         }
         page_results = self._action('group_list')(context,
                                                   data_dict_page_results)
