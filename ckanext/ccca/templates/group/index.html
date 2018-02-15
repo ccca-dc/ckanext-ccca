@@ -28,8 +28,9 @@
         {% set type_of_groups = h.scheming_field_by_name(schema['fields'], 'type_of_group')['choices'] %}
 
         <div id="accordion" role="tablist">
+          {% set sorted_groups = c.page.items|groupby('type_of_group') %}
           {% for group_type in type_of_groups %}
-            {% set filtered_groups = c.page.items|selectattr("type_of_group", "equalto", group_type['value'])|list %}
+            {% set filtered_groups = h.ccca_filter_groupby(sorted_groups, group_type['value']) %}
             {% if c.q == "" or (c.q != "" and filtered_groups|length > 0) %}
             <div class="card">
               <div class="card-header" role="tab" id="headingOne">

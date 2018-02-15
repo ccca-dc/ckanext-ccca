@@ -344,3 +344,24 @@ def ccca_group_list(type_of_group=None):
         return groups
 
     return [group for group in groups if group.get('type_of_group', None) == type_of_group]
+
+
+def ccca_group_list(type_of_group=None):
+    context = {'model': model,
+               'user': c.user}
+
+    groups = tk.get_action('group_list')(context, {'all_fields': True, 'include_dataset_count': True, 'include_extras': True})
+
+    if type_of_group is None:
+        return groups
+
+    return [group for group in groups if group.get('type_of_group', None) == type_of_group]
+
+def ccca_filter_groupby(tuple_groupby, filter_string):
+    filtered = filter(lambda x: filter_string in x[0], tuple_groupby)
+    try:
+        return filtered[0][1]
+    except:
+        return filtered
+
+
