@@ -152,7 +152,7 @@
 /* [role=main] { */
 /*   min-height: 350px; */
 /* } */
-
+/* KATHI min-width otherwise problem in mobile version */
 @media (min-width: 992px) {
     [role=main] .primary {
       float: right;
@@ -8515,9 +8515,15 @@ a.tag:hover {
   box-shadow: inset 0 1px 0 #006280;
 }
 
+/* KATHI different word break for long titles */
 @media (max-width: 980px){
     #content h1 {
       -ms-word-break: break-all;
       word-break: break-all;
     }
+}
+
+/* KATHI center for group site */
+.image {
+    text-align: center;
 }

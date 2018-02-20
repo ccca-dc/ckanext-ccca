@@ -1,0 +1,9 @@
+{% ckan_extends %}
+
+{% block pre_primary %}
+  {% snippet 'organization/snippets/ccca_organization.html', organization=c.group_dict, show_nums=true %}
+  {{ super() }}
+{% endblock %}
+
+{% block secondary_content %}
+{% endblock %}

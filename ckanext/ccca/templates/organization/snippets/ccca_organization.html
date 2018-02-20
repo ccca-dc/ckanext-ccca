@@ -1,3 +1,5 @@
+{% resource 'ccca/group_site.css' %}
+
 <section class="module-content">
   <div class="row" style="margin-bottom:40px">
       {% block inner %}
@@ -30,7 +32,7 @@
           {% if show_nums %}
           {% block nums %}
               <dt><i>{{ _('Followers: ') }}</i> {{ h.SI_number_span(organization.num_followers) }}  </dt>
-               <dt><i>{{ _('Views: ') }}</i> {{ h.SI_number_span(organization.package_count) }}</dt>
+              <dt><i>{{ _('Datasets: ') }}</i> {{ h.SI_number_span(organization.package_count) }}</dt>
 
                {% set current_url = h.full_current_url() %}
               <dt>
