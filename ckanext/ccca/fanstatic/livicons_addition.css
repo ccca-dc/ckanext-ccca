@@ -115,3 +115,30 @@
     float: left;
   }
 }
+
+/*********** Info Panel 01 ***********/
+.info-panel-01 {
+  padding: 10px 20px 10px;
+  margin-bottom: 10px;
+}
+.green-border {
+    border-left: 5px solid #9ec96e;
+}
+.blue-border {
+    border-left: 5px solid #21bbef;
+}
+/* 9ec96e cbda6b  */
+.info-panel-01 .livicon-evo {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  margin-left: -3px;
+  margin-top: -13px;
+  opacity: 0.3;
+}
+.info-panel-01 h6 {
+  font-weight: 900;
+}
+.info-panel-01 h6:after {
+  clear: both;
+}
