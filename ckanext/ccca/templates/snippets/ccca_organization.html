@@ -22,7 +22,8 @@
           {% endblock %}
           {% block description %}
           {% if organization.description %}
-            <p>{{ organization.description }}</p>
+            {{ h.markdown_extract(organization.description, 250) }}
+            <b>{% link_for _('read more'), controller=organization.type, action='about', id=organization.name %}</b>
           {% else %}
             <p class="empty">{{ _('There is no description for this organization') }}</p>
           {% endif %}
