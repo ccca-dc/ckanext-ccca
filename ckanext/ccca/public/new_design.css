@@ -8527,3 +8527,20 @@ a.tag:hover {
 .image {
     text-align: center;
 }
+
+/* KATHI copied from CKAN */
+.label-inverse,
+.badge-inverse {
+  background-color: #333333;
+}
+.label-inverse[href],
+.badge-inverse[href] {
+  background-color: #1a1a1a;
+}
+.dataset-private {
+  margin-right: 10px;
+  text-transform: uppercase;
+}
+.dataset-private .icon-lock {
+  width: 9px;
+}
