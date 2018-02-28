@@ -51,7 +51,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_get_news': helpers.ccca_get_news,
             'ccca_group_show': helpers.ccca_group_show,
             'ccca_group_list': helpers.ccca_group_list,
-            'ccca_filter_groupby': helpers.ccca_filter_groupby
+            'ccca_filter_groupby': helpers.ccca_filter_groupby,
+            'ccca_sort_groups_dropdown': helpers.ccca_sort_groups_dropdown,
+            'ccca_sort_groups_list': helpers.ccca_sort_groups_list
             }
 
     # IRoutes
@@ -106,7 +108,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('categories', '/categories',
                     controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
                     action='index') #, ckan_icon='star'
-    
+
         return map
 
     def after_map(self, map):

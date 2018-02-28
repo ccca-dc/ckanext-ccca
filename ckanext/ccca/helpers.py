@@ -24,12 +24,136 @@ import random
 import ckan.lib.helpers as h
 # Anja 27.9.17
 from ckanext.filtersearch import helpers as hf
+from ckanext.scheming import helpers as hs
 
 from pylons import config
 
 import json
 
 import ckan.model as model
+
+# Store group_list and group_type_list globally: Anja, 28.2.18
+# to get them only once
+group_list = []
+group_type_list =[]
+
+
+def _get_group_index_list (name,list_of_items):
+#for the list of groups as prepared for group list
+    for i, x in enumerate(list_of_items):
+        if x['name'] == name:
+            return i
+    return -1
+
+def _get_group_index_dropdown (name,list_of_items):
+#for the list of groups as prepared for dropdown
+    for i, x in enumerate(list_of_items):
+        if x[1] == name:
+            return i
+    return -1
+
+def _get_group(id):
+    global group_list
+    if not group_list:
+        group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+
+    if not group_list:
+        return None
+    result = (item for item in group_list if item['id'] == id).next()
+
+    return result
+
+def _get_group_type_label(name):
+    global group_type_list
+    label = ''
+    if not group_type_list:
+        schema = hs.scheming_group_schemas()
+        group_info = schema['group']
+        field_list = group_info['fields']
+        for x in field_list:
+            if x['field_name'] == 'type_of_group':
+                group_type_list = x['choices']
+
+    if not group_type_list:
+        return ''
+    label = ''
+    for x in group_type_list:
+        if x['value']==name:
+            label = x['label']
+            break
+    return label
+
+def ccca_sort_groups_dropdown(pkg_groups):
+
+    #reverse Order because of insertion method below
+    rev_groups = sorted(pkg_groups, key=lambda tup: tup[1], reverse=True)
+
+    sorted_groups = []
+    for x in rev_groups:
+        group = _get_group(x[0])
+        group_type = ''
+        group_type_label = ''
+        if 'type_of_group' in group:
+            group_type = group['type_of_group']
+        if group_type:
+            group_type_label = _get_group_type_label(group_type)
+        else:
+            group_type = 'other'
+            group_type_label = 'Other'
+        if not sorted_groups or _get_group_index_dropdown(group_type_label,sorted_groups) <0:
+            f = []
+            f.append('-') # Empty id for group types
+            f.append( group_type_label)
+            f.append(False)
+            x.append(True)
+            sorted_groups.append(f)
+            sorted_groups.append(x)
+        else:
+            index=_get_group_index_dropdown(group_type_label,sorted_groups)
+            if  index >= 0:
+                x.append(True)
+                sorted_groups.insert(index+1, x)
+
+    for g in sorted_groups:
+        if not g[2]:
+            g[1] = g[1] + ': '
+
+    #print sorted_groups
+    return sorted_groups
+
+def ccca_sort_groups_list(pkg_groups):
+# sorting for the group_list
+    #reverse Order because of insertion method below
+    rev_groups = sorted(pkg_groups,  key=lambda k: k['name'], reverse=True)
+    sorted_groups = []
+    for x in rev_groups:
+        group = _get_group(x['id'])
+        group_type = ''
+        group_type_label = ''
+        if 'type_of_group' in group:
+            group_type = group['type_of_group']
+        if group_type:
+            group_type_label = _get_group_type_label(group_type)
+        else:
+            group_type = 'other'
+            group_type_label = 'Other'
+        if not sorted_groups or _get_group_index_list(group_type,sorted_groups) <0:
+            f = {}
+            f['description'] = group['description']
+            f['name'] = group_type
+            f['display_name'] = group_type_label + ': '
+            f['title'] = group_type_label + ': '
+            f['is_type'] = True
+            sorted_groups.append(f)
+            x['is_type'] = False
+            sorted_groups.append(x)
+        else:
+            index=_get_group_index_list(group_type,sorted_groups)
+            if  index >= 0:
+                x['is_type'] = False
+                sorted_groups.insert(index+1, x)
+
+    return sorted_groups
 
 def ccca_get_news ():
     news_id = ccca_check_news();
@@ -363,5 +487,3 @@ def ccca_filter_groupby(tuple_groupby, filter_string):
         return filtered[0][1]
     except:
         return filtered
-
-
