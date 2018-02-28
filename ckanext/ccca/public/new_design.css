@@ -4,6 +4,86 @@
   margin-top: 10px
 }
 
+/* From main on data --- */
+.pill {
+    display: inline-block;
+    background-color: #6f8890;
+    color: #ffffff;
+    padding: 2px 10px 1px 10px;
+    margin-right: 5px;
+    font-weight: normal;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+
+/* from old ccca-theme.css */
+/* additional file type icons */
+.label[data-format=doc],
+.label[data-format*=doc] {
+  /*background-color: #e9f65a;*/
+  background-color: grey;
+}
+
+.label[data-format=odt],
+.label[data-format*=odt] {
+/*  background-color: #b50db3;*/
+  background-color: grey;
+}
+
+.label[data-format=netcdf],
+.label[data-format*=netcdf] {
+  background-color: #337794;
+}
+
+.label[data-format=nc],
+.label[data-format*=nc] {
+  background-color: #337794;
+}
+
+.label[data-format=tgz],
+.label[data-format*=tgz] {
+  background-color: #686868;
+}
+
+/* Need the corresponding icons */
+.format-label[data-format="odt"],
+.format-label[data-format*="odt"] {
+  width: 32px;
+  height: 35px;
+  background: url("../images/ccca-resources-sprite-icons.png") no-repeat 0 0;
+  background-position: 0px -62px;
+}
+.format-label[data-format="doc"],
+.format-label[data-format*="doc"] {
+  width: 32px;
+  height: 35px;
+  background: url("../images/ccca-resources-sprite-icons.png") no-repeat 0 0;
+  background-position: -32px -62px;
+}
+.format-label[data-format="netcdf"],
+.format-label[data-format*="netcdf"] {
+  width: 32px;
+  height: 35px;
+  background: url("../images/ccca-resources-sprite-icons.png") no-repeat 0 0;
+  background-position: -64px -62px;
+}
+.format-label[data-format="nc"],
+.format-label[data-format*="nc"] {
+  width: 32px;
+  height: 35px;
+  background: url("../images/ccca-resources-sprite-icons.png") no-repeat 0 0;
+  background-position: -64px -62px;
+}
+.format-label[data-format="tgz"],
+.format-label[data-format*="tgz"] {
+  width: 32px;
+  height: 35px;
+  background: url("../images/ccca-resources-sprite-icons.png") no-repeat 0 0;
+  background-position: -96px -62px;
+}
+
+/* Anja End */
 
     .resource-item {
     position: relative;
