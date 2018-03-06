@@ -2,6 +2,7 @@
 {#}
 {% set intro = g.site_intro_text %}
 {#}
+{% set stats = h.get_site_statistics() %}
   <header class="page-header front-header">
     {% if intro %}
     <div class="container">
@@ -12,7 +13,8 @@
         </div>
 	<div class="col-md-offset-1 col-md-5 text-md-right text-xs-center">
 	  <div class="headline">
-	    <div id="opendata-count">TODO</div>
+            {% set dataset_count = h.SI_number_span(stats.dataset_count) %}
+	    <div id="opendata-count">{{ dataset_count }}</div>
 	    <div class="title">Datasets</div>
 	  </div>
 	  <form action="/en/dataset" role="search">
@@ -39,8 +41,9 @@
         </div>
 	<div class="col-md-offset-1 col-md-5 text-md-right text-xs-center">
 	  <div class="headline">
-	    <div id="opendata-count">TODO</div>
-	    <div class="title">News</div>
+            {% set dataset_count = h.SI_number_span(stats.dataset_count) %}
+	    <div id="opendata-count">{{ dataset_count }}</div>
+	    <div class="title">Datasets</div>
 	  </div>
 	  <form action="/en/dataset" role="search">
 	    <div class="form-group has-feedback">
