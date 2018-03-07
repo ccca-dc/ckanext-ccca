@@ -8863,8 +8863,11 @@ legend + .control-group {
 .js .image-upload .btn-remove-url .icon-remove {
   margin-right: 0;
 }
+.control-group .select2-container {
+    width: 100% !important;
+}
 
-/* KATHI - added for forms */
+/* KATHI - added for forms so that all fields look alike */
 @media (min-width: 768px) {
     .form-horizontal .control-label {
         float: left;
@@ -8880,7 +8883,7 @@ legend + .control-group {
         position: relative;
     }
 
-    .form-control {
+    .control-group .form-control {
         position: relative;
         display: inline-block;
         width: 91.66666667%;
@@ -8901,8 +8904,44 @@ legend + .control-group {
         display: inline-block;
         width: 91.66666667%;
     }
+    .control-group .select2-container {
+        width: 91.66666667% !important;
+    }
+}
+
+.autocomplete-div .select2-container {
+    width: 100% !important;
+}
+/* copied from form-control field for select2 fields */
+.control-group .select2-choice,
+.control-group .select2-choices {
+    height: 45px !important;
+    padding: 8px 12px !important;
+    padding-bottom: 12px;
+    font-size: 18px;
+    line-height: 1.5 !important;
+    color: #333 !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    /* border: 1px solid #333;
+    border-radius: 0; */
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
+}
+.select2-container .select2-choices .select2-search-field input {
+    padding-top: 0 !important;
+}
+.select2-container .select2-choice .select2-arrow b {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-position: 0 6px;
 }
 .form-actions .btn {
     margin-right: 10px;
     margin-bottom: 10px
 }
+
+/* KATHI- end of adding for forms */
