@@ -330,12 +330,10 @@
 .helptip {
     position: relative;
     display: block;
-    /* border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 /* Helptip text */
 .helptip .helptiptext {
     visibility: hidden;
-    width: 400px;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -346,6 +344,11 @@
     z-index: 1;
     top: -5px;
     right: 105%;
+}
+@media (min-width: 768px) {
+    .helptip .helptiptext {
+        width: 400px;
+    }
 }
 /* Show the helptip text when you mouse over the helptip container */
 .helptip:hover .helptiptext {
@@ -8776,18 +8779,18 @@ a.tag:hover {
 }
 @media (min-width: 768px) {
   .form-horizontal .controls {
+    margin-left: 16.66666667%;
     /* margin-left: 130px; */
     width: 83.33333333%;
-    display: inline-block;
     position: relative;
   }
 }
 .js .image-upload .controls {
   position: relative;
 }
-.add-member-form .controls {
+/* .add-member-form .controls {
   margin-left: auto;
-}
+} */
 .ie7 .control-full.control-large .controls input {
   padding-bottom: 20px;
 }
@@ -8817,10 +8820,10 @@ legend + .control-group {
   position: relative;
   top: -2px;
 }
-.add-member-form .row-fluid .control-group {
+/* .add-member-form .row-fluid .control-group {
   float: left;
   width: 45%;
-}
+} */
 
 .js .image-upload #field-image-url {
   padding-right: 90px;
@@ -8865,6 +8868,10 @@ legend + .control-group {
 }
 .control-group .select2-container {
     width: 100% !important;
+}
+
+.dataset-form .well {
+    clear: right;
 }
 
 /* KATHI - added for forms so that all fields look alike */
@@ -8942,6 +8949,68 @@ legend + .control-group {
 .form-actions .btn {
     margin-right: 10px;
     margin-bottom: 10px
+}
+.control-group #field-image-url {
+    display: inline-block;
+    width: 91.66666667% !important;
+}
+.control-group .btn-remove-url {
+    right: 8.33333333% !important;
+    margin-right: 5px !important;
+}
+
+/* copied from CKAN */
+.checkbox input[type=checkbox] {
+  position: relative;
+  margin-left: initial;
+  /* margin-right: 5px; */
+  top: 2px;
+}
+
+@media (min-width: 992px) {
+    [role=main] .secondary {
+      pointer-events: none;
+      padding: 0;
+      z-index: 1;
+      padding-right: 1px;
+      float: right;
+    }
+    .primary .primary {
+      float: left;
+      margin-left: 0;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .primary .primary h1:first-child,
+    .primary .primary h2:first-child,
+    .primary .primary h3:first-child,
+    .primary .primary h4:first-child {
+      margin-top: 0;
+    }
+    .primary .tertiary {
+      margin-bottom: 20px;
+      pointer-events: none; /* otherwise problems with floating */
+    }
+}
+.add-member-form .control-label {
+  width: 100%;
+  text-align: left;
+}
+.add-member-form .controls {
+  margin-left: 0;
+}
+.add-member-or {
+  text-transform: uppercase;
+  color: #777777;
+  font-weight: bold;
+}
+.add-member-form .row .control-group {
+  float: left;
+  width: 45%;
+}
+.add-member-form .row .select2-container,
+.add-member-form .row input {
+  width: 100% !important;
 }
 
 /* KATHI- end of adding for forms */
