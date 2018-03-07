@@ -8969,11 +8969,9 @@ legend + .control-group {
 
 @media (min-width: 992px) {
     [role=main] .secondary {
-      pointer-events: none;
       padding: 0;
       z-index: 1;
       padding-right: 1px;
-      float: right;
     }
     .primary .primary {
       float: left;
