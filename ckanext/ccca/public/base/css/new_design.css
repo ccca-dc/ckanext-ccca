@@ -243,6 +243,13 @@
     top: 12px;
     right: 10px;
     }
+    /* KATHI - added from CKAN */
+    @media (max-width: 768px) {
+      .resource-item .btn-group {
+        display: none;
+      }
+    }
+    /* KATHI end */
     .format-label {
     *margin-right: .3em;
     display: inline-block;
