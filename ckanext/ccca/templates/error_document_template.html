@@ -14,9 +14,15 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
+
+        {% if c.code and  c.code[0] == '404' %}
+        <p class="lead">{{ c.content}}</p>
+        <p><i class="icon-meh icon-2x"></i></p>
+        {% else %}
         {# TODO create more specific error message. Maybe with: {{ c.content }} and {{ c.code[0] }} #}
         <p class="lead">{{ _("There was a problem. Here is a bug!") }}</p>
         <p><i class="icon-bug icon-4x"></i></p>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -26,4 +32,3 @@
   {# eat the flash messages caused by the 404 #}
   {% set flash_messages = h.flash.pop_messages() %}
 {% endblock %}
-
