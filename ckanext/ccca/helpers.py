@@ -225,110 +225,65 @@ def ccca_organizations_available_with_private():
     return org_list
 
 
-def ccca_get_org_and_role(user):
-
-    if  user['name'] != None:
-        user_name = user['name']
-    else:
-        return None
-
-    user_orgs = ccca_get_orgs_for_user(user_name)
-    #print "****************** ccca_get_org_and_role"
-    #print user_orgs
-    if  user_orgs != None:
-        for org in user_orgs:
-            #print org
-            org_users = tk.get_action('organization_show')({},{'id':org['name'], 'include_users':True})
-            for u in org_users['users']:
-                if u['name'] == user_name:
-                    if u['capacity'] == 'admin':
-                        org['role'] = 'Admin'
-                    elif u['capacity'] == 'editor':
-                        org['role'] = 'Editor'
-                    elif u['capacity'] == 'member':
-                        org['role'] = 'Member'
-                    else:
-                        org['role'] = u['capacity']
-
-                    break
-    #print user_orgs
-    return user_orgs
-
-def ccca_get_orgs_for_user (user_name):
-    """ Delivers list of organizations for a user"""
+def ccca_get_orgs_for_user (user):
+    """ Delivers list of organizations and roles for a user"""
 
     try:
-        all_orgs = tk.get_action('organization_list')({},{'all_fields':True, 'include_users':True})
-        all_users = tk.get_action('user_list')({},{})
+        u_orgs = tk.get_action('organization_list_for_other_user')({},{'user_id':user['id']})
     except:
         return None
 
-    # make a simple list of users in every org
-    user_org_list = {}
-    for org in all_orgs:
-        u_list = []
-        users = org['users']
-        for us in users:
-            u_list.append(us['name'])
-        user_org_list[org['name']] = u_list
+    # make return list
+    orgs_for_user =[]
+    for u_org in u_orgs:
+        org = u_org['organization']
+        org_sum = {}
+        org_sum['name'] = org['name']
+        org_sum['display_name'] = org['display_name']
+        org_sum['url'] = h.url_for(controller='organization', action='read', id=org['name'])
+        cap = u_org['role']
+        if cap == 'admin':
+            org_sum['role'] = 'Admin'
+        elif cap == 'editor':
+            org_sum['role'] = 'Editor'
+        elif cap == 'member':
+            org_sum['role'] = 'Member'
+        else:
+            org_sum['role'] = u['capacity']
 
-    # make the return dict
-    orgs_for_user = []
-    for org in all_orgs:
-        # check of current user (u) in list
-        if user_name in user_org_list[org['name']] and user_org_list[org['name']] != None:
-
-            org_sum = {}
-            org_sum['name'] = org['name']
-            org_sum['display_name'] = org['display_name']
-            org_sum['url'] = h.url_for(controller='organization', action='read', id=org['name'])
-            orgs_for_user.append(org_sum)
-
+        orgs_for_user.append(org_sum)
 
     return orgs_for_user
 
 def ccca_get_orgs ():
     """ Delivers an user-dependent list of organizations and users"""
 
-    all_orgs = tk.get_action('organization_list')({},{'all_fields':True, 'include_users':True})
-    all_users = tk.get_action('user_list')({},{})
-
-    # make a simple list of users in every org
-    user_org_list = {}
-    for org in all_orgs:
-        u_list = []
-        users = org['users']
-        for us in users:
-            u_list.append(us['name'])
-        user_org_list[org['name']] = u_list
+    try:
+        all_users = tk.get_action('user_list')({},{})
+    except:
+        return None
 
     # make the return dict
     user_orgs = {}
-    for u in all_users:
 
+    for user in all_users:
         orgs_for_user = []
-        for org in all_orgs:
-            # check of current user (u) in list
-            if u['name'] in user_org_list[org['name']] and user_org_list[org['name']] != None:
+        try:
+            u_orgs = tk.get_action('organization_list_for_other_user')({},{'user_id':user['id']})
+        except:
+            continue
 
-                org_sum = {}
-                org_sum['name'] = org['name']
-                org_sum['display_name'] = org['display_name']
-                org_sum['url'] = h.url_for(controller='organization', action='read', id=org['name'])
-                orgs_for_user.append(org_sum)
+        for u_org in u_orgs:
+            org = u_org['organization']
+            org_sum = {}
+            org_sum['name'] = org['name']
+            org_sum['display_name'] = org['display_name']
+            org_sum['url'] = h.url_for(controller='organization', action='read', id=org['name'])
+            orgs_for_user.append(org_sum)
 
-                #just one
-                #user_orgs[u['name']] = org_sum
-                # one org is enough
-                #break
+        user_orgs[user['name']] =  orgs_for_user
 
-        user_orgs[u['name']] =  orgs_for_user
-        #print user_orgs[u['name']]
-    #print "USer_org_list"
-    #print user_orgs
     return user_orgs
-
-
 
 """ Anja 9.6.2017"""
 def ccca_get_user_dataset(user_id):

@@ -96,7 +96,7 @@
         </dl>
 
         {#} CCCA Extension: organization and role, Anja 20.7.17 {#}
-        {% set user_orgs_and_roles = h.ccca_get_org_and_role(user)%}
+        {% set user_orgs_and_roles = h.ccca_get_orgs_for_user(user)%}
         {% if user_orgs_and_roles != None %}
         <dl>
           <dt>{{ _('Organisation(s)') }}</dt>
