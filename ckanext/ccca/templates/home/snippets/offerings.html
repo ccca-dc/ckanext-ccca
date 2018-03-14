@@ -32,7 +32,7 @@
                     eventOn: grandparent;
                     drawOnViewport: true
                 "></div>
-                <h4 class="text-center">{{ h.mail_to(_('datenzentrum@ccca.ac.at'), _('Quick Help'), None, None, _('Help '), _('Please describe your requirements:'), class='mdedit_dz_mail_to')}}</h4>
+                <h4 class="text-center"><a href="{{ h.url_for('contact_form') }}" title="{{ _('Contact') }}">Quick Help</a></h4>
                 <p class="text-center">For any questions regarding the Data Centre or access and use of the Data Server, please contact us. We are looking forward to hearing from you!</p>
             </div>
         </div>
