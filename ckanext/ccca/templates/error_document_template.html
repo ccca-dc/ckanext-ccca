@@ -1,3 +1,5 @@
+{% resource 'ccca/livicons' %}
+
 {% extends "page.html" %}
 
 {% block subtitle %}{{ gettext('Error %(error_code)s', error_code=c.code[0]) }}{% endblock %}
@@ -14,16 +16,19 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
-
         {% if c.code and  c.code[0] == '404' %}
         <p class="lead">{{ c.content}}</p>
-        <p><i class="icon-meh icon-2x"></i></p>
+        <h1>&#x1f62f;</h1>
         {% else %}
         {# TODO create more specific error message. Maybe with: {{ c.content }} and {{ c.code[0] }} #}
         <p class="lead">{{ _("There was a problem. Here is a bug!") }}</p>
-        <p><i class="icon-bug icon-4x"></i></p>
+        <p class="livicon-evo center-block" data-options="
+            name: bug.svg;
+            eventOn: grandparent;
+            drawOnViewport: true
+        "></p>
         {% endif %}
-      </div>
+        </div>
     </div>
   </section>
 {% endblock %}
