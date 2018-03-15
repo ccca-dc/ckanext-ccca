@@ -32,6 +32,17 @@ import json
 
 import ckan.model as model
 
+#Anja 15.3.2018
+def ccca_get_groups_with_dataset(groups):
+    if not groups:
+        return None
+    dataset_groups= []
+    for group in groups:
+        if group['package_count'] > 0:
+            dataset_groups.append(group)
+    return dataset_groups
+
+
 # Store group_list and group_type_list globally: Anja, 28.2.18
 # to get them only once
 group_list = []

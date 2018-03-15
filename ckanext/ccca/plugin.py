@@ -52,7 +52,8 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_group_list': helpers.ccca_group_list,
             'ccca_filter_groupby': helpers.ccca_filter_groupby,
             'ccca_sort_groups_dropdown': helpers.ccca_sort_groups_dropdown,
-            'ccca_sort_groups_list': helpers.ccca_sort_groups_list
+            'ccca_sort_groups_list': helpers.ccca_sort_groups_list,
+            'ccca_get_groups_with_dataset': helpers.ccca_get_groups_with_dataset
             }
 
     # IRoutes
