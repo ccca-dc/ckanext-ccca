@@ -3,6 +3,11 @@
 {% set type = group.type or 'group' %}
 {% set url = h.url_for(type ~ '_read', action='read', id=group.name) %}
 
+{% if group['my_group'] %}
+  {% set author = group['my_group'].replace(' ','+')%}
+  {% set url = url + '?author=' + author %}
+{% endif %}
+
 {% if group.is_type %}
 <hr><hr>
 <h3 class="media-heading">{{ group.display_name }}</h4>

@@ -43,10 +43,24 @@ def ccca_get_groups_with_dataset(u_groups, uid):
     if not uid:
         return None
 
-    user = logic.get_action('user_show')({}, {'include_datasets':True, 'id': uid})
 
-    if not 'datasets' in user:
+    user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uid})
+
+    if not user_info:
         return None
+
+    #We identify via email adresses - cannot be chenged due to ldap
+    # Maintainer and Author are allowed to edit
+    user = user_info['email']
+
+    #Get all packages the given user is author or maintainer
+    data_dict ={}
+    data_dict['fq']= 'author_email:' +  user #  + \
+                      #  ' OR maintainer_email:' + user #leider nimmt package_search die Query so nicht korrekt, obwohl solr es kann
+    #print data_dict
+    result = logic.get_action('package_search')({}, data_dict)
+    user_datasets = result['results']
+
 
     #count number of datasets in group
     group_count = []
@@ -54,7 +68,8 @@ def ccca_get_groups_with_dataset(u_groups, uid):
     #list group_names only
     group_list = []
 
-    for x in user['datasets']:
+    for x in user_datasets:
+        #print x['name']
         gl = x['groups']
         for g in gl:
             if g['name'] not in group_list:
@@ -74,6 +89,7 @@ def ccca_get_groups_with_dataset(u_groups, uid):
         if g['name'] in group_list:
             gi = group_list.index(g['name'])
             g['package_count'] = group_count[gi]['count']
+            g['my_group'] = user_info['display_name']             #  For facet in group_template
             dataset_groups.append(g)
 
     return dataset_groups
