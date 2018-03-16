@@ -33,13 +33,49 @@ import json
 import ckan.model as model
 
 #Anja 15.3.2018
-def ccca_get_groups_with_dataset(groups):
-    if not groups:
+def ccca_get_groups_with_dataset(u_groups, uid):
+
+    #filter the given list of groups for groups of the users own datasets
+
+    if not u_groups:
         return None
+
+    if not uid:
+        return None
+
+    user = logic.get_action('user_show')({}, {'include_datasets':True, 'id': uid})
+
+    if not 'datasets' in user:
+        return None
+
+    #count number of datasets in group
+    group_count = []
+
+    #list group_names only
+    group_list = []
+
+    for x in user['datasets']:
+        gl = x['groups']
+        for g in gl:
+            if g['name'] not in group_list:
+                group_list.append(g['name'])
+                #Create Element to store name and count
+                ng = {}
+                ng['name'] = g['name']
+                ng['count'] = 1
+                group_count.append(ng)
+            else:
+                gi = group_list.index(g['name'])
+                group_count[gi]['count'] = group_count[gi]['count'] + 1
+
+    #return only groups we found above
     dataset_groups= []
-    for group in groups:
-        if group['package_count'] > 0:
-            dataset_groups.append(group)
+    for g in u_groups:
+        if g['name'] in group_list:
+            gi = group_list.index(g['name'])
+            g['package_count'] = group_count[gi]['count']
+            dataset_groups.append(g)
+
     return dataset_groups
 
 

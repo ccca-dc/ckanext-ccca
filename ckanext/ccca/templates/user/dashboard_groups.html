@@ -11,7 +11,7 @@
 {% block primary_content_inner %}
   <h2 class="hide-heading">{{ _('My Groups') }}</h2>
   {% set groups = h.groups_available(am_member=True) %}
-  {% set dataset_groups = h.ccca_get_groups_with_dataset(groups) %}
+  {% set dataset_groups = h.ccca_get_groups_with_dataset(groups,c.user) %}
 
   {% if dataset_groups %}
     <div class="wide">
