@@ -9,10 +9,14 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-  <h2 class="hide-heading">{{ _('My Groups') }}</h2>
   {% set groups = h.groups_available(am_member=True) %}
+  {% if c.is_sysadmin %}
+  <h2 class="hide-heading">{{ _('My Groups (sysadmin)') }}</h2>
+  {% set dataset_groups = groups %}
+  {% else %}
+  <h2 class="hide-heading">{{ _('My Groups') }}</h2>
   {% set dataset_groups = h.ccca_get_groups_with_dataset(groups,c.user) %}
-
+  {% endif %}
   {% if dataset_groups %}
     <div class="wide">
       {% snippet "group/snippets/group_list.html", groups=dataset_groups %}
