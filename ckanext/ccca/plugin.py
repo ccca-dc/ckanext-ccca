@@ -104,11 +104,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
-        # Categories
-        map.connect('categories', '/categories',
-                    controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
-                    action='index') #, ckan_icon='star'
-
+    
         return map
 
     def after_map(self, map):
