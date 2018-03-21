@@ -53,7 +53,9 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_filter_groupby': helpers.ccca_filter_groupby,
             'ccca_sort_groups_dropdown': helpers.ccca_sort_groups_dropdown,
             'ccca_sort_groups_list': helpers.ccca_sort_groups_list,
-            'ccca_get_groups_with_dataset': helpers.ccca_get_groups_with_dataset
+            'ccca_get_groups_with_dataset': helpers.ccca_get_groups_with_dataset,
+            'ccca_get_dataset_by_role': helpers.ccca_get_dataset_by_role,
+            'ccca_check_user_datasets': helpers.ccca_check_user_datasets
             }
 
     # IRoutes
@@ -104,7 +106,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
-    
+
         return map
 
     def after_map(self, map):
