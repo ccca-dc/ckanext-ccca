@@ -96,16 +96,16 @@
                                     <td>West</td>
                                     <td>{{coordinates['west']}}</td>
                                 </tr>
-                                {#}
+
                                 <tr>
                                     <td>Time Start</td>
-                                    <td>{{h.date_str_to_datetime(pkg.temporal_start)}}</td>
+                                    <td>{{h.render_datetime(pkg.temporal_start, with_hours=True)}}</td>
                                 </tr>
                                 <tr>
                                     <td>Time End</td>
-                                    <td>{{h.date_str_to_datetime(pkg.temporal_end)}}</td>
+                                    <td>{{h.render_datetime(pkg.temporal_end, with_hours=True)}}</td>
                                 </tr>
-                                {#}
+
                             </table>
                         </div>
                     </div>
