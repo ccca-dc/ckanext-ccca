@@ -15,12 +15,19 @@
 
     <p>
     {% for type in files %}
-    Entire Archives:
-<em>{{type[0]['format']}} - </em>
+
+        {% if type[0]['format'] == 'Link' %}
+        {% else %}
+        Download:
+        {% endif%}
+
+        <em>{{type[0]['format']}} - </em>
         {% for f in type %}
-
-    <a href={{ f['url'] }}>{{ f['name']}}</a>&nbsp;&nbsp;
-
+              {% if type[0]['format'] == 'Link' %}
+                  <a href={{ f['url'] }} target="_blank">{{ f['name']}}</a>&nbsp;&nbsp;
+              {% else %}
+                  <a href={{ f['url'] }}>{{ f['name']}}</a>&nbsp;&nbsp;
+              {% endif%}
         {% endfor %}
         <br>
     {% endfor %}

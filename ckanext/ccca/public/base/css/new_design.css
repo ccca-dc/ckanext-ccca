@@ -1,3 +1,21 @@
+/* Anja, 18.4.18 */
+.ccca-order-by{
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px
+}
+.ccca-order-by.dropdown {
+    color: #fff;
+    background-color: white;
+    border-color: #ec971f
+}
+.ccca-order-by.dropdown-toggle:hover,
+.ccca-order-by.dropdown-toggle:focus{
+    color: #003647;
+    background-color: #d4d4d4;
+    border-color: #003f39
+}
+
 /* Anja, 2.3.18 */
 /* From main.css*/
 .label[data-format=html],

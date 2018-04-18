@@ -37,7 +37,7 @@
   {#
    {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting=sorting, sorting_selected=selected_criteria, count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items %}
   #}
-   {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting='False', count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items, no_title='small' %}
+   {% snippet 'snippets/search_form.html', form_id='organization-search-form', type='organization', query=c.q, sorting=sorting, sorting_selected=selected_criteria, count=c.page.item_count, placeholder=_('Search organizations...'), show_empty=request.params, no_bottom_border=true if c.page.items, no_title='small' %}
   {% endblock %}
   {% block organizations_list %}
     {% if c.page.items or request.params %}
