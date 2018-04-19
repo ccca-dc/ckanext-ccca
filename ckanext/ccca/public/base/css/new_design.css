@@ -9218,6 +9218,9 @@ legend + .control-group {
     margin-left: 0;
   }
   .modal {
+    width: auto;
+    margin: 0;
+    padding: 0;
     top: 10px;
     left: 10px;
     right: 10px;
