@@ -1,7 +1,30 @@
 {% ckan_extends %}
 
+{%- block meta -%}
+  {{ super() }}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {% block meta_description %}{% endblock %}
+{%- endblock -%}
+
+{%- block title -%}
+  {% block subtitle %}{{ _('Home') }}{% endblock %} | {{ app_globals.site_title }}
+{%- endblock -%}
+
 {% block styles %}
-    {{ super() }}
-    <link rel="stylesheet" href="/ccca-theme.css" />
-    <script src="/iframeResizer.contentWindow.min.js"></script>
+  {{ super() }}
+  <!-- <link rel='stylesheet' href="/new_design_ccca.css" /> -->
+  <!-- <link rel='stylesheet' href="/new_design.css" /> -->
+  <!-- <link rel="stylesheet" href="LivIconsEvo/css/LivIconsEvo.css" /> -->
+  <!-- <link rel='stylesheet' id='font_source_sans_pro-css'  href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,400italic,600italic' type='text/css' media='all' /> -->
+{% endblock %}
+
+{%- block scripts %}
+  <!-- <script type='text/javascript' src='https://code.jquery.com/jquery-1.11.1.min.js?ver=1.11.1'></script> -->
+  <!-- <script type='text/javascript' src='/app.min.js'></script> -->
+  <!-- <script src="LivIconsEvo/js/LivIconsEvo.Tools.js"></script> -->
+  <!-- <script src="LivIconsEvo/js/LivIconsEvo.defaults.js"></script> -->
+  <!-- <script src="LivIconsEvo/js/LivIconsEvo.min.js"></script> -->
+{% endblock -%}
+
+{% block body_extras %}
 {% endblock %}

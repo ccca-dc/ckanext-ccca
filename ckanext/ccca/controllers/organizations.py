@@ -11,6 +11,7 @@ import ckan.lib.base as base
 abort = base.abort
 render = base.render
 NotAuthorized = logic.NotAuthorized
+NotFound = logic.NotFound
 
 
 import ckan.plugins as plugins

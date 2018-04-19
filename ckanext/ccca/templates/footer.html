@@ -1,43 +1,88 @@
-<link rel="stylesheet" href="/ccca-theme.css" />
-<footer class="site-footer">
+{% set stats = h.get_site_statistics() %}
+
+<footer class="page-footer">
   <div class="container">
-    {% block footer_content %}
-    <div>
-      <div class="footer-links footerdiv">
-        {% block footer_nav %}
-          <ul class="unstyled">
-            {% block footer_links %}
-              <li><a href="{{ h.url_for(controller='home', action='about') }}">CCCA Data Centre</a></li>
-              {% link_for _('Disclaimer'), controller='ckanext.ccca.controllers.disclaimer:DisclaimerController', action='disclaimer' %}
-            {% endblock %}
-          </ul>
-          <ul class="unstyled">
-            {% block footer_links_ckan %}
-              {% set api_url = 'http://docs.ckan.org/en/{0}/api/'.format(g.ckan_doc_version) %}
-              <li><a href="http://www.opendefinition.org/okd/"><img src="{{ h.url_for_static('/base/images/od_80x15_blue.png') }}"></a></li>
-            {% endblock %}
-          </ul>
-        {% endblock %}
+    <div class="row">
+      <div class="col-sm-4 col-xs-6">
+        <a href="{{ h.url_for(controller='package', action='search') }}">
+          {% set dataset_count = h.SI_number_span(stats.dataset_count) %}
+          <div class="statsnumber">
+            {{ dataset_count }} <i class="icon-file"></i>
+          </div>
+          <p>{{ ungettext('Dataset', 'Datasets', dataset_count) }}</p>
+        </a>
       </div>
-      <div class="footerdiv">
-          <a href="http://www.re3data.org/repository/r3d100012288"><img src="/images/re3data_badge.png" height="100" style="margin-bottom:20px"></a>
+      <div class="col-sm-4 col-xs-6">
+        <a href="{{ h.url_for(controller='organization', action='index') }}">
+          {% set org_count = h.SI_number_span(stats.organization_count) %}
+          <div class="statsnumber">
+            {{ org_count }} <i class="icon-user"></i>
+          </div>
+          <p>{{ ungettext('Organization', 'Organizations', org_count) }}</p>
+        </a>
       </div>
-      <div class="attribution footerdiv">
-        {% block footer_attribution %}
-          <p>{% trans %}<strong>Based on</strong> <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>{% endtrans %}</p>
-        {% endblock %}
-        {% block footer_lang %}
-        {% endblock %}
-        <p>
-            <a href="https://www.ccca.ac.at/"><img src="/images/CCCA_Logo_RGB_transparent-2.png" height="30" width="100"></a>
-            &nbsp;
-            <a href="https://www.zamg.ac.at/"><img src="/images/zamg_white_WBM_normal_kurz.png" height="30" width="100"></a>
-        </p>
+      <div class="col-sm-4 col-xs-6">
+        <a href="{{ h.url_for(controller='group', action='index') }}">
+          {% set group_count = h.SI_number_span(stats.group_count) %}
+          <div class="statsnumber">
+            {{ group_count }} <i class="icon-tags"></i>
+          </div>
+          <p>{{ ungettext('Group', 'Groups', group_count) }}</p>
+        </a>
       </div>
     </div>
-    {% endblock %}
+    <hr style="width: 100%; color: white; height: 1px; background-color:white;" />
+    <div class="row top-buffer">
+      <div class="col-md-3 col-xs-6">
+        <div>
+          <ul class="list-unstyled">
+            <li><a href="{{ h.url_for(controller='group', action='index') }}">{{ _('Groups') }}</a></li>
+            <li><a href="{{ h.url_for(controller='organization', action='index') }}">{{ _('Organizations') }}</a></li>
+            <li><a href="{{ h.url_for(controller='package', action='search') }}">{{ _('Data') }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <div>
+          <ul class="list-unstyled">
+            <li><a href="{{ h.url('/about') }}">{{ _('About') }}</a></li>
+            <li><a href="{{ h.url('/contact') }}">{{ _('Contact') }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3 col-xs-6">
+        <div>
+          <ul class="list-unstyled">
+            <li><a href="http://docs.ckan.org/en/latest/api/index.html" target="_blank">{{ _('API') }}</a></li>
+            <li><a href="https://github.com/ccca-dc" target="_blank">{{ _('Sourcecode') }}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-2 col-xs-6 col-md-offset-1">
+      <strong>Based on</strong> <a class="hide-text ckan-footer-logo" href="http://ckan.org">CKAN</a>
+      </div>
+    </div>
+    <hr style="width: 100%; color: white; height: 1px; background-color:white;" />
+    <div class="row">
+      <div class="col-md-3 col-xs-6">
+        <a href="http://www.re3data.org/repository/r3d100012288"><img class="img-responsive" src="/images/re3data_badge.png"></a>
+      </div>
+      {#
+      <div class="col-md-4 col-md-offset-1 col-xs-6">
+        <a href="https://www.ccca.ac.at/"><img class="img-responsive" src="/images/CCCA_Logo_RGB_transparent-2.png"></a>
+      </div>
+      #}
+      <div class="col-md-2 col-md-offset-1 col-xs-6">
+        <a href="https://www.bmbwf.gv.at/"><img class="img-responsive" src="/images/logo_bmbwf.png"></a>
+      </div>
+      <div class="col-md-2 col-md-offset-1 col-xs-6">
+        <a href="https://www.zamg.ac.at/"><img class="img-responsive" src="/images/zamg_white_WBM_normal_kurz.png"></a>
+      </div>
+      <div class="col-md-2 col-md-offset-1 col-xs-4">
+        <a href="http://vsc.ac.at/"><img class="img-responsive" src="/images/logo_vsc.gif"></a>
+      </div>
+    </div>
   </div>
-
   {% block footer_debug %}
     {% if g.debug %}
       {% include 'snippets/debug.html' %}

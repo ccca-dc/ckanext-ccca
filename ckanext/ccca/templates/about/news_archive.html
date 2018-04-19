@@ -14,11 +14,22 @@
     <h1 class="page-heading">{{ title }}</h1>
 
     <p>
-    Entire Archives:
-    {% for item in files %}
+    {% for type in files %}
 
-    <a href={{ item['url'] }}>{{ item['name'] }}</a>&nbsp;&nbsp;
+        {% if type[0]['format'] == 'Link' %}
+        {% else %}
+        Download:
+        {% endif%}
 
+        <em>{{type[0]['format']}} - </em>
+        {% for f in type %}
+              {% if type[0]['format'] == 'Link' %}
+                  <a href={{ f['url'] }} target="_blank">{{ f['name']}}</a>&nbsp;&nbsp;
+              {% else %}
+                  <a href={{ f['url'] }}>{{ f['name']}}</a>&nbsp;&nbsp;
+              {% endif%}
+        {% endfor %}
+        <br>
     {% endfor %}
 
     </p>

@@ -1,0 +1,32 @@
+{% extends "user/dashboard.html" %}
+
+{% block dashboard_activity_stream_context %}{% endblock %}
+
+{% block page_primary_action %}
+  {% if h.check_access('group_create') %}
+    {% link_for _('Add Group'), controller='group', action='new', class_="btn btn-primary", icon="plus-sign-alt" %}
+  {% endif %}
+{% endblock %}
+
+{% block primary_content_inner %}
+  {% set groups = h.groups_available(am_member=True) %}
+  {% if c.is_sysadmin %}
+  <h2 class="hide-heading">{{ _('My Groups (sysadmin)') }}</h2>
+  {% set dataset_groups = groups %}
+  {% else %}
+  <h2 class="hide-heading">{{ _('My Groups') }}</h2>
+  {% set dataset_groups = h.ccca_get_groups_with_dataset(groups,c.user) %}
+  {% endif %}
+  {% if dataset_groups %}
+    <div class="wide">
+      {% snippet "group/snippets/group_list.html", groups=dataset_groups %}
+    </div>
+  {% else %}
+    <p class="empty">
+      {{ _('You have no datasets assgined to some groups') }}
+      {% if h.check_access('group_create') %}
+        {% link_for _('Create new group now?'), controller='group', action='new' %}
+      {% endif %}
+    </p>
+  {% endif %}
+{% endblock %}

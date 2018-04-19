@@ -1,0 +1,24 @@
+{#
+Display a grid of group items.
+
+groups - A list of groups.
+
+Example:
+
+    {% snippet "group/snippets/group_list.html" %}
+
+#}
+{#} Sort groups accroding to group type, Anja, 28.2.18 {#}
+{% set sorted_groups = h.ccca_sort_groups_list(groups)%}
+
+{% block group_list %}
+<br>
+<ul class="media-grid">
+  <hr>
+	{% block group_list_inner %}
+  {% for group in sorted_groups %}
+    {% snippet "group/snippets/group_item.html", group=group, position=loop.index %}
+  {% endfor %}
+  {% endblock %}
+</ul>
+{% endblock %}

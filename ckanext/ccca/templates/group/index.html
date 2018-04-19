@@ -1,0 +1,94 @@
+{% resource 'ccca/livicons' %}
+{% resource 'ccca/livicons_addition.css' %}
+
+{% ckan_extends %}
+
+{% block primary %}
+  <div class="primary col-md-12">
+  {% block primary_content %}
+    <article class="module">
+      <div class="module-content">
+        {% if self.page_primary_action() | trim %}
+          <div class="page_primary_action">
+            {% block page_primary_action %}
+              {% if h.check_access('group_create') %}
+                {% link_for _('Add Group'), controller='group', action='new', class_='btn btn-success pull-right', icon='plus-sign-alt' %}
+              {% endif %}
+            {% endblock %}
+          </div>
+        {% endif %}
+
+    {% block primary_content_inner %}
+      <h1 class="hide-heading">{{ _('Groups') }}</h1>
+      {% snippet "group/snippets/helper.html" %}
+
+      {% block groups_search_form %}
+        {% snippet 'snippets/search_form.html', form_id='group-search-form', type='group', query=c.q, sorting_selected=c.sort_by_selected, count=c.page.item_count, placeholder=_('Search groups...'), show_empty=request.params, no_bottom_border=true if c.page.items, sorting = 'False', no_title='small' %}
+      {% endblock %}
+
+      {% block groups_list %}
+        {%- set schema = h.scheming_get_group_schema('group') -%}
+        {% set type_of_groups = h.scheming_field_by_name(schema['fields'], 'type_of_group')['choices'] %}
+
+        <div id="accordion" role="tablist">
+          {% set sorted_groups = c.page.items|groupby('type_of_group') %}
+          {% for group_type in type_of_groups %}
+            {% set filtered_groups = h.ccca_filter_groupby(sorted_groups, group_type['value']) %}
+            {% if c.q == "" or (c.q != "" and filtered_groups|length > 0) %}
+            <div class="card">
+              <div class="card-header" role="tab" id="headingOne">
+                <div class="row">
+                <h2>
+                 <div class="col-sm-7 col-xs-12">
+                  <a data-toggle="collapse" href="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
+                      {{ group_type['label'] }}
+                      <span class="livicon-evo pull-right" data-options="
+                          name: morph-chevron-top-bottom.svg;
+                          style: solid;
+                          size: 30px;
+                          strokeStyle: round;
+                          solidColor: #606060;
+                          eventType:click;
+                          eventOn:parent;
+                          rotate: 180;
+                      "></span>
+                  </a>
+                 </div>
+                </h2>
+                </div>
+              </div>
+              <div id="collapse{{ loop.index }}" class="collapse" role="tabpanel" aria-labelledby="heading{{ loop.index }}" data-parent="#accordion">
+                <div class="card-body">
+                  <hr>
+                  {% if filtered_groups|length > 0 %}
+                    {% for item in filtered_groups %}
+                      <ul class="media">
+                        {% snippet "group/snippets/group_item.html", group=item, position=loop.index %}
+                      </ul>
+                    {% endfor %}
+                  {% else %}
+                    <p class="empty">
+                      {{ _('There are currently no groups of type "' + group_type['label'] + '"') }}.
+                        {% if h.check_access('group_create') %}
+                          {% link_for _('How about creating one?'), controller='group', action='new' %}</a>.
+                        {% endif %}
+                    </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      {% endblock %}
+    {% endblock %}
+
+
+      </div>
+    </article>
+  {% endblock %}
+  </div>
+{% endblock %}
+
+{% block secondary %}
+{% endblock %}

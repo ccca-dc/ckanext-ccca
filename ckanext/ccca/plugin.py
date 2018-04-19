@@ -29,6 +29,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         toolkit.add_template_directory(config_, 'templates')
         toolkit.add_public_directory(config_, 'public')
         toolkit.add_resource('fanstatic', 'ccca')
+        toolkit.add_resource('public/base/vendor', 'vendor')
 
     # ITemplateHelpers
     # Anja 28.11.16
@@ -42,12 +43,19 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_check_member': helpers.ccca_check_member,
             'ccca_get_user_dataset':helpers.ccca_get_user_dataset,
             'ccca_get_orgs': helpers.ccca_get_orgs,
-            'ccca_get_org_and_role': helpers.ccca_get_org_and_role,
             'ccca_get_orgs_for_user': helpers.ccca_get_orgs_for_user,
             'ccca_organizations_available_with_private': helpers.ccca_organizations_available_with_private,
             'ccca_check_news': helpers.ccca_check_news,
             'ccca_get_user_name': helpers.ccca_get_user_name,
-            'ccca_get_news': helpers.ccca_get_news
+            'ccca_get_news': helpers.ccca_get_news,
+            'ccca_group_show': helpers.ccca_group_show,
+            'ccca_group_list': helpers.ccca_group_list,
+            'ccca_filter_groupby': helpers.ccca_filter_groupby,
+            'ccca_sort_groups_dropdown': helpers.ccca_sort_groups_dropdown,
+            'ccca_sort_groups_list': helpers.ccca_sort_groups_list,
+            'ccca_get_groups_with_dataset': helpers.ccca_get_groups_with_dataset,
+            'ccca_get_dataset_by_role': helpers.ccca_get_dataset_by_role,
+            'ccca_check_user_datasets': helpers.ccca_check_user_datasets
             }
 
     # IRoutes
@@ -88,16 +96,17 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='index')
 
+        # Groups
+        map.connect('group', '/group',
+                    controller='ckanext.ccca.controllers.group:CCCAGroupController',
+                    action='index')
+
         # List Members of own organization
         map.connect('organization_list_members', '/organization/members_list/{id}',
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
-        # Categories
-        map.connect('categories', '/categories',
-                    controller='ckanext.ccca.controllers.categories:CCCACategoriesController',
-                    action='index') #, ckan_icon='star'
-    
+
         return map
 
     def after_map(self, map):

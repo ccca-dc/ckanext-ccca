@@ -1,0 +1,31 @@
+{% if h.ccca_check_news() %}
+    {% set news = h.ccca_get_news() %}
+    {% if news %}
+        <!-- Icon box 03 - NEWS -->
+        <div class="container">
+            <div class="row icon-box-03">
+                <div class="col-md-12 col-xs-12">
+                    <div class="over">
+                    <div class="icon-wrapper bg1 left">
+                      <div class="sub-wrapper">
+                          <a href="{{ h.url_for(controller='ckanext.ccca.controllers.about:AboutController', action='news_archive')}}">
+                          <div class="livicon-evo" data-options="
+                              name: calendar.svg;
+                              style: lines;
+                              strokeColor: #fff;
+                              eventOn: grandparent;
+                              drawOnViewport: true">
+                          </div></a>
+                     </div>
+                   </div>
+               </div>
+                  <div class="text-wrapper left">
+                      <h4 class="text-uppercase"><a href="{{ h.url_for(controller='ckanext.ccca.controllers.about:AboutController', action='news_archive')}}">News</a></h4>
+                      <strong>{{h.render_datetime(news['created'], with_hours=False, date_format='%A, %d. %B %Y')}}</strong>
+                      <p>{{ h.render_markdown(news['description']) }}</p>
+                  </div>
+              </div>
+           </div>
+      </div>
+  {% endif %}
+{% endif %}

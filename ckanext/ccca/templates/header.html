@@ -2,24 +2,72 @@
 
 <!-- Remove search bar -->
 {% block header_wrapper %}
-  {{ super() }}
+  {% block header_account %}
+    {{ super() }}
+  {% endblock %}
+
   {% block header_site_search %}
   {% endblock %}
-{% endblock %}
 
 
 {% block header_site_navigation %}
-      <nav class="section navigation">
-        <ul class="nav nav-pills">
-          {% block header_site_navigation_tabs %}
+<nav class="navbar navbar-default" id="main-navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navigation-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="pull-left" href="{{ h.url('home') }}">
+        <img src="/data_ccca_logo.png" class="navbar-brand-ccca" alt="{{ app_globals.site_title }}" title="{{ app_globals.site_title }}">
+      </a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-navigation-collapse" role="navigation">
+      <div>
+        <ul class="nav navbar-nav navbar-right">
             {{ h.build_nav_main(
-              ('search', _('Datasets')),
-              ('organizations_index', _('Organizations')),
               ('group_index', _('Groups')),
-              ('categories', _('Categories')),
+              ('organizations_index', _('Organizations')),
+              ('search', _('Datasets')),
               ('about', _('About'))
             ) }}
-          {% endblock %}
+          {#
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">{{ _('About') }} <span class="caret"></span></a>
+            <ul role="menu" class="dropdown-menu">
+              <li>
+                <a href="{{ h.url('/about') }}">{{ _("CCCA Data Centre") }}</a>
+              </li>
+              <li>
+                <a href="{{ h.url('/about/usage') }}">{{ _('Usage Information') }}</a>
+              </li>
+              <li>
+                <a href="{{ h.url('/about/citation') }}">{{ _('Citation and Identification') }}</a>
+              </li>
+              <li>
+                <a href="{{ h.url('/about/download') }}">{{ _('Download and API') }}</a>
+              </li>
+              <li>
+                <a href="{{ h.url('/about/data_policy') }}">{{ _('Data Policy') }}</a>
+              </li>
+              <li>
+                <a href="{{ h.url('/about/credits') }}">{{ _('Acknowledgements') }}</a>
+              </li>
+            </ul>
+          </li>
+          <li class="search">
+            <a href="{{ h.url_for(controller='package', action='search') }}" title="{{ _('Search') }}"><i class="icon-search" aria-hidden="true"></i></a>
+          </li>
+          #}
         </ul>
-      </nav>
-    {% endblock %}
+      </div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container -->
+</nav>
+{% endblock %}
+{% endblock %}

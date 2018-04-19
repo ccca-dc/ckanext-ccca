@@ -1,0 +1,50 @@
+{% resource 'ccca/group_site.css' %}
+
+<section class="module-content">
+  <div class="row" style="margin-bottom:40px">
+      {% block inner %}
+          <div class="col-md-3 col-xs-12">
+          {% block image %}
+            <div class="image">
+              <a href="{{ url }}">
+                <img src="{{ organization.image_display_url or h.url_for_static('/base/images/placeholder-organization.png') }}" width="200" alt="{{ organization.name }}" />
+              </a>
+            </div>
+          {% endblock %}
+          </div>
+          <div class="col-md-6 col-xs-12">
+          {% block heading %}
+          <h1 class="heading">{{ organization.title or organization.name }}
+            {% if organization.state == 'deleted' %}
+              [{{ _('Deleted') }}]
+            {% endif %}
+          </h1>
+          {% endblock %}
+          {% block description %}
+          {% if organization.description %}
+            {{ h.markdown_extract(organization.description, 250) }}
+            <b>{% link_for _('read more'), controller=organization.type, action='about', id=organization.name %}</b>
+          {% else %}
+            <p class="empty">{{ _('There is no description for this organization') }}</p>
+          {% endif %}
+          {% endblock %}
+          </div>
+          <div class="col-md-3 col-xs-12" align="right">
+          {% if show_nums %}
+          {% block nums %}
+              <dt><i>{{ _('Followers: ') }}</i> {{ h.SI_number_span(organization.num_followers) }}  </dt>
+              <dt><i>{{ _('Datasets: ') }}</i> {{ h.SI_number_span(organization.package_count) }}</dt>
+
+               {% set current_url = h.full_current_url() %}
+              <dt>
+                 {{ h.filtersearch_toggle_following('group', organization.id) }}
+                 <a href="https://www.facebook.com/sharer.php?u={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Facebook"><i style="color:#3c5a99" class="icon-facebook-sign"></i> </a>
+                 <a href="https://twitter.com/share?url={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Twitter"><i style="color:#57c1df" class="icon-twitter-sign"></i> </a>
+                 <a href="https://plus.google.com/share?url={{ current_url }}" target="_blank" data-toggle="tooltip" title="Share on Google+" class="nav-item"><i style="color:#ea4335" class="icon-google-plus-sign"></i> </a>
+             </dt>
+        {% endblock %}
+        {% endif %}
+        </div>
+        {% endblock %}
+</div>
+</section>

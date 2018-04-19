@@ -1,0 +1,19 @@
+{#
+Display a hierarchical tree of organizations
+
+
+Example:
+
+    {% snippet "organization/snippets/organization_list.html" %}
+
+#}
+<div id="publisher-tree">
+     {% if  c.q %}
+     	{% set top_nodes = h.group_tree_highlight(organizations, h.group_tree(type_='organization')) %}
+     {% else %}
+        {# we use ogdch_render_tree instead of the organization_tree template to speed up the rendering #}
+        <div class="organization-hierarchy empty-search">
+        {{ h.ogdch_render_tree()|safe }}
+        </div>
+     {% endif %}
+</div>

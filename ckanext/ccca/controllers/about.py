@@ -20,11 +20,25 @@ ValidationError = logic.ValidationError
 from ckanext.ccca import helpers as hc
 import json
 
+def _check_existing_formats(ff, list_of_formats):
+
+    for x in list_of_formats:
+        for d in x:
+            if d['format'] == ff:
+                return True
+            else:
+                break
+    return False
+
+
 class AboutController(p.toolkit.BaseController):
     """
     Controller for displaying about pages
     """
     def news_archive(self):
+
+        #Show list of news: Abstract of newest resource per version
+        #Display Archive: One File/Link per Format per Year - Year identified via name
 
         news_id  = hc.ccca_check_news()
 
@@ -32,31 +46,115 @@ class AboutController(p.toolkit.BaseController):
             return
         try:
             news_pkg = tk.get_action('package_show')({}, {'id': news_id, 'include_datasets':True})
-
-            news_res_list = news_pkg['resources']
-
         except:
+            print "No News Dataset founds ..."
             return
 
-        # Reverse order
-        news_res_list = list(reversed(news_res_list))
+        #get a list with news messages
+        news_list = []
+        #get the newest files with different resource titles
+        formats_and_files = []
+        d_titles = []
 
-        # Remove versions and save urls and titles of older archives
-        files = []
-        for x in news_res_list:
-            if 'newer_version' in x and x['newer_version'] == "":
-                f_entry = {}
-                f_entry['url'] = x['url']
-                f_entry['name'] = x['name']
-                files.append(f_entry)
-                #print x['name']
+        nd = ''
+        newest_res = {}
+        newest_title = ''
+        # consider distributions and look for latest change
+        newest_res = {}
+        # Build initial formatlist for ARCHIVE
+        for x in news_pkg['resources']:
+            #latest change
+            if x['created'] > nd or  x['last_modified'] > nd:
+                nd = x['last_modified'] if x['last_modified'] else x['created']
+                newest_res = x
+                newest_title = x['name']
+                newest_description = x['description']
 
-        #print files
-        #print json.dumps(news_res_list, indent=3)
-        #print json.dumps (list(reversed(news_res_list)),indent=3)
-        #print json.dumps(files, indent=3)
+            #consider distributions
+            f = []
+            f_entry = {}
+            f_entry['url'] = x['url']
+            f_entry['name'] = x['name']
+            f_entry['format'] = x['format']
+            if x['format'] == '': # presumably URL
+                f_entry['format'] = "Link"
 
-        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_res_list, 'files': files })
+            f.append(f_entry)
+            formats_and_files.append(f)
+
+        # do not add empty descriptions
+        if newest_description  != '':
+            news_list.append(newest_res)
+
+        #Look for older versions and append them to list for template
+        relations = news_pkg['relations']
+        if len(relations) > 0:
+            has_older_versions = True
+        else:
+            has_older_versions = False
+
+        while has_older_versions:
+
+            for x in relations:
+                if x['relation'] == 'is_version_of':
+                    older_version= x['id']
+                    news_pkg = tk.get_action('package_show')({}, {'id':older_version, 'include_datasets':True})
+
+                    # do not add empty descriptions
+                    if 'description' in news_pkg['resources'][0] and news_pkg['resources'][0]['description'] != '':
+                        # implicates that all distributions have the same description!
+                        news_list.append(news_pkg['resources'][0])
+
+                    #Search formats years
+                    for res in news_pkg['resources']:
+                         f_entry = {}
+                         f_entry['url'] = res['url']
+                         f_entry['name'] = res['name']
+                         f_entry['format'] = res['format']
+                         if res['format'] == '': # presumably URL
+                              f_entry['format'] = 'Link'
+                         if not _check_existing_formats(f_entry['format'], formats_and_files):
+                             # New list of files for format
+                             ff = []
+                             ff.append(f_entry)
+                             formats_and_files.append(ff)
+                         else:
+                             if res['name'] != newest_title: #one file per format per year
+                                 newest_title = res['name']
+                                 for fl in formats_and_files:
+                                     for f in fl:
+                                         if f['format'] == f_entry['format']:
+                                            fl.append(f_entry)
+                                            break
+                        # Next loop
+                    relations = news_pkg['relations']
+                    if len(relations) > 0:
+                        has_older_versions = True
+                    else:
+                        has_older_versions = False
+                elif x['relation'] == 'has_version' and len(relations) == 1 :
+                    has_older_versions = False
+                    break
+                else:
+                    continue
+
+
+
+        #print formats_and_files
+
+        # Link as last item(s)
+        sorted_format_and_files =[]
+        for ff in formats_and_files:
+            if ff[0]['format'] != 'Link':
+                sorted_format_and_files.append(ff)
+        for ff in formats_and_files:
+            if ff[0]['format'] == 'Link':
+                sorted_format_and_files.append(ff)
+
+        print "FINAL LIst"
+        print sorted_format_and_files
+
+        return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_list, 'files': sorted_format_and_files })
 
     def usage(self):
         return p.toolkit.render('about/usage.html', {'title': 'Usage Information'})
