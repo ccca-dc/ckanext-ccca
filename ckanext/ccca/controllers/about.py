@@ -61,13 +61,15 @@ class AboutController(p.toolkit.BaseController):
         newest_title = ''
         # consider distributions and look for latest change
         newest_res = {}
-        # Build initial formatlist
+        # Build initial formatlist for ARCHIVE
         for x in news_pkg['resources']:
             #latest change
             if x['created'] > nd or  x['last_modified'] > nd:
                 nd = x['last_modified'] if x['last_modified'] else x['created']
                 newest_res = x
                 newest_title = x['name']
+                newest_description = x['description']
+
             #consider distributions
             f = []
             f_entry = {}
@@ -80,7 +82,9 @@ class AboutController(p.toolkit.BaseController):
             f.append(f_entry)
             formats_and_files.append(f)
 
-        news_list.append(newest_res)
+        # do not add empty descriptions
+        if newest_description  != '':
+            news_list.append(newest_res)
 
         #Look for older versions and append them to list for template
         relations = news_pkg['relations']
@@ -96,8 +100,10 @@ class AboutController(p.toolkit.BaseController):
                     older_version= x['id']
                     news_pkg = tk.get_action('package_show')({}, {'id':older_version, 'include_datasets':True})
 
-                    # implicates that all distributions have the same description!
-                    news_list.append(news_pkg['resources'][0])
+                    # do not add empty descriptions
+                    if 'description' in news_pkg['resources'][0] and news_pkg['resources'][0]['description'] != '':
+                        # implicates that all distributions have the same description!
+                        news_list.append(news_pkg['resources'][0])
 
                     #Search formats years
                     for res in news_pkg['resources']:
