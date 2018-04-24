@@ -151,8 +151,8 @@ class AboutController(p.toolkit.BaseController):
             if ff[0]['format'] == 'Link':
                 sorted_format_and_files.append(ff)
 
-        print "FINAL LIst"
-        print sorted_format_and_files
+        #print "FINAL LIst"
+        #print sorted_format_and_files
 
         return p.toolkit.render('about/news_archive.html', {'title': 'News Archive', 'news': news_list, 'files': sorted_format_and_files })
 
