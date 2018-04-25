@@ -9,8 +9,10 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-
+{#}
 {% set creator_sets = h.ccca_check_user_datasets(c.user_dict.datasets, c.user)%}
+{#}
+{% set creator_sets = c.user_dict.datasets%}
 {% set author_sets = h.ccca_get_dataset_by_role('author', c.user)%}
 {% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', c.user)%}
 
