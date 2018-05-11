@@ -3,7 +3,7 @@
 {% set user = c.userobj %}
 
 {% block breadcrumb_content %}
-  <li class="active"><a href="{{ h.url_for(controller='user', action='dashboard') }}">{{ _('Dashboard') }}</a></li>
+  <li class="active"><a href="{{ h.url_for(controller='user', action='dashboard_datasets') }}">{{ _('Dashboard') }}</a></li>
 {% endblock %}
 
 {% block secondary %}{% endblock %}

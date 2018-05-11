@@ -1,5 +1,13 @@
 {% extends "user/read_base.html" %}
 
+
+
+{% block page_primary_action %}
+  {% if h.check_access('package_create') %}
+    {% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-success pull-right", icon="plus-sign-alt" %}
+  {% endif %}
+{% endblock %}
+
 {% block primary_content_inner %}
   <h2 class="hide-heading">
     {% block page_heading %}{{ _('Datasets') }}{% endblock %}
