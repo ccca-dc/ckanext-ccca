@@ -1,0 +1,31 @@
+{% extends "snippets/search_form.html" %}
+
+{#} Kathi 4.5.2018
+copied from filtersearch
+fixed group and org search
+{#}
+
+{% block search_input %}
+<div class="form-group has-feedback">
+  {#} changed name="q" to name="text" {#}
+  <input type="search" class="form-control input-lg" name="text" value="{{ query }}" autocomplete="on" placeholder="{{ placeholder }}">
+  <i class="icon-search form-control-feedback" aria-hidden="true"></i>
+</div>
+<div class="reset-search">
+  {% if c.group_dict.name %}
+    <a href="{{ h.url_for(controller=c.controller, action=c.action, id=c.group_dict.name) }}"><i class="icon-remove-circle" aria-hidden="true"></i> {{ _('Reset search') }}</a>
+    {% if no_title=="small" %}
+      <div class="pull-right">
+        {% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
+      </div>
+    {% endif %}
+  {% else %}
+    <a href="{{ h.url_for(controller=c.controller, action=c.action) }}"><i class="icon-remove-circle" aria-hidden="true"></i> {{ _('Reset search') }}</a>
+    {% if no_title=="small" %}
+      <div class="pull-right">
+        {% snippet 'snippets/search_result_text.html', query=query, count=count, type=type %}
+      </div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}
