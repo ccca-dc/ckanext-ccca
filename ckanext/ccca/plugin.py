@@ -106,6 +106,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
+        map.connect('user_datasets', '/user/{id:.*}',
+                    controller='ckanext.ccca.controllers.user:UserController',
+                    action='read', ckan_icon='sitemap')
+
 
         return map
 
