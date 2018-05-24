@@ -106,7 +106,35 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
-        map.connect('user_datasets', '/user/{id:.*}',
+        # Users
+        # following connections need to be added in order to change /user/{id} site
+        map.connect('register', '/user/register',
+                    controller='ckan.controllers.user:UserController',
+                    action='register')
+        map.connect('login', '/user/login',
+                    controller='ckan.controllers.user:UserController',
+                    action='login')
+        map.connect('/user/_logout',
+                    controller='ckan.controllers.user:UserController',
+                    action='logout')
+        map.connect('/user/logged_in',
+                    controller='ckan.controllers.user:UserController',
+                    action='logged_in')
+        map.connect('/user/logged_out',
+                    controller='ckan.controllers.user:UserController',
+                    action='logged_out')
+        map.connect('/user/logged_out_redirect',
+                    controller='ckan.controllers.user:UserController',
+                    action='logged_out_page')
+        map.connect('/user/reset',
+                    controller='ckan.controllers.user:UserController',
+                    action='request_reset')
+        map.connect('/user/me',
+                    controller='ckan.controllers.user:UserController',
+                    action='me')
+
+        # this is where the actual change happened
+        map.connect('user_datasets', '/user/{id}',
                     controller='ckanext.ccca.controllers.user:UserController',
                     action='read', ckan_icon='sitemap')
 
