@@ -7538,7 +7538,7 @@ button.close {
 }
 
 .hide {
-    display: none !important
+    display: none /* !important - removed in order for embed to work */
 }
 
 .show {
