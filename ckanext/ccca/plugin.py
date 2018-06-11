@@ -54,8 +54,8 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
             'ccca_sort_groups_dropdown': helpers.ccca_sort_groups_dropdown,
             'ccca_sort_groups_list': helpers.ccca_sort_groups_list,
             'ccca_get_groups_with_dataset': helpers.ccca_get_groups_with_dataset,
-            'ccca_get_dataset_by_role': helpers.ccca_get_dataset_by_role,
-            'ccca_check_user_datasets': helpers.ccca_check_user_datasets
+            'ccca_get_datasets_by_role': helpers.ccca_get_datasets_by_role,
+            'ccca_get_datasets_for_others':helpers.ccca_get_datasets_for_others
             }
 
     # IRoutes

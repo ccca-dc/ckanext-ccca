@@ -15,10 +15,15 @@
 
   {% block package_list %}
 
-  {% set creator_sets = c.user_dict.datasets%}
-  {% set author_sets = h.ccca_get_dataset_by_role('author', c.user)%}
-  {% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', c.user)%}
-
+  {% if c.is_myself %}
+      {% set creator_sets = c.user_dict.datasets %}
+      {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
+      {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
+  {% else %}
+      {% set creator_sets = h.ccca_get_datasets_for_others('creator', c.user_dict['name']) %}
+      {% set author_sets = h.ccca_get_datasets_for_others('author', c.user_dict['name'])%}
+      {% set maintainer_sets = h.ccca_get_datasets_for_others('maintainer', c.user_dict['name'])%}
+  {% endif %}
   {% if creator_sets or author_sets or maintainer_sets %}
     {% snippet 'user/snippets/sort_user_datasets.html', c=c, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
   {% else %}

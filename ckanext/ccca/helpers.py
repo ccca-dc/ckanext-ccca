@@ -32,32 +32,76 @@ import json
 
 import ckan.model as model
 
-#Anja 21.3.2018
-def ccca_check_user_datasets(user_datasets, uname):
+#Anja 11.06.2018, name as backup for  foreign dataset request
+def ccca_get_datasets_for_others(role,uname):
 #Check if there is any datasets where the user is neither author nor maintainer
     if not uname:
         return None
 
-    if not user_datasets:
+    if not role:
+        return None
+
+    if role != 'author' and role != 'maintainer' and role != 'creator':
         return None
 
     user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uname})
 
-    user = user_info['email']
+    user = ''
+    user_name = ''
+    user_id =''
 
-    if not user:
+    if 'email' in user_info and user_info['email'] != '':
+        user = user_info['email']
+    else:
+        if 'fullname' in user_info and user_info['fullname'] != '':
+            user_name = user_info['fullname']
+
+    if 'id' in user_info and user_info['id'] != '':
+        user_id = user_info['id']
+
+    if user == '' and user_name == '' and user_id != '':
         return None
 
-    creator_datasets = []
+    return_datasets = []
 
-    for x in user_datasets:
-        if x['author_email'] != user and x['maintainer_email'] != user:
-            creator_datasets.append(x)
+    #Get all packages the given user is author or maintainer
+    data_dict ={}
+    data_dict['rows'] = 1000
 
-    return creator_datasets
+    if role == 'author':
+        if user != '':
+            data_dict['fq']= 'author_email:' +  user
+        elif user_name!= '':
+            data_dict['fq']= 'author:"' +  user_name + '"'
+        else:
+            return None
 
-#Anja 20.3.2018
-def ccca_get_dataset_by_role(role, uname):
+    elif role == 'maintainer':
+        if user != '':
+            data_dict['fq']= 'maintainer_email:' +  user
+        elif user_name!= '':
+            data_dict['fq']='maintainer:"' +  user_name + '"'
+        else:
+            return None
+
+    elif role == 'creator':
+        if user_id != '':
+            data_dict['fq']= 'creator_user_id:' +  user_id
+        else:
+            return None
+
+    else:
+        return None
+
+
+    result = logic.get_action('package_search')({'ignore_capacity_check': True}, data_dict)
+
+    role_datasets = result['results']
+    return role_datasets
+
+
+#Anja 20.3.2018 - Attention: Just for own request - permission problem
+def ccca_get_datasets_by_role(role, uname):
 
     if not uname:
         return None
@@ -65,21 +109,33 @@ def ccca_get_dataset_by_role(role, uname):
     if not role:
         return None
 
-    if role != 'author' and role != 'maintainer':
+    if role != 'author' and role != 'maintainer' and role != 'creator':
         return None
 
     user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uname})
 
-    user = user_info['email']
+    if 'email' in user_info:
+        user = user_info['email']
+    else:
+        return None
+    if role == 'creator':
+        if 'id' in user_info:
+            user_id = user_info['id']
+        else:
+            return None
 
     #Get all packages the given user is author or maintainer
     data_dict ={}
 
+    data_dict['rows'] = 1000
+    data_dict['include_drafts']= True
+
     if role == 'author':
         data_dict['fq']= 'author_email:' +  user + ' +state:(draft OR active)'
-        data_dict['rows'] = 1000
     elif role == 'maintainer':
         data_dict['fq']= 'maintainer_email:' +  user + ' +state:(draft OR active)'
+    elif role == 'creator':
+        data_dict['fq']= 'creator_user_id:' +  user_id + ' +state:(draft OR active)'
     else:
         return None
 
