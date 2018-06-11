@@ -9,13 +9,11 @@
 {% endblock %}
 
 {% block primary_content_inner %}
-{#}
-{% set creator_sets = h.ccca_check_user_datasets(c.user_dict.datasets, c.user)%}
-{#}
-{% set creator_sets = c.user_dict.datasets%}
-{% set author_sets = h.ccca_get_dataset_by_role('author', c.user)%}
-{% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', c.user)%}
 
+{# Anja, 11.6.2018: Attention c.data_dict.user_datasets limited here to 50 -> new request#}
+{% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
+{% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
+{% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
   <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
   {% if not creator_sets and not author_sets and not maintainer_sets %}
       <p class="empty">
@@ -26,7 +24,7 @@
     </p>
   {% else %}
   <div id="accordion" role="tablist">
-    {% snippet 'user/snippets/sort_user_datasets.html', c=c %}
+    {% snippet 'user/snippets/sort_user_datasets.html', c=c, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
   </div> {#} Accordeon {#}
 
 {% endif %}
