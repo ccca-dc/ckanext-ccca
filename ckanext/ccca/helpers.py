@@ -50,13 +50,13 @@ def ccca_get_datasets_for_others(role,uname):
     user_name = ''
     user_id =''
 
-    if 'email' in user_info and user_info['email'] != '':
+    if 'email' in user_info and user_info['email'] != ''  and user_info['email'] != None:
         user = user_info['email']
     else:
-        if 'fullname' in user_info and user_info['fullname'] != '':
+        if 'fullname' in user_info and user_info['fullname'] != '' and user_info['fullname'] != None :
             user_name = user_info['fullname']
 
-    if 'id' in user_info and user_info['id'] != '':
+    if 'id' in user_info and user_info['id'] != '' and user_info['id'] != None:
         user_id = user_info['id']
 
     if user == '' and user_name == '' and user_id != '':
