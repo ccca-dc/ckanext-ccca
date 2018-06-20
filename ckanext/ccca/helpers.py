@@ -232,16 +232,25 @@ def _get_group_index_dropdown (name,list_of_items):
             return i
     return -1
 
-def _get_group(id):
-    global group_list
-    if not group_list:
-        group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+def _get_group(id, group_list):
 
     if not group_list:
         return None
-    result = (item for item in group_list if item['id'] == id).next()
 
-    return result
+    for x in group_list:
+        if x['id'] == id:
+            return x
+    return None
+    #
+    #ATTENTION: GEnerator Expression needs to by klammert by try!!!!!!!!!
+    # Otherwise SERiOUS problems if element is not in list
+    # Anja. 20-6.2018
+    # try:
+    #     result = (item for item in group_list if item['id'] == id).next()
+    # except:
+    #     print "Otto"
+    ##print "Fertig"
+    #return result
 
 def _get_group_type_label(name):
     global group_type_list
@@ -265,12 +274,14 @@ def _get_group_type_label(name):
 
 def ccca_sort_groups_dropdown(pkg_groups):
 
+    group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+
     #reverse Order because of insertion method below
     rev_groups = sorted(pkg_groups, key=lambda tup: tup[1], reverse=True)
 
     sorted_groups = []
     for x in rev_groups:
-        group = _get_group(x[0])
+        group = _get_group(x[0], group_list)
         group_type = ''
         group_type_label = ''
         if 'type_of_group' in group:
@@ -297,8 +308,7 @@ def ccca_sort_groups_dropdown(pkg_groups):
     for g in sorted_groups:
         if not g[2]:
             g[1] = g[1] + ': '
-
-    #print sorted_groups
+    
     return sorted_groups
 
 def ccca_sort_groups_list(pkg_groups):
