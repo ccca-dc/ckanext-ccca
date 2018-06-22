@@ -212,12 +212,6 @@ def ccca_get_groups_with_dataset(u_groups, uid):
     return dataset_groups
 
 
-# Store group_list and group_type_list globally: Anja, 28.2.18
-# to get them only once
-group_list = []
-group_type_list =[]
-
-
 def _get_group_index_list (name,list_of_items):
 #for the list of groups as prepared for group list
     for i, x in enumerate(list_of_items):
@@ -252,16 +246,7 @@ def _get_group(id, group_list):
     ##print "Fertig"
     #return result
 
-def _get_group_type_label(name):
-    global group_type_list
-    label = ''
-    if not group_type_list:
-        schema = hs.scheming_group_schemas()
-        group_info = schema['group']
-        field_list = group_info['fields']
-        for x in field_list:
-            if x['field_name'] == 'type_of_group':
-                group_type_list = x['choices']
+def _get_group_type_label(name, group_type_list):
 
     if not group_type_list:
         return ''
@@ -273,9 +258,18 @@ def _get_group_type_label(name):
     return label
 
 def ccca_sort_groups_dropdown(pkg_groups):
+#Sort Groups accroding to type
+# Anja, 22.6.18: For the dropdown menu to add a package to a group
+
+    #group_type_list:
+    schema = hs.scheming_group_schemas()
+    group_info = schema['group']
+    field_list = group_info['fields']
+    for x in field_list:
+        if x['field_name'] == 'type_of_group':
+            group_type_list = x['choices']
 
     group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
-
     #reverse Order because of insertion method below
     rev_groups = sorted(pkg_groups, key=lambda tup: tup[1], reverse=True)
 
@@ -287,7 +281,7 @@ def ccca_sort_groups_dropdown(pkg_groups):
         if 'type_of_group' in group:
             group_type = group['type_of_group']
         if group_type:
-            group_type_label = _get_group_type_label(group_type)
+            group_type_label = _get_group_type_label(group_type, group_type_list)
         else:
             group_type = 'other'
             group_type_label = 'Other'
@@ -308,22 +302,34 @@ def ccca_sort_groups_dropdown(pkg_groups):
     for g in sorted_groups:
         if not g[2]:
             g[1] = g[1] + ': '
-    
+
     return sorted_groups
 
 def ccca_sort_groups_list(pkg_groups):
 # sorting for the group_list
+# Anja, 22.6.18: For the overview of groups a package belongs to
+
+    #group_type_list:
+    schema = hs.scheming_group_schemas()
+    group_info = schema['group']
+    field_list = group_info['fields']
+    for x in field_list:
+        if x['field_name'] == 'type_of_group':
+            group_type_list = x['choices']
+
     #reverse Order because of insertion method below
+    group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+
     rev_groups = sorted(pkg_groups,  key=lambda k: k['name'], reverse=True)
     sorted_groups = []
     for x in rev_groups:
-        group = _get_group(x['id'])
+        group = _get_group(x['id'], group_list)
         group_type = ''
         group_type_label = ''
         if 'type_of_group' in group:
             group_type = group['type_of_group']
         if group_type:
-            group_type_label = _get_group_type_label(group_type)
+            group_type_label = _get_group_type_label(group_type, group_type_list)
         else:
             group_type = 'other'
             group_type_label = 'Other'
@@ -342,7 +348,6 @@ def ccca_sort_groups_list(pkg_groups):
             if  index >= 0:
                 x['is_type'] = False
                 sorted_groups.insert(index+1, x)
-
     return sorted_groups
 
 def ccca_get_news ():
