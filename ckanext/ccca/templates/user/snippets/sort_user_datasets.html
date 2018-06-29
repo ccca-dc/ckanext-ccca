@@ -1,16 +1,16 @@
 {% resource 'ccca/livicons' %}
 {% resource 'ccca/livicons_addition.css' %}
-
+{#} Anja, 11.6.2018 - should be set by the caller!
 {% if not creator_sets %}
     {% set creator_sets = c.user_dict.datasets %}
 {% endif %}
 {% if not author_sets %}
-    {% set author_sets = h.ccca_get_dataset_by_role('author', c.user)%}
+    {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
 {% endif %}
 {% if not maintainer_sets %}
-    {% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', c.user)%}
+    {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
 {% endif %}
-
+{#}
     {% if creator_sets %}
     <div class="card">
       <div class="card-header" role="tab" id="headingOne">

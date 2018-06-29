@@ -32,32 +32,76 @@ import json
 
 import ckan.model as model
 
-#Anja 21.3.2018
-def ccca_check_user_datasets(user_datasets, uname):
+#Anja 11.06.2018, name as backup for  foreign dataset request
+def ccca_get_datasets_for_others(role,uname):
 #Check if there is any datasets where the user is neither author nor maintainer
     if not uname:
         return None
 
-    if not user_datasets:
+    if not role:
+        return None
+
+    if role != 'author' and role != 'maintainer' and role != 'creator':
         return None
 
     user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uname})
 
-    user = user_info['email']
+    user = ''
+    user_name = ''
+    user_id =''
 
-    if not user:
+    if 'email' in user_info and user_info['email'] != ''  and user_info['email'] != None:
+        user = user_info['email']
+    else:
+        if 'fullname' in user_info and user_info['fullname'] != '' and user_info['fullname'] != None :
+            user_name = user_info['fullname']
+
+    if 'id' in user_info and user_info['id'] != '' and user_info['id'] != None:
+        user_id = user_info['id']
+
+    if user == '' and user_name == '' and user_id != '':
         return None
 
-    creator_datasets = []
+    return_datasets = []
 
-    for x in user_datasets:
-        if x['author_email'] != user and x['maintainer_email'] != user:
-            creator_datasets.append(x)
+    #Get all packages the given user is author or maintainer
+    data_dict ={}
+    data_dict['rows'] = 1000
 
-    return creator_datasets
+    if role == 'author':
+        if user != '':
+            data_dict['fq']= 'author_email:' +  user
+        elif user_name!= '':
+            data_dict['fq']= 'author:"' +  user_name + '"'
+        else:
+            return None
 
-#Anja 20.3.2018
-def ccca_get_dataset_by_role(role, uname):
+    elif role == 'maintainer':
+        if user != '':
+            data_dict['fq']= 'maintainer_email:' +  user
+        elif user_name!= '':
+            data_dict['fq']='maintainer:"' +  user_name + '"'
+        else:
+            return None
+
+    elif role == 'creator':
+        if user_id != '':
+            data_dict['fq']= 'creator_user_id:' +  user_id
+        else:
+            return None
+
+    else:
+        return None
+
+
+    result = logic.get_action('package_search')({'ignore_capacity_check': True}, data_dict)
+
+    role_datasets = result['results']
+    return role_datasets
+
+
+#Anja 20.3.2018 - Attention: Just for own request - permission problem
+def ccca_get_datasets_by_role(role, uname):
 
     if not uname:
         return None
@@ -65,21 +109,33 @@ def ccca_get_dataset_by_role(role, uname):
     if not role:
         return None
 
-    if role != 'author' and role != 'maintainer':
+    if role != 'author' and role != 'maintainer' and role != 'creator':
         return None
 
     user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uname})
 
-    user = user_info['email']
+    if 'email' in user_info:
+        user = user_info['email']
+    else:
+        return None
+    if role == 'creator':
+        if 'id' in user_info:
+            user_id = user_info['id']
+        else:
+            return None
 
     #Get all packages the given user is author or maintainer
     data_dict ={}
 
+    data_dict['rows'] = 1000
+    data_dict['include_drafts']= True
+
     if role == 'author':
         data_dict['fq']= 'author_email:' +  user + ' +state:(draft OR active)'
-        data_dict['rows'] = 1000
     elif role == 'maintainer':
         data_dict['fq']= 'maintainer_email:' +  user + ' +state:(draft OR active)'
+    elif role == 'creator':
+        data_dict['fq']= 'creator_user_id:' +  user_id + ' +state:(draft OR active)'
     else:
         return None
 
@@ -156,12 +212,6 @@ def ccca_get_groups_with_dataset(u_groups, uid):
     return dataset_groups
 
 
-# Store group_list and group_type_list globally: Anja, 28.2.18
-# to get them only once
-group_list = []
-group_type_list =[]
-
-
 def _get_group_index_list (name,list_of_items):
 #for the list of groups as prepared for group list
     for i, x in enumerate(list_of_items):
@@ -176,27 +226,27 @@ def _get_group_index_dropdown (name,list_of_items):
             return i
     return -1
 
-def _get_group(id):
-    global group_list
-    if not group_list:
-        group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+def _get_group(id, group_list):
 
     if not group_list:
         return None
-    result = (item for item in group_list if item['id'] == id).next()
 
-    return result
+    for x in group_list:
+        if x['id'] == id:
+            return x
+    return None
+    #
+    #ATTENTION: GEnerator Expression needs to by klammert by try!!!!!!!!!
+    # Otherwise SERiOUS problems if element is not in list
+    # Anja. 20-6.2018
+    # try:
+    #     result = (item for item in group_list if item['id'] == id).next()
+    # except:
+    #     print "Otto"
+    ##print "Fertig"
+    #return result
 
-def _get_group_type_label(name):
-    global group_type_list
-    label = ''
-    if not group_type_list:
-        schema = hs.scheming_group_schemas()
-        group_info = schema['group']
-        field_list = group_info['fields']
-        for x in field_list:
-            if x['field_name'] == 'type_of_group':
-                group_type_list = x['choices']
+def _get_group_type_label(name, group_type_list):
 
     if not group_type_list:
         return ''
@@ -208,19 +258,30 @@ def _get_group_type_label(name):
     return label
 
 def ccca_sort_groups_dropdown(pkg_groups):
+#Sort Groups accroding to type
+# Anja, 22.6.18: For the dropdown menu to add a package to a group
 
+    #group_type_list:
+    schema = hs.scheming_group_schemas()
+    group_info = schema['group']
+    field_list = group_info['fields']
+    for x in field_list:
+        if x['field_name'] == 'type_of_group':
+            group_type_list = x['choices']
+
+    group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
     #reverse Order because of insertion method below
     rev_groups = sorted(pkg_groups, key=lambda tup: tup[1], reverse=True)
 
     sorted_groups = []
     for x in rev_groups:
-        group = _get_group(x[0])
+        group = _get_group(x[0], group_list)
         group_type = ''
         group_type_label = ''
         if 'type_of_group' in group:
             group_type = group['type_of_group']
         if group_type:
-            group_type_label = _get_group_type_label(group_type)
+            group_type_label = _get_group_type_label(group_type, group_type_list)
         else:
             group_type = 'other'
             group_type_label = 'Other'
@@ -242,22 +303,33 @@ def ccca_sort_groups_dropdown(pkg_groups):
         if not g[2]:
             g[1] = g[1] + ': '
 
-    #print sorted_groups
     return sorted_groups
 
 def ccca_sort_groups_list(pkg_groups):
 # sorting for the group_list
+# Anja, 22.6.18: For the overview of groups a package belongs to
+
+    #group_type_list:
+    schema = hs.scheming_group_schemas()
+    group_info = schema['group']
+    field_list = group_info['fields']
+    for x in field_list:
+        if x['field_name'] == 'type_of_group':
+            group_type_list = x['choices']
+
     #reverse Order because of insertion method below
+    group_list = logic.get_action('group_list')({}, {'all_fields':True, 'include_extras':True})
+
     rev_groups = sorted(pkg_groups,  key=lambda k: k['name'], reverse=True)
     sorted_groups = []
     for x in rev_groups:
-        group = _get_group(x['id'])
+        group = _get_group(x['id'], group_list)
         group_type = ''
         group_type_label = ''
         if 'type_of_group' in group:
             group_type = group['type_of_group']
         if group_type:
-            group_type_label = _get_group_type_label(group_type)
+            group_type_label = _get_group_type_label(group_type, group_type_list)
         else:
             group_type = 'other'
             group_type_label = 'Other'
@@ -276,7 +348,6 @@ def ccca_sort_groups_list(pkg_groups):
             if  index >= 0:
                 x['is_type'] = False
                 sorted_groups.insert(index+1, x)
-
     return sorted_groups
 
 def ccca_get_news ():
