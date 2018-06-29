@@ -57,6 +57,7 @@ class CCCAGroupController(group.GroupController):
         sort_by = c.sort_by_selected = request.params.get('sort')
         try:
             self._check_access('site_read', context)
+            self._check_access('group_list', context)
         except NotAuthorized:
             abort(401, _('Not authorized to see this page'))
 
@@ -66,14 +67,25 @@ class CCCAGroupController(group.GroupController):
             context['user_id'] = c.userobj.id
             context['user_is_admin'] = c.userobj.sysadmin
 
-        data_dict_global_results = {
-            'all_fields': False,
-            'q': q,
-            'sort': sort_by,
-            'type': group_type or 'group',
-        }
-        global_results = self._action('group_list')(context,
-                                                    data_dict_global_results)
+        try:
+            data_dict_global_results = {
+                'all_fields': False,
+                'include_extras': True,
+                'q': q,
+                'sort': sort_by,
+                'type': group_type or 'group',
+            }
+            global_results = self._action('group_list')(context,
+                                                        data_dict_global_results)
+        except ValidationError as e:
+            if e.error_dict and e.error_dict.get('message'):
+                msg = e.error_dict['message']
+            else:
+                msg = str(e)
+            h.flash_error(msg)
+            c.page = h.Page([], 0)
+            return render(self._index_template(group_type),
+                          extra_vars={'group_type': group_type})
 
         data_dict_page_results = {
             'all_fields': True,

@@ -16,8 +16,8 @@
   {% block package_list %}
 
   {% set creator_sets = c.user_dict.datasets%}
-  {% set author_sets = h.ccca_get_dataset_by_role('author', c.user)%}
-  {% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', c.user)%}
+  {% set author_sets = h.ccca_get_dataset_by_role('author', user.name)%}
+  {% set maintainer_sets = h.ccca_get_dataset_by_role('maintainer', user.name)%}
 
   {% if creator_sets or author_sets or maintainer_sets %}
     {% snippet 'user/snippets/sort_user_datasets.html', c=c, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
