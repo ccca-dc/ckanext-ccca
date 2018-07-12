@@ -67,10 +67,11 @@ Example:
           {% block resources_outer %}
             <ul class="dataset-resources list-inline">
               {% block resources_inner %}
-                {% for format in h.dict_list_reduce(package.resources, 'format') %}
+                {% for res in package.resources %}
                 <li>
-                  {% set format_truncated = h.truncate(format, 30) %}
-                  <small><span class="label label-default" title="{{ format }}">{{ format }}</span></small>
+                  {% set format_truncated = h.truncate(res['format'], 30) %}
+                  {% set url = h.url_for(controller='package', action='resource_read', id=package.name, resource_id=res.id) %}
+                  <small><a href="{{url}}" class="label label-default" title="{{ format_truncated }}">{{ format_truncated }}</a></small>
                 </li>
                 {% endfor %}
               {% endblock %}
