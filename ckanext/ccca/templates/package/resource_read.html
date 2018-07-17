@@ -61,6 +61,12 @@
                     <div id="subset_params" class="collapse">
                         {% set coordinates = h.spatial_to_coordinates(pkg.spatial) %}
                         {% set parent = h.get_parent_dataset(pkg.id) %}
+                        {#} Anja, 17.7.18: check vertical {#}
+                        {% set query_params = h.get_query_params(pkg)%}
+                        {% set vertical_level = '' %}
+                        {% if 'vertCoord' in query_params and query_params['vertCoord'] != '' %}
+                          {% set vertical_level = query_params['vertCoord'] %}
+                        {% endif %}
 
                         {% set vars = [] %}
                         {% for x in pkg.variables %}
@@ -96,7 +102,12 @@
                                     <td>West</td>
                                     <td>{{coordinates['west']}}</td>
                                 </tr>
-
+                                {% if vertical_level != ''%}
+                                <tr>
+                                    <td>Vertical Level</td>
+                                    <td>{{vertical_level}}</td>
+                                </tr>
+                                {% endif %}
                                 <tr>
                                     <td>Time Start</td>
                                     <td>{{h.render_datetime(pkg.temporal_start, with_hours=True)}}</td>
