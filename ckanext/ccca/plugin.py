@@ -20,8 +20,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
-    #plugins.implements(plugins.IAuthFunctions) # Functions moved to iauth
-    #plugins.implements(plugins.IMapper)
+    plugins.implements(plugins.IGroupController, inherit=True)
 
 
     # IConfigurer
@@ -141,22 +140,11 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
 
         return map
 
-    def after_map(self, map):
-        #log.fatal("==================================> %s" % map)
-        return map
+    # IGroupController
+    # Add type_of_group if group was created without type_of_group (api)
+    def before_view(self, grp_dict):
+        type_of_group = grp_dict.get("type_of_group", None)
 
-    #IAuthFunctions
-    #def get_auth_functions(self):
-        #return {'package_update': package_update}
-
-    """
-    #IMapper
-    def after_update(mapper, connection, instance):
-        print ("After update")
-
-    def before_update(mapper, connection, instance):
-        print ("Before update")
-
-    def before_insert(mapper, connection, instance):
-        print ("Before insert")
-    """
+        if not type_of_group:
+            grp_dict["type_of_group"] = config.get("ckan.ccca.default_type_of_group")
+        return grp_dict
