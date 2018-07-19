@@ -1,3 +1,11 @@
+/* Anja, 19.7.18 */
+/* For Help Texts: links */
+.ccca-light-on-dark, 
+.ccca-light-on-dark:hover{
+  color: white;
+}
+
+
 /* Anja 18.7.18 */
 /* Adapt mobile view for News */
 @media (max-width: 768px) {
