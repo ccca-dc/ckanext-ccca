@@ -1,3 +1,25 @@
+/* Anja, 19.7.18 */
+/* For Help Texts: links */
+.ccca-light-on-dark, 
+.ccca-light-on-dark:hover{
+  color: white;
+}
+
+
+/* Anja 18.7.18 */
+/* Adapt mobile view for News */
+@media (max-width: 768px) {
+  .mobile-news {
+    text-align: center;
+  }
+}
+@media (min-width: 769px) {
+  .mobile-news {
+    text-align: left;
+  }
+}
+
+
 /* Anja 26.4.2018 */
 .ccca-extra_margin{
   margin-top:75px; /* special for organization-list - Mobile/Narrow View or long names and Sort Button */

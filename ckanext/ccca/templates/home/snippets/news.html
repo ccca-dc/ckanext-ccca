@@ -19,7 +19,7 @@
                      </div>
                    </div>
                </div>
-                  <div class="text-wrapper left">
+                  <div class="mobile-news">
                       <h4 class="text-uppercase"><a href="{{ h.url_for(controller='ckanext.ccca.controllers.about:AboutController', action='news_archive')}}">News</a></h4>
                       <strong>{{h.render_datetime(news['created'], with_hours=False, date_format='%A, %d. %B %Y')}}</strong>
                       <p>{{ h.render_markdown(news['description']) }}</p>
