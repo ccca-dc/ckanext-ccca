@@ -14,6 +14,14 @@ Overrides major settings from main.css - span9 width etc
 
 Load as first plugin!
 
+Add the following line
+
+<link rel="stylesheet" href="/base/{{ g.main_css[6:] }}" /> to
+to
+
+ckan/lib/neu/src/ckan/ckan/templates/base.html
+(Block Styles; replace resource )
+
 Implements a News Box on front page; Dataset : News
 
 Change your INI-File (development.ini / production.ini) in the following way::
