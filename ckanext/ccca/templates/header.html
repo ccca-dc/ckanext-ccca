@@ -37,15 +37,9 @@
             </a>
           </li>
           <li>
-            <a href="{{ h.url_for(controller='ckanext.basket.controllers.basket:BasketController', action='index') }}" class="image" title="{{ _('My Baskets') }}">
-                <span class="livicon-evo" data-options="
-                name: box.svg;
-                size: 20px;
-                style: filled;
-                fillColor: #d9e7eb;
-                strokeColor: #003647;
-                eventType: click;
-            "></span>
+            <a href="{{ h.url_for(controller='ckanext.basket.controllers.basket:BasketController', action='index') }}" title="{{ _('My Baskets') }}">
+                 <i class="icon-archive" aria-hidden="true"></i>
+                 <span class="text">{{ _('Baskets') }}</span>
             </a>
           </li>
           {% block header_account_settings_link %}
