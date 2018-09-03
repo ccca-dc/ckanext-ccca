@@ -46,7 +46,7 @@ class CCCAGroupController(group.GroupController):
     def index(self):
         group_type = self._guess_group_type()
 
-        page = self._get_page_number(request.params) or 1
+        page = h.get_page_number(request.params) or 1
         items_per_page = 21
 
         context = {'model': model, 'session': model.Session,
