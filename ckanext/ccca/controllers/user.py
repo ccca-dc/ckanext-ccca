@@ -481,12 +481,9 @@ def _user_show(context, data_dict):
 
         if include_private_and_draft_datasets:
             if include_private_and_draft_datasets:
-                context['ignore_capacity_check'] = True
-                search_dict.update({'include_drafts': True})
-                # exchange this for CKAN 2.7
-                # search_dict.update({
-                #     'include_private': True,
-                #     'include_drafts': True})
+                search_dict.update({
+                    'include_private': True,
+                    'include_drafts': True})
 
         search_dict.update({'fq': fq})
 

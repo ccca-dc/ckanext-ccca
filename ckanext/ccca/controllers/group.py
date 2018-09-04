@@ -95,4 +95,3 @@ class CCCAGroupController(group.GroupController):
         c.page.items = page_results
         return render(self._index_template(group_type),
                       extra_vars={'group_type': group_type})
-
