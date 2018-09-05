@@ -83,10 +83,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.about:AboutController',
                     action='data_policy')
 
-        # Mail Request user registration
-        map.connect('/user/register',
-                    controller='ckanext.ccca.controllers.user:UserController',
-                    action='register')
+
         map.connect('disclaimer', '/disclaimer',
                     controller='ckanext.ccca.controllers.disclaimer:DisclaimerController',
                     action='disclaimer')
@@ -106,10 +103,11 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
+
         # Users
         # following connections need to be added in order to change /user/{id} site
         map.connect('register', '/user/register',
-                    controller='ckan.controllers.user:UserController',
+                    controller='ckanext.ldap.controllers.user:UserController',
                     action='register')
         map.connect('login', '/user/login',
                     controller='ckan.controllers.user:UserController',
@@ -132,13 +130,10 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('/user/me',
                     controller='ckan.controllers.user:UserController',
                     action='me')
-
         # this is where the actual change happened
         map.connect('user_datasets', '/user/{id}',
                     controller='ckanext.ccca.controllers.user:UserController',
                     action='read', ckan_icon='sitemap')
-
-
         return map
 
     def after_map(self, map):
