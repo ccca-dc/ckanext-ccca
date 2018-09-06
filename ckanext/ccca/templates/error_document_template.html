@@ -16,7 +16,7 @@
   <section class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
-        {% if c.code and  c.code[0] == '404' %}
+        {% if c.code and  c.code[0] in ('404', '403') %}
         <p class="lead">{{ c.content}}</p>
         <h1>&#x1f62f;</h1>
         {% else %}

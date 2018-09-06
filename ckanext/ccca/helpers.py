@@ -140,8 +140,8 @@ def ccca_get_datasets_by_role(role, uname):
         return None
 
     #print data_dict
-
-    result = logic.get_action('package_search')({'ignore_capacity_check': True}, data_dict)
+    data_dict['include_private'] = True
+    result = logic.get_action('package_search')({}, data_dict)
 
     #print result
 

@@ -34,6 +34,12 @@
               <span class="badge">{{ new_activities }}</span>
             </a>
           </li>
+          <li>
+            <a href="{{ h.url_for(controller='ckanext.basket.controllers.basket:BasketController', action='index') }}" title="{{ _('My Baskets') }}">
+                 <i class="icon-archive" aria-hidden="true"></i>
+                 <span class="text">{{ _('Baskets') }}</span>
+            </a>
+          </li>
           {% block header_account_settings_link %}
             <li>
               <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
