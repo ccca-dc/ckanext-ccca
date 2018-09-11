@@ -20,8 +20,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
     plugins.implements(plugins.IConfigurer, inherit=False)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers)
-    #plugins.implements(plugins.IAuthFunctions) # Functions moved to iauth
-    #plugins.implements(plugins.IMapper)
+    plugins.implements(plugins.IGroupController, inherit=True)
 
 
     # IConfigurer
@@ -83,10 +82,7 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.about:AboutController',
                     action='data_policy')
 
-        # Mail Request user registration
-        map.connect('/user/register',
-                    controller='ckanext.ccca.controllers.user:UserController',
-                    action='register')
+
         map.connect('disclaimer', '/disclaimer',
                     controller='ckanext.ccca.controllers.disclaimer:DisclaimerController',
                     action='disclaimer')
@@ -106,10 +102,11 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
                     controller='ckanext.ccca.controllers.organizations:CCCAOrganizationController',
                     action='members_list', ckan_icon='group')
 
+
         # Users
         # following connections need to be added in order to change /user/{id} site
         map.connect('register', '/user/register',
-                    controller='ckan.controllers.user:UserController',
+                    controller='ckanext.ldap.controllers.user:UserController',
                     action='register')
         map.connect('login', '/user/login',
                     controller='ckan.controllers.user:UserController',
@@ -132,31 +129,17 @@ class CccaPlugin(plugins.SingletonPlugin, toolkit.DefaultDatasetForm):
         map.connect('/user/me',
                     controller='ckan.controllers.user:UserController',
                     action='me')
-
         # this is where the actual change happened
         map.connect('user_datasets', '/user/{id}',
                     controller='ckanext.ccca.controllers.user:UserController',
                     action='read', ckan_icon='sitemap')
-
-
         return map
 
-    def after_map(self, map):
-        #log.fatal("==================================> %s" % map)
-        return map
+    # IGroupController
+    # Add type_of_group if group was created without type_of_group (api)
+    def before_view(self, grp_dict):
+        type_of_group = grp_dict.get("type_of_group", None)
 
-    #IAuthFunctions
-    #def get_auth_functions(self):
-        #return {'package_update': package_update}
-
-    """
-    #IMapper
-    def after_update(mapper, connection, instance):
-        print ("After update")
-
-    def before_update(mapper, connection, instance):
-        print ("Before update")
-
-    def before_insert(mapper, connection, instance):
-        print ("Before insert")
-    """
+        if not type_of_group:
+            grp_dict["type_of_group"] = config.get("ckan.ccca.default_type_of_group")
+        return grp_dict
