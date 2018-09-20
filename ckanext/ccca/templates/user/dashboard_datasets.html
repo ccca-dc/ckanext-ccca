@@ -16,7 +16,7 @@
 {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
 {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
   <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
-  {% if not creator_sets and not author_sets and not maintainer_sets %}
+  {% if not creator_sets and not author_sets and not maintainer_sets and not private_sets %}
       <p class="empty">
       {{ _('You haven\'t created any datasets.') }}
       {% if h.check_access('package_create') %}
