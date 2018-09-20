@@ -11,11 +11,12 @@
 {% block primary_content_inner %}
 
 {# Anja, 11.6.2018: Attention c.data_dict.user_datasets limited here to 50 -> new request#}
+{% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
 {% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
 {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
 {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
   <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
-  {% if not creator_sets and not author_sets and not maintainer_sets %}
+  {% if not creator_sets and not author_sets and not maintainer_sets and not private_sets %}
       <p class="empty">
       {{ _('You haven\'t created any datasets.') }}
       {% if h.check_access('package_create') %}
@@ -24,7 +25,7 @@
     </p>
   {% else %}
   <div id="accordion" role="tablist">
-    {% snippet 'user/snippets/sort_user_datasets.html', c=c, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
+    {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
   </div> {#} Accordeon {#}
 
 {% endif %}

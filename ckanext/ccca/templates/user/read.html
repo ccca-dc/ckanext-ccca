@@ -14,17 +14,21 @@
 
   {% block package_list %}
 
-  {% if c.is_myself %}
+  {% if c.is_myself  %}
+      {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
       {% set creator_sets = c.user_dict.datasets %}
       {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
       {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
   {% else %}
+    {% if c.is_sysadmin  %}
+        {% set private_sets = h.ccca_get_datasets_for_others('private', c.user_dict['name']) %}
+    {% endif %}
       {% set creator_sets = h.ccca_get_datasets_for_others('creator', c.user_dict['name']) %}
       {% set author_sets = h.ccca_get_datasets_for_others('author', c.user_dict['name'])%}
       {% set maintainer_sets = h.ccca_get_datasets_for_others('maintainer', c.user_dict['name'])%}
   {% endif %}
-  {% if creator_sets or author_sets or maintainer_sets %}
-    {% snippet 'user/snippets/sort_user_datasets.html', c=c, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
+  {% if creator_sets or author_sets or maintainer_sets or private_sets %}
+    {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets,creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
   {% else %}
     {% if c.is_myself %}
       <p class="empty">
