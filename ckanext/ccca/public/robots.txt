@@ -8,4 +8,4 @@ User-Agent: *
 Crawl-Delay: 10
 
 User-agent: SemrushBot
-Disallow: /kla
+Disallow: /
