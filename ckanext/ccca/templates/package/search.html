@@ -1,0 +1,14 @@
+{% resource 'ccca/introjs' %}
+{% resource 'ccca/introjs_addition.css' %}
+
+{% ckan_extends %}
+
+{% block page_primary_action %}
+
+<div class="dropdown pull-right big-media">
+    {{ super() }}
+    <a class="btn btn-sm btn-start-intro-js" href="javascript:void(0);" onclick="javascript:introJs().setOption('tooltipClass', 'customDefault').setOption('showProgress', true).start();" title="Explain me this page">
+        <i class="icon-question-sign icon-2x"></i>
+    </a>
+</div>
+{% endblock %}
