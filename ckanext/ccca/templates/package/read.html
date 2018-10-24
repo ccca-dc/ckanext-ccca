@@ -1,10 +1,12 @@
 {% resource 'ccca/livicons' %}
 {% resource 'ccca/livicons_addition.css' %}
+{% resource 'ccca/introjs' %}
+{% resource 'ccca/introjs_addition.css' %}
 
 {% ckan_extends %}
 
 {% block page_heading %}
-    <div class="info-panel-01 green-border">
+    <div class="info-panel-01 green-border" data-step="1" data-tooltipclass='introjs-ttip' data-intro="Hi! Let me explain this page to you! You are currently on a dataset page and can see the dataset's title. Let's start the tour!">
         <h6 class="text-uppercase">
         <div class="livicon-evo" data-options="
             name: tag.svg;
