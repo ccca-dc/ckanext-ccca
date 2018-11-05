@@ -34,7 +34,7 @@ import ckan.model as model
 
 #Anja 11.06.2018, name as backup for  foreign dataset request
 def ccca_get_datasets_for_others(role,uname):
-#Check if there is any datasets where the user is neither author nor maintainer
+
     if not uname:
         return None
 
@@ -407,6 +407,14 @@ def ccca_get_news ():
 
     #print json.dumps(news_res, indent=4)
     return newest_res
+
+def ccca_get_max_sets():
+    if 'ckanext.ccca.max_user_display_sets' in config:
+        max_sets =  config.get ('ckanext.ccca.max_user_display_sets')
+        #print max_sets
+        return int(max_sets)
+    else:
+        return -1
 
 def ccca_check_news():
     if 'ckanext.ccca.news_id' in config:
