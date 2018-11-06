@@ -10,13 +10,13 @@
   {% block primary_content %}
     <article class="module">
       <div class="module-content">
+          <div class="pull-right">
+              <a class="btn btn-sm btn-start-intro-js" href="javascript:void(0);" onclick="javascript:introJs().setOption('tooltipClass', 'customDefault').setOption('showProgress', true).start();" title="Explain me this page">
+                  <i class="icon-question-sign icon-2x"></i>
+              </a>
+          </div>
         {% if self.page_primary_action() | trim %}
           <div class="page_primary_action">
-              <div class="pull-right">
-                  <a class="btn btn-sm btn-start-intro-js" href="javascript:void(0);" onclick="javascript:introJs().setOption('tooltipClass', 'customDefault').setOption('showProgress', true).start();" title="Explain me this page">
-                      <i class="icon-question-sign icon-2x"></i>
-                  </a>
-              </div>
             {% block page_primary_action %}
               {% if h.check_access('group_create') %}
                 {% link_for _('Add Group'), controller='group', action='new', class_='btn btn-success pull-right', icon='plus-sign-alt' %}
@@ -26,7 +26,7 @@
         {% endif %}
 
     {% block primary_content_inner %}
-      <h1 class="hide-heading" data-step="1" data-tooltipclass='introjs-ttip' data-intro="Hi! Let me explain our group concept to you. So groups are created to manage collections of datasets. Datasets can be grouped according to many different criterias, which will be explained in a bit.">{{ _('Groups') }}</h1>
+      <h1 class="hide-heading" data-step="1" data-tooltipclass='introjs-ttip' data-intro="Hi! Let me explain our group concept to you. Groups are created to manage collections of datasets. Datasets can be grouped according to many different criterias, which will be explained in a bit.">{{ _('Groups') }}</h1>
       {% snippet "group/snippets/helper.html" %}
 
       {% block groups_search_form %}
