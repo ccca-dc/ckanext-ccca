@@ -2,12 +2,6 @@
 
 {% block dashboard_activity_stream_context %}{% endblock %}
 
-{% block page_primary_action %}
-  {% if h.check_access('package_create') %}
-    {% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-success pull-right", icon="plus-sign-alt" %}
-  {% endif %}
-{% endblock %}
-
 {% block primary_content_inner %}
 
 {# Anja, 11.6.2018: Attention c.data_dict.user_datasets limited here to 50: new request#}
