@@ -14,60 +14,74 @@
   {% set max_sets = h.ccca_get_max_sets () %}
   {% set max_exceeded = false %}
 
-  {% if c.is_myself  %}
+  {% set author_sets = None %}
+  {% set maintainer_sets = None %}
+  {% set creator_sets = None %}
+  {% set private_sets = None %}
 
+  {% if 'number_created_packages' in c.user_dict and max_sets > 0 %}
+    {% if c.user_dict['number_created_packages'] > max_sets %}
+          {% set max_exceeded = true %}
+    {% endif %}
+  {% endif%}
 
-      {# private sets must always be visible #}
-      {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+  {% if c.is_myself %}
+      {% if 'datasets' in c.user_dict %}
 
+        {% if  c.is_sysadmin  %} {# Private included #}
+           {% set creator_sets = c.user_dict['datasets']|selectattr('private','equalto',False)|list%}
+           {% set private_sets = c.user_dict['datasets']|selectattr('private','equalto',True)|list%}
+        {% else %} {# Private not included #}
+            {% set creator_sets = c.user_dict['datasets']%}
+            {# private sets must always be visible #}
+            {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+        {% endif %}
 
-      {% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
+      {% else %}
+
+        {% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
+        {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+
+      {% endif %}
+
       {% if  (max_sets > 0) and (creator_sets|length > max_sets) %}
           {% set max_exceeded = true %}
       {% endif %}
 
       {% if not max_exceeded %}
-        {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
-        {% if (max_sets>0) and (author_sets|length > max_sets) %}
-            {% set max_exceeded = true %}
-        {% endif %}
-      {% else %}
-          {% set author_sets = None %}
+          {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
+          {% if (max_sets>0) and (author_sets|length > max_sets) %}
+              {% set max_exceeded = true %}
+          {% endif %}
       {% endif %}
 
       {% if not max_exceeded %}
         {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
-      {% else %}
-          {% set maintainer_sets = None %}
       {% endif %}
 
-  {% elif c.is_sysadmin  %} {# sysadmin gets same view as user #}
+  {% elif c.is_sysadmin %} {# similar view as for user to check performance #}
 
-        {% set private_sets = h.ccca_get_datasets_for_others('private', c.user_dict['name']) %}
-        {% set creator_sets = h.ccca_get_datasets_for_others('creator', c.user_dict['name']) %}
-
-        {% if  (max_sets > 0) and (creator_sets|length > max_sets) %}
-            {% set max_exceeded = true %}
-        {% endif %}
-
-      {% if not max_exceeded %}
-        {% set author_sets = h.ccca_get_datasets_for_others('author', c.user_dict['name'])%}
-        {% if (max_sets>0) and (author_sets|length > max_sets) %}
-            {% set max_exceeded = true %}
-        {% endif %}
-      {% else %}
-          {% set author_sets = None %}
+      {# private sets visible  for admin #}
+      {% set private_sets = h.ccca_get_datasets_by_role('private', c.user_dict['name'])%}
+      {% set creator_sets = c.user_dict['datasets']|selectattr('private','equalto',False)|list%}
+      {% if  (max_sets > 0) and (creator_sets|length > max_sets) %}
+          {% set max_exceeded = true %}
       {% endif %}
 
       {% if not max_exceeded %}
-        {% set maintainer_sets = h.ccca_get_datasets_for_others('maintainer', c.user_dict['name'])%}
-      {% else %}
-          {% set maintainer_sets = None %}
+          {% set author_sets = h.ccca_get_datasets_by_role('author', c.user_dict['name'])%}
+          {% if (max_sets>0) and (author_sets|length > max_sets) %}
+              {% set max_exceeded = true %}
+          {% endif %}
+      {% endif %}
+
+      {% if not max_exceeded %}
+        {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user_dict['name'])%}
       {% endif %}
 
   {% endif %}
-
-  {% if c.is_myself or c.is_sysadmin%}
+{############################Display#######################################################}
+  {%if c.is_myself or c.is_sysadmin%}
       {% if not max_exceeded%}
           {% if creator_sets or author_sets or maintainer_sets or private_sets %}
             {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets,creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
@@ -86,7 +100,7 @@
             {% endif %}
           {% endif %}
       {% else %} {# if max_exceeded #}
-        {# show creator_sets in the tradional way #}
+        {# show creator_sets and private_sets in the tradional way, buttons for other sets #}
         <div id="accordion" role="tablist">
           {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
           <br>
@@ -99,11 +113,12 @@
         <a href="{% url_for controller='package', action='search', maintainer=c.user_dict.fullname %}" class="btn btn-primary" >{{ _('Maintainer') }}</a>
         <a href="{% url_for controller='package', action='search', author=c.user_dict.fullname%}" class="btn btn-primary" >{{ _('Author') }}</a>
       {% endif %}
-
+{################################################################}
   {% else %} {# all other normal users #}
    <h4> Query datasets by role for user {{c.user_dict.fullname}}:</h4>
     <a href="{% url_for controller='package', action='search', maintainer=c.user_dict.fullname %}" class="btn btn-primary" >{{ _('Maintainer') }}</a>
     <a href="{% url_for controller='package', action='search', author=c.user_dict.fullname%}" class="btn btn-primary" >{{ _('Author') }}</a>
   {% endif %}
-  {% endblock %}
+
+   {% endblock %}
 {% endblock %}

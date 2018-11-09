@@ -4,19 +4,34 @@
 
 {% block primary_content_inner %}
 
-{# Anja, 11.6.2018: Attention c.data_dict.user_datasets limited here to 50: new request#}
 
 {# Anja. 2,11.2018: Check whether there are too much sets #}
 
 {% set max_sets = h.ccca_get_max_sets () %}
 {% set max_exceeded = false %}
 
+{% if 'number_created_packages' in c.user_dict and max_sets > 0 %}
+  {% if c.user_dict['number_created_packages'] > max_sets %}
+        {% set max_exceeded = true %}
+  {% endif %}
+{% endif%}
 
-{# private sets must always be visible #}
-{% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
 
+{# different handling for sys_admins: private included in creator_sets #}
+{# Private Sets need always be visible #}
+{% if 'datasets' in c.user_dict %}
+     {% if  c.is_sysadmin  %}
+        {% set creator_sets = c.user_dict['datasets']|selectattr('private','equalto',False)|list%}
+        {% set private_sets = c.user_dict['datasets']|selectattr('private','equalto',True)|list%}
+     {% else %}
+       {% set creator_sets = c.user_dict['datasets']%}
+       {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+     {% endif %}
+{% else %}
+    {% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
+    {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+{% endif %}
 
-{% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
 {% if  (max_sets > 0) and (creator_sets|length > max_sets) %}
     {% set max_exceeded = true %}
 {% endif %}
