@@ -14,7 +14,11 @@
 
     <div class="col-md-3  pull-right">
       {% if h.check_access('package_create') %}
-          {% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-success", icon="plus-sign-alt" %}
+          {% if c.is_myself  %}
+            {% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-success", icon="plus-sign-alt" %}
+          {% elif c.is_sysadmin %}
+            {% link_for _('Manage '+ user.name), controller='user', action='edit', id=user.name, class_='btn btn-success', icon='wrench' %}
+          {% endif %}
       {% endif %}
     </div>
 
