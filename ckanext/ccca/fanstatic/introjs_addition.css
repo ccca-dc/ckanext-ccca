@@ -1,0 +1,21 @@
+.introjs-ttip {
+    color: #003647;
+}
+
+.introjs-skipbutton {
+    border-radius: 0;
+    color: red;
+}
+
+.customDefault {
+    color: #003647;
+}
+
+.introjs-button {
+    outline: 0 !important;
+}
+
+.btn-start-intro-js {
+    line-height: 1.5;
+    margin-bottom: 10px !important;
+}
