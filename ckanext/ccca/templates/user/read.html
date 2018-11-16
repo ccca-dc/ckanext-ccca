@@ -2,6 +2,8 @@
 
 
 {% block primary_content_inner %}
+  {# super for basket_button in ckanext-basket #}
+  {{ super() }}
   <h2 class="hide-heading">
     {% block page_heading %}{{ _('Datasets') }}{% endblock %}
   </h2>
