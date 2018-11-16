@@ -32,93 +32,7 @@ import json
 
 import ckan.model as model
 
-#Anja 11.06.2018, name as backup for  foreign dataset request
-def ccca_get_datasets_for_others(role,uname):
-#Check if there is any datasets where the user is neither author nor maintainer
-    if not uname:
-        return None
-
-    if not role:
-        return None
-
-    if role != 'author' and role != 'maintainer' and role != 'creator' and role != 'private'  :
-        return None
-
-    user_info = logic.get_action('user_show')({}, {'include_datasets':False, 'id': uname})
-
-    user = ''
-    user_name = ''
-    user_id =''
-
-    if 'email' in user_info and user_info['email'] != ''  and user_info['email'] != None:
-        user = user_info['email']
-    else:
-        if 'fullname' in user_info and user_info['fullname'] != '' and user_info['fullname'] != None :
-            user_name = user_info['fullname']
-
-    if 'id' in user_info and user_info['id'] != '' and user_info['id'] != None:
-        user_id = user_info['id']
-
-    if user == '' and user_name == '' and user_id != '':
-        return None
-
-    return_datasets = []
-
-    #Get all packages the given user is author or maintainer
-    data_dict ={}
-    data_dict['rows'] = 1000
-
-    if role == 'author':
-        if user != '':
-            data_dict['fq']= 'author_email:' +  user
-        elif user_name!= '':
-            data_dict['fq']= 'author:"' +  user_name + '"'
-        else:
-            return None
-
-    elif role == 'maintainer':
-        if user != '':
-            data_dict['fq']= 'maintainer_email:' +  user
-        elif user_name!= '':
-            data_dict['fq']='maintainer:"' +  user_name + '"'
-        else:
-            return None
-
-    elif role == 'creator' or 'private':
-        if user_id != '':
-            data_dict['fq']= 'creator_user_id:' +  user_id
-        else:
-            return None
-
-    else:
-        return None
-
-    if role == 'private':
-        if user_id != '':
-            data_dict['fq']= 'creator_user_id:' +  user_id
-        else:
-            return None
-
-        data_dict['fq']= 'creator_user_id:' +  user_id + ' +state:(draft OR active)'
-        data_dict['include_private'] = True
-        result = logic.get_action('package_search')({'doch_private': True, 'ignore_capacity_check': True}, data_dict)
-
-        # Remove Public Datasets
-        private_packages = []
-        for x in result['results']:
-            if  x['private'] == True:
-                private_packages.append(x)
-
-        return private_packages
-
-    else:
-        result = logic.get_action('package_search')({'ignore_capacity_check': True}, data_dict)
-
-        role_datasets = result['results']
-        return role_datasets
-
-
-#Anja 20.3.2018 - Attention: Just for own request - permission problem
+#Anja Nov.2018 - Attention: Just for own or sys_admins request 
 def ccca_get_datasets_by_role(role, uname):
 
     if not uname:
@@ -407,6 +321,14 @@ def ccca_get_news ():
 
     #print json.dumps(news_res, indent=4)
     return newest_res
+
+def ccca_get_max_sets():
+    if 'ckanext.ccca.max_user_display_sets' in config:
+        max_sets =  config.get ('ckanext.ccca.max_user_display_sets')
+        #print max_sets
+        return int(max_sets)
+    else:
+        return -1
 
 def ccca_check_news():
     if 'ckanext.ccca.news_id' in config:

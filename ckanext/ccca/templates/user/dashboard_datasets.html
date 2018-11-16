@@ -2,19 +2,56 @@
 
 {% block dashboard_activity_stream_context %}{% endblock %}
 
-{% block page_primary_action %}
-  {% if h.check_access('package_create') %}
-    {% link_for _('Add Dataset'), controller='package', action='new', class_="btn btn-success pull-right", icon="plus-sign-alt" %}
-  {% endif %}
-{% endblock %}
-
 {% block primary_content_inner %}
 
-{# Anja, 11.6.2018: Attention c.data_dict.user_datasets limited here to 50 -> new request#}
-{% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
-{% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
-{% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
-{% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
+
+{# Anja. 2,11.2018: Check whether there are too much sets #}
+
+{% set max_sets = h.ccca_get_max_sets () %}
+{% set max_exceeded = false %}
+
+{% if 'number_created_packages' in c.user_dict and max_sets > 0 %}
+  {% if c.user_dict['number_created_packages'] > max_sets %}
+        {% set max_exceeded = true %}
+  {% endif %}
+{% endif%}
+
+
+{# different handling for sys_admins: private included in creator_sets #}
+{# Private Sets need always be visible #}
+{% if 'datasets' in c.user_dict %}
+     {% if  c.is_sysadmin  %}
+        {% set creator_sets = c.user_dict['datasets']|selectattr('private','equalto',False)|list%}
+        {% set private_sets = c.user_dict['datasets']|selectattr('private','equalto',True)|list%}
+     {% else %}
+       {% set creator_sets = c.user_dict['datasets']%}
+       {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+     {% endif %}
+{% else %}
+    {% set creator_sets = h.ccca_get_datasets_by_role('creator', c.user)%}
+    {% set private_sets = h.ccca_get_datasets_by_role('private', c.user)%}
+{% endif %}
+
+{% if  (max_sets > 0) and (creator_sets|length > max_sets) %}
+    {% set max_exceeded = true %}
+{% endif %}
+
+{% if not max_exceeded %}
+  {% set author_sets = h.ccca_get_datasets_by_role('author', c.user)%}
+  {% if (max_sets>0) and (author_sets|length > max_sets) %}
+      {% set max_exceeded = true %}
+  {% endif %}
+{% else %}
+    {% set author_sets = None %}
+{% endif %}
+
+{% if not max_exceeded %}
+  {% set maintainer_sets = h.ccca_get_datasets_by_role('maintainer', c.user)%}
+{% else %}
+    {% set maintainer_sets = None %}
+{% endif %}
+
+
   <h2 class="hide-heading">{{ _('My Datasets') }}</h2>
   {% if not creator_sets and not author_sets and not maintainer_sets and not private_sets %}
       <p class="empty">
@@ -23,11 +60,19 @@
         {% link_for _('Create one now?'), controller='package', action='new' %}
       {% endif %}
     </p>
-  {% else %}
+  {% elif not max_exceeded %}
+    <div id="accordion" role="tablist">
+      {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
+    </div> {#} Accordeon {#}
+  {% elif max_exceeded %}
+  {# show private sets and creator_sets in the tradional way #}
   <div id="accordion" role="tablist">
     {% snippet 'user/snippets/sort_user_datasets.html', c=c, private_sets=private_sets, creator_sets=creator_sets, author_sets=author_sets, maintainer_sets=maintainer_sets %}
+    <br>
   </div> {#} Accordeon {#}
-
+  <h4> Query datasets by my role:</h4>
+  <a href="{% url_for controller='package', action='search', maintainer_email=c.user_dict.email %}" class="btn btn-primary" >{{ _('Maintainer') }}</a>
+  <a href="{% url_for controller='package', action='search', author_email=c.user_dict.email %}" class="btn btn-primary" >{{ _('Author') }}</a>
 {% endif %}
 
 {% endblock %}
