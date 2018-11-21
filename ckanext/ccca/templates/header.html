@@ -1,9 +1,11 @@
+{% resource 'ccca/introjs' %}
+{% resource 'ccca/introjs_addition.css' %}
+
 {% ckan_extends %}
 
 <!-- Remove search bar -->
 {% block header_wrapper %}
-<!-- Change dashbaord link from news to datasets - thus include all this stuff from org ckan ...-->
-<!-- Anja, 24.4.18-->
+
 {% block header_account %}
   <header class="account-masthead">
     <div class="container">    {% block header_account_container_content %}
@@ -20,42 +22,60 @@
             </li>
           {% endif %}
           <li>
+            <span data-intro-group="explain-header" data-tooltipclass='introjs-ttip'  data-intro='Hi, let me explain this header bar to you! Click here to see your profile information, your Datasets and a log of your recent activities.' data-step="1">
             <a href="{{ h.url_for(controller='user', action='read', id=c.userobj.name) }}" class="image" title="{{ _('View profile') }}">
               {{ h.gravatar((c.userobj.email_hash if c and c.userobj else ''), size=22) }}
-              <span class="username">{{ c.userobj.display_name }}</span>
-            </a>
+                  <span class="username"  >{{ c.userobj.display_name }}</span>
+              </a>
+              </span>
           </li>
           {% set new_activities = h.new_activities() %}
           <li class="notifications {% if new_activities > 0 %}notifications-important{% endif %}">
+            <span data-intro-group="explain-header" data-tooltipclass='introjs-ttip'  data-intro='Clicking here leads you to your Dashboad. Your Dashboard contains the News Feed, thus the overview of news on all items your are following (The number indicates how many news you have). Furthermore you find information about your organizations and - in case - information about the groups your dataset(s) belong to.' data-step="2">
             {% set notifications_tooltip = ngettext('Dashboard (%(num)d new item)', 'Dashboard (%(num)d new items)', new_activities) %}
             <a href="{{ h.url_for(controller='user', action='dashboard') }}" title="{{ notifications_tooltip }}">
               <i class="icon-dashboard" aria-hidden="true"></i>
               <span class="text">{{ _('Dashboard') }}</span>
               <span class="badge">{{ new_activities }}</span>
             </a>
+          </span>
           </li>
           <li>
+            <span data-intro-group="explain-header" data-tooltipclass='introjs-ttip'  data-intro='Click here to create baskets and find information existing baskets.' data-step="3">
             <a href="{{ h.url_for(controller='ckanext.basket.controllers.basket:BasketController', action='index') }}" title="{{ _('My Baskets') }}">
                  <i class="icon-archive" aria-hidden="true"></i>
                  <span class="text">{{ _('Baskets') }}</span>
             </a>
+            </span>
           </li>
           {% block header_account_settings_link %}
             <li>
+            <span data-intro-group="explain-header" data-tooltipclass='introjs-ttip'  data-intro='Selecting this item leads you to a form where you can change your profile settings.' data-step="4">
+
               <a href="{{ h.url_for(controller='user', action='edit', id=c.userobj.name) }}" title="{{ _('Edit settings') }}">
                 <i class="icon-cog" aria-hidden="true"></i>
                 <span class="text">{{ _('Settings') }}</span>
               </a>
+              </span>
             </li>
           {% endblock %}
           {% block header_account_log_out_link %}
             <li>
+              <span data-intro-group="explain-header" data-tooltipclass='introjs-ttip'  data-intro='Click here to logout from our server.' data-step="5">
               <a href="{{ h.url_for('/user/_logout') }}" title="{{ _('Log out') }}">
                 <i class="icon-signout" aria-hidden="true"></i>
                 <span class="text">{{ _('Log out') }}</span>
               </a>
+              </span>
             </li>
           {% endblock %}
+            {% block header_introjs %}
+            <li>
+          <a  href="javascript:void(0);" onclick="javascript:introJs().setOption('tooltipClass', 'customDefault').setOption('showProgress', true).setOption('showStepNumbers', false).start('explain-header');" title="Explain me this header bar">
+              <i class="icon-question-sign" aria-hidden="true"></i>
+          </a>
+            </li>
+            {% endblock %}
           {% endblock %}
         </ul>
       </div>
@@ -71,8 +91,11 @@
         </ul>
       </nav>
     {% endif %}
+
   {% endblock %}
 </div>
+
+
 </header>
   {% endblock %}
 

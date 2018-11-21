@@ -4,6 +4,7 @@
 {% ckan_extends %}
 
 {% block resource_read_title %}
+    <span data-intro-group="explain-resource" data-tooltipclass='introjs-ttip'  data-intro='Hi, let me explain this page to you! Here you see the title of the resource' data-step="1">
     <div class="info-panel-01 blue-border">
         <h6 class="text-uppercase">
           <div class="livicon-evo" data-options="
@@ -20,11 +21,14 @@
         </h6>
         <h2 class="page-heading">{{ h.resource_display_name(res) | truncate(50) }}</h2>
     </div>
+    </span>
+    <span data-intro-group="explain-resource" data-tooltipclass='introjs-ttip'  data-intro='Here you find the title and link to the dataset this resource belongs to' data-step="2">
     <div class="info-panel-01 green-border">
         <h6>
           DATASET: {% link_for pkg.title, controller='package', action='read', id=pkg.name %}
         </h6>
     </div>
+    </span>
 {% endblock %}
 
 
@@ -33,7 +37,10 @@
     {% if h.get_parent_dataset(res.package_id) and '/subset/' in res.url %}
         <div class="alignments">
              <div class="row">
+               <span data-intro-group="explain-resource" data-tooltipclass='introjs-ttip'  data-intro='As this resource is a subset of another resource, you can find here information about the parameter used to create this subset. Try it.' data-step="3">
+
                  <div>
+
                     <span class="livicon-evo" data-options="
                         name: pie-chart.svg;
                         size: 50px;
@@ -55,6 +62,7 @@
                         rotate: 180;
                     "></span></a>
                 </div>
+                </span>
             </div>
             <div class="row">
                 <div class="subset_params_section col-sm-12">
