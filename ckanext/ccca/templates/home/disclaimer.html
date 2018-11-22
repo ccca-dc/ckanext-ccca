@@ -1,7 +1,13 @@
 {% extends "page.html" %}
 
+{% block breadcrumb_content %}
+<li class="active">{% link_for _('Disclaimer'), controller='ckanext.ccca.controllers.disclaimer:DisclaimerController', action='disclaimer' %}</li>
+{% endblock %}
+
+
 {% block primary %}
-  <div class="module-content">
+
+<div class="container">
       {% snippet 'disclaimer/snippets/disclaimer_text.html' %}
-  </div>
+</div>
 {% endblock %}
